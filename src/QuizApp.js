@@ -76,26 +76,13 @@ function QuizApp() {
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
-    if (selectedCategory && selectedSubcategory && 
-        quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]) {
-      try {
-        const subcategoryQuestions = quizData.categories[selectedCategory]
-          .subcategories[selectedSubcategory].questions;
-        if (subcategoryQuestions && subcategoryQuestions.length > 0) {
-          const shuffledQuestions = shuffleArray([...subcategoryQuestions]).slice(0, 10);
-          setQuestions(shuffledQuestions);
-          setCurrentQuestionIndex(0);
-          setScore(0);
-          setShowScore(false);
-          setFeedback(null);
-          setIsAnswered(false);
-          setIsQuizKingMode(false);
-        } else {
-          console.error('選択されたサブカテゴリーに問題がありません');
-        }
-      } catch (error) {
-        console.error('問題データの読み込みエラー:', error);
-      }
+    if (selectedCategory && selectedSubcategory) {
+      const categoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+      const shuffledQuestions = shuffleArray([...categoryQuestions]).slice(0, 10);
+      setQuestions(shuffledQuestions);
+      setCurrentQuestionIndex(0);
+      setScore(0);
+      setShowScore(false);
     }
   }, [selectedCategory, selectedSubcategory]);
 
@@ -275,6 +262,18 @@ function QuizApp() {
     }
   };
 
+  const handleBackToCategories = () => {
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setQuestions([]);
+  };
+
+  const handleBackToSubcategories = () => {
+    setSelectedSubcategory(null);
+    setQuestions([]);
+    setShowScore(false);
+  };
+
   // カテゴリー選択画面
   if (!selectedCategory) {
     return (
@@ -309,13 +308,14 @@ function QuizApp() {
 
   // サブカテゴリー選択画面
   if (!selectedSubcategory) {
+    const category = quizData.categories[selectedCategory];
     return (
       <div className="app">
-        <h1>クイズアプリ</h1>
+        <h1>{category.name}</h1>
         <div className="category-selection">
-          <h2>{quizData.categories[selectedCategory].name}のサブカテゴリーを選択してください</h2>
+          <h2>サブカテゴリーを選択してください</h2>
           <div className="category-grid">
-            {Object.entries(quizData.categories[selectedCategory].subcategories).map(([key, subcategory]) => (
+            {Object.entries(category.subcategories).map(([key, subcategory]) => (
               <button
                 key={key}
                 onClick={() => setSelectedSubcategory(key)}
@@ -326,7 +326,7 @@ function QuizApp() {
             ))}
           </div>
           <button
-            onClick={() => setSelectedCategory(null)}
+            onClick={handleBackToCategories}
             className="back-button"
           >
             カテゴリー選択に戻る
@@ -367,14 +367,10 @@ function QuizApp() {
             あなたのスコアは {score} / {questions.length} です
           </div>
           <button
-            onClick={() => {
-              setSelectedCategory(null);
-              setSelectedSubcategory(null);
-              setIsQuizKingMode(false);
-            }}
+            onClick={handleBackToSubcategories}
             className="back-button"
           >
-            カテゴリー選択に戻る
+            サブカテゴリー選択に戻る
           </button>
         </div>
       </div>
@@ -388,29 +384,9 @@ function QuizApp() {
         <div className="question-count">
           <span>質問 {currentQuestionIndex + 1}</span>/{questions.length}
         </div>
-        <div className="category-info">
-          {isQuizKingMode ? (
-            <div>
-              <div className="category-name">
-                {quizData.categories[questions[currentQuestionIndex].category].name}
-              </div>
-              <div className="subcategory-name">
-                {quizData.categories[questions[currentQuestionIndex].category]
-                  .subcategories[questions[currentQuestionIndex].subcategory].name}
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="category-name">
-                {quizData.categories[selectedCategory].name}
-              </div>
-              {selectedSubcategory && (
-                <div className="subcategory-name">
-                  {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
-                </div>
-              )}
-            </div>
-          )}
+        <div className="category-name">
+          {quizData.categories[selectedCategory].name} - 
+          {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
         </div>
         <div className="question-text">
           {questions[currentQuestionIndex].question}
