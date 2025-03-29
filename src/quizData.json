@@ -154,7 +154,7 @@
       }
     },
     "vehicles_hobbies": {
-      "name": "のりもの・ホビー・その他",
+      "name": "のりもの・ホビー",
       "subcategories": {
         "cars": {
           "name": "クルマ",

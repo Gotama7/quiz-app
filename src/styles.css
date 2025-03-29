@@ -61,6 +61,11 @@ h2 {
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
 }
 
 .category-button:hover {
