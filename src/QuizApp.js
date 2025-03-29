@@ -12,12 +12,17 @@ function getAllQuestions() {
   const allQuestions = [];
   Object.entries(quizData.categories).forEach(([categoryKey, category]) => {
     Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
-      const questionsWithMeta = subcategory.questions.map(q => ({
-        ...q,
-        categoryName: category.name,
-        subcategoryName: subcategory.name
-      }));
-      allQuestions.push(...questionsWithMeta);
+      if (subcategory.questions && subcategory.questions.length > 0) {
+        subcategory.questions.forEach(q => {
+          allQuestions.push({
+            question: q.question,
+            correct: q.correct,
+            distractors: q.distractors,
+            categoryName: category.name,
+            subcategoryName: subcategory.name
+          });
+        });
+      }
     });
   });
   return shuffleArray(allQuestions).slice(0, 30);
@@ -188,9 +193,9 @@ function QuizApp() {
       const currentQuestion = questions[currentQuestionIndex];
       const allOptions = shuffleArray([
         currentQuestion.correct,
-        currentQuestion.distractor1,
-        currentQuestion.distractor2,
-        currentQuestion.distractor3
+        currentQuestion.distractors[0],
+        currentQuestion.distractors[1],
+        currentQuestion.distractors[2]
       ]);
       setOptions(allOptions);
       setShowFeedback(false);
@@ -294,6 +299,7 @@ function QuizApp() {
           </div>
           <div className="quiz-king-section">
             <h2>クイズ王チャレンジ</h2>
+            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
             <button
               onClick={startQuizKingChallenge}
               className="quiz-king-button"
