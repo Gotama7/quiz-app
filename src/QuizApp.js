@@ -276,7 +276,7 @@ function QuizApp() {
   };
 
   // カテゴリー選択画面
-  if (!selectedCategory && !isQuizKingMode) {
+  if (!selectedCategory) {
     return (
       <div className="app">
         <h1>クイズアプリ</h1>
@@ -295,7 +295,6 @@ function QuizApp() {
           </div>
           <div className="quiz-king-section">
             <h2>クイズ王チャレンジ</h2>
-            <p>全カテゴリーからランダムに30問出題されます</p>
             <button
               onClick={startQuizKingChallenge}
               className="quiz-king-button"
@@ -309,40 +308,18 @@ function QuizApp() {
   }
 
   // サブカテゴリー選択画面
-  if (selectedCategory && !selectedSubcategory && !isQuizKingMode) {
+  if (!selectedSubcategory) {
     return (
       <div className="app">
-        <h1>サブカテゴリーを選択してください</h1>
-        <div className="subcategory-selection">
-          <div className="subcategory-grid">
-            <button
-              onClick={() => {
-                const categoryQuestions = quizData.categories[selectedCategory].questions || [];
-                if (categoryQuestions.length > 0) {
-                  const shuffledQuestions = shuffleArray([...categoryQuestions]).slice(0, 10);
-                  setQuestions(shuffledQuestions);
-                  setCurrentQuestionIndex(0);
-                  setScore(0);
-                  setShowScore(false);
-                }
-              }}
-              className="subcategory-button"
-            >
-              全サブカテゴリーから出題
-            </button>
+        <h1>クイズアプリ</h1>
+        <div className="category-selection">
+          <h2>{quizData.categories[selectedCategory].name}のサブカテゴリーを選択してください</h2>
+          <div className="category-grid">
             {Object.entries(quizData.categories[selectedCategory].subcategories).map(([key, subcategory]) => (
               <button
                 key={key}
-                onClick={() => {
-                  setSelectedSubcategory(key);
-                  const subcategoryQuestions = subcategory.questions;
-                  const shuffledQuestions = shuffleArray([...subcategoryQuestions]).slice(0, 10);
-                  setQuestions(shuffledQuestions);
-                  setCurrentQuestionIndex(0);
-                  setScore(0);
-                  setShowScore(false);
-                }}
-                className="subcategory-button"
+                onClick={() => setSelectedSubcategory(key)}
+                className="category-button"
               >
                 {subcategory.name}
               </button>

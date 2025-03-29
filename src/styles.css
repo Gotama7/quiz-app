@@ -45,28 +45,25 @@ h2 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.category-grid,
-.subcategory-grid {
+.category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
 }
 
-.category-button,
-.subcategory-button {
-  padding: 15px 20px;
-  font-size: 1.1em;
+.category-button {
+  padding: 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
   background-color: #4CAF50;
   color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.category-button:hover,
-.subcategory-button:hover {
+.category-button:hover {
   background-color: #45a049;
 }
 
@@ -161,14 +158,15 @@ h2 {
 }
 
 .back-button {
-  padding: 10px 20px;
-  font-size: 1.1em;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
   background-color: #666;
   color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 1rem;
 }
 
 .back-button:hover {
@@ -481,10 +479,11 @@ h2 {
 
 /* クイズ王チャレンジセクション */
 .quiz-king-section {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 10px;
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  text-align: center;
 }
 
 .quiz-king-section h2 {
@@ -500,12 +499,12 @@ h2 {
 }
 
 .quiz-king-button {
-  padding: 15px 30px;
-  font-size: 1.2em;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
   background-color: #ff9800;
   color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
