@@ -486,21 +486,26 @@ h2 {
 .quiz-king-section {
   margin-top: 2rem;
   padding: 2rem;
-  background-color: #f8f8f8;
+  background: linear-gradient(135deg, #6B46C1, #4834A8);
   border-radius: 8px;
   text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid #8B5CF6;
 }
 
 .quiz-king-section h2 {
   color: #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 1.8rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   margin-bottom: 1rem;
+  font-weight: bold;
 }
 
 .quiz-king-section p {
-  color: #fff;
+  color: #E9D8FD;
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
+  line-height: 1.6;
 }
 
 .quiz-king-button {
@@ -508,14 +513,20 @@ h2 {
   font-size: 1.2rem;
   border: none;
   border-radius: 8px;
-  background-color: #ff9800;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .quiz-king-button:hover {
-  background-color: #f57c00;
+  background: linear-gradient(135deg, #D97706, #B45309);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* クイズ王達成表示 */
