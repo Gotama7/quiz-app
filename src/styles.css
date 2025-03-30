@@ -489,18 +489,18 @@ h2 {
 .quiz-king-section {
   margin-top: 2rem;
   padding: 2rem;
-  background: linear-gradient(135deg, #FFF3C4, #FEF08A);
+  background: #f5f5f5;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 2px solid #FDE047;
+  border: 2px solid #e0e0e0;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .quiz-king-section h2 {
-  color: #854D0E;
+  color: #333;
   font-size: 1.8rem;
   text-shadow: none;
   margin-bottom: 1rem;
@@ -508,7 +508,7 @@ h2 {
 }
 
 .quiz-king-section p {
-  color: #92400E;
+  color: #666;
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
   line-height: 1.6;
@@ -519,7 +519,7 @@ h2 {
   font-size: 1.2rem;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, #FB923C, #EA580C);
+  background: #333;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -530,7 +530,7 @@ h2 {
 }
 
 .quiz-king-button:hover {
-  background: linear-gradient(135deg, #EA580C, #C2410C);
+  background: #000;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
