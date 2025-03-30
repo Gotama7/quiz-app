@@ -60,7 +60,7 @@ h2 {
   font-size: 1.2rem;
   border: none;
   border-radius: 8px;
-  background-color: #4CAF50;
+  background-color: #2196F3;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -72,7 +72,7 @@ h2 {
 }
 
 .category-button:hover {
-  background-color: #45a049;
+  background-color: #1976D2;
 }
 
 /* クイズ画面 */
@@ -938,7 +938,7 @@ h2 {
   object-fit: cover;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border: 3px solid #4CAF50;
+  border: 3px solid #000000;
 }
 
 /* レスポンシブデザイン */
