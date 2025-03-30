@@ -480,6 +480,11 @@ function QuizApp() {
               {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
             </div>
           )}
+          {showFeedback && (
+            <div className={`feedback ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
+              {feedback.isCorrect ? '正解！' : `不正解... 正解は ${feedback.correctAnswer} です`}
+            </div>
+          )}
           <div className="question-text">
             {questions[currentQuestionIndex].question}
           </div>
@@ -497,11 +502,6 @@ function QuizApp() {
             </button>
           ))}
         </div>
-        {showFeedback && (
-          <div className={`feedback ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
-            {feedback.isCorrect ? '正解！' : `不正解... 正解は ${feedback.correctAnswer} です`}
-          </div>
-        )}
       </div>
     );
   }
