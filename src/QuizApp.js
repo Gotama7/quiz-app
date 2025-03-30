@@ -85,12 +85,31 @@ function QuizApp() {
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
     if (selectedCategory && selectedSubcategory) {
-      const categoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
-      const shuffledQuestions = shuffleArray([...categoryQuestions]).slice(0, 10);
+      const subcategoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+      const formattedQuestions = subcategoryQuestions.map(q => ({
+        question: q.question,
+        correct: q.correct,
+        distractors: q.distractors,
+        categoryName: quizData.categories[selectedCategory].name,
+        subcategoryName: quizData.categories[selectedCategory].subcategories[selectedSubcategory].name
+      }));
+      const shuffledQuestions = shuffleArray([...formattedQuestions]).slice(0, 10);
       setQuestions(shuffledQuestions);
       setCurrentQuestionIndex(0);
       setScore(0);
       setShowScore(false);
+      setIsAnswered(false);
+      setShowFeedback(false);
+
+      // 最初の問題の選択肢をセット
+      if (shuffledQuestions.length > 0) {
+        const firstQuestion = shuffledQuestions[0];
+        const initialOptions = shuffleArray([
+          firstQuestion.correct,
+          ...firstQuestion.distractors
+        ]);
+        setOptions(initialOptions);
+      }
     }
   }, [selectedCategory, selectedSubcategory]);
 
