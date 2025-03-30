@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import quizData from './quizData.json';
 import './styles.css';
-import barbarossaImage from './barbarossa.jpg';
+import barbarossaImage from './images/barbarossa.jpg';
 
 // 選択肢をランダムに並べ替える関数
 function shuffleArray(array) {
