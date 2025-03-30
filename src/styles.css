@@ -128,26 +128,30 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-family: inherit;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 100%;
-  margin: 0;
+  outline: none;
 }
 
 .answer-button:hover:not(:disabled) {
   background-color: #e9ecef;
+  border-color: #bbb;
 }
 
 .answer-button.correct {
   background-color: #4CAF50;
-  color: white !important;
+  color: white;
   border-color: #4CAF50;
 }
 
 .answer-button.incorrect {
   background-color: #f44336;
-  color: white !important;
+  color: white;
   border-color: #f44336;
 }
 
@@ -156,6 +160,47 @@ h2 {
   opacity: 0.8;
   background-color: #f8f9fa;
   color: #333;
+}
+
+/* モバイルデバイス向けの調整 */
+@media (max-width: 1024px) {
+  .answer-button {
+    -webkit-tap-highlight-color: transparent;
+    background-color: #f8f9fa !important;
+    color: #333 !important;
+  }
+
+  .answer-button.correct {
+    background-color: #4CAF50 !important;
+    color: white !important;
+  }
+
+  .answer-button.incorrect {
+    background-color: #f44336 !important;
+    color: white !important;
+  }
+
+  .answer-button:disabled {
+    background-color: #f8f9fa !important;
+    color: #333 !important;
+  }
+}
+
+/* タブレット向けの追加スタイル */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .answer-button {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  .answer-button.correct,
+  .answer-button.incorrect,
+  .answer-button:disabled {
+    opacity: 1;
+    -webkit-text-fill-color: currentColor;
+  }
 }
 
 /* スコア画面 */
