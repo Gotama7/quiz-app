@@ -125,7 +125,7 @@ h2 {
   font-size: 1.1em;
   background-color: #f8f9fa;
   color: #333;
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
@@ -137,6 +137,7 @@ h2 {
   -moz-appearance: none;
   appearance: none;
   outline: none;
+  box-sizing: border-box;
 }
 
 .answer-button:hover:not(:disabled) {
@@ -161,6 +162,7 @@ h2 {
   opacity: 0.8;
   background-color: #f8f9fa;
   color: #333;
+  border-color: #ddd;
 }
 
 /* モバイルデバイス向けの調整 */
@@ -169,21 +171,25 @@ h2 {
     -webkit-tap-highlight-color: transparent;
     background-color: #f8f9fa !important;
     color: #333 !important;
+    border: 1px solid #ddd !important;
   }
 
   .answer-button.correct {
     background-color: #4CAF50 !important;
     color: white !important;
+    border-color: #4CAF50 !important;
   }
 
   .answer-button.incorrect {
     background-color: #f44336 !important;
     color: white !important;
+    border-color: #f44336 !important;
   }
 
   .answer-button:disabled {
     background-color: #f8f9fa !important;
     color: #333 !important;
+    border-color: #ddd !important;
   }
 }
 
