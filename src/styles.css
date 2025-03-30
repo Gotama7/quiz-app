@@ -1114,4 +1114,42 @@ h2 {
   .back-to-top-button {
     right: 160px;
   }
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.nav-button {
+  padding: 12px 25px;
+  font-size: 1.1em;
+  background-color: #666;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 200px;
+}
+
+.nav-button:hover {
+  background-color: #555;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 20px;
+  }
+
+  .nav-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1em;
+  }
 } 

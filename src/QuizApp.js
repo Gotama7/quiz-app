@@ -558,20 +558,6 @@ function QuizApp() {
     return (
       <div className="quiz-container">
         <div className="question-section">
-          <button
-            onClick={handleBackToCategories}
-            className="back-to-top-button"
-          >
-            トップに戻る
-          </button>
-          {!isQuizKingMode && (
-            <button
-              onClick={handleBackToSubcategories}
-              className="back-to-subcategories-button"
-            >
-              サブカテゴリー選択に戻る
-            </button>
-          )}
           <div className="timer-section">
             <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
               残り時間: {timeLeft}秒
