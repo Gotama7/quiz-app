@@ -81,7 +81,7 @@ function QuizApp() {
   });
   const [answerHistory, setAnswerHistory] = useState([]);
   const [answerStats, setAnswerStats] = useState({});
-  const [timeLeft, setTimeLeft] = useState(20);
+  const [timeLeft, setTimeLeft] = useState(15);
   const [timerActive, setTimerActive] = useState(false);
 
   // サブカテゴリーが選択されたときに問題を設定
@@ -323,7 +323,7 @@ function QuizApp() {
           setCurrentQuestionIndex(nextQuestion);
           setIsAnswered(false);
           setShowFeedback(false);
-          setTimeLeft(20);
+          setTimeLeft(15);
           setTimerActive(true);
           
           const nextQuestionData = questions[nextQuestion];
@@ -346,7 +346,7 @@ function QuizApp() {
   // 問題表示時にタイマーを開始
   useEffect(() => {
     if (questions.length > 0 && currentQuestionIndex < questions.length && !isAnswered) {
-      setTimeLeft(20);
+      setTimeLeft(15);
       setTimerActive(true);
     }
   }, [questions, currentQuestionIndex]);
@@ -386,7 +386,7 @@ function QuizApp() {
         setCurrentQuestionIndex(nextQuestion);
         setIsAnswered(false);
         setShowFeedback(false);
-        setTimeLeft(20);
+        setTimeLeft(15);
         setTimerActive(true);
         
         const nextQuestionData = questions[nextQuestion];
@@ -547,7 +547,7 @@ function QuizApp() {
             <div 
               className="timer-bar"
               style={{
-                width: `${(timeLeft / 20) * 100}%`,
+                width: `${(timeLeft / 15) * 100}%`,
                 backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
               }}
             />
