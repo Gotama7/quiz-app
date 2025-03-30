@@ -1,7 +1,7 @@
 {
   "categories": {
-    "history_literature": {
-      "name": "歴史・文学",
+    "history_humanities": {
+      "name": "歴史・人文",
       "subcategories": {
         "japanese_history": {
           "name": "日本史",
@@ -33,6 +33,10 @@
         },
         "geography": {
           "name": "地理",
+          "questions": []
+        },
+        "philosophy": {
+          "name": "思想・哲学",
           "questions": []
         },
         "religion": {
@@ -78,19 +82,11 @@
         }
       }
     },
-    "living_things": {
-      "name": "いきもの",
+    "biology": {
+      "name": "生物",
       "subcategories": {
-        "biology": {
+        "biology_general": {
           "name": "生物",
-          "questions": []
-        },
-        "medicine": {
-          "name": "医療",
-          "questions": []
-        },
-        "paleontology": {
-          "name": "古生物",
           "questions": []
         },
         "animals": {
@@ -100,26 +96,22 @@
         "plants": {
           "name": "植物",
           "questions": []
+        },
+        "medical": {
+          "name": "人体・医療",
+          "questions": []
         }
       }
     },
     "art_subculture": {
       "name": "アート・サブカル",
       "subcategories": {
-        "manga": {
-          "name": "マンガ",
+        "manga_anime": {
+          "name": "マンガ・アニメ",
           "questions": []
         },
-        "anime": {
-          "name": "アニメ",
-          "questions": []
-        },
-        "tv": {
-          "name": "テレビ",
-          "questions": []
-        },
-        "movies": {
-          "name": "映画",
+        "tv_movies": {
+          "name": "テレビ・映画",
           "questions": []
         },
         "music": {
@@ -127,7 +119,7 @@
           "questions": []
         },
         "art": {
-          "name": "芸術",
+          "name": "美術",
           "questions": []
         }
       }
@@ -145,10 +137,6 @@
         },
         "martial_arts": {
           "name": "格闘技",
-          "questions": []
-        },
-        "motorsports": {
-          "name": "モータースポーツ",
           "questions": []
         }
       }
@@ -168,6 +156,14 @@
           "name": "鉄道",
           "questions": []
         },
+        "ships": {
+          "name": "艦船",
+          "questions": []
+        },
+        "aircraft": {
+          "name": "飛行機",
+          "questions": []
+        },
         "military": {
           "name": "ミリタリー",
           "questions": []
@@ -176,8 +172,8 @@
           "name": "登山",
           "questions": []
         },
-        "dams": {
-          "name": "ダム",
+        "architecture": {
+          "name": "建築",
           "questions": []
         },
         "cameras": {
