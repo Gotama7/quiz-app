@@ -81,6 +81,8 @@ function QuizApp() {
   });
   const [answerHistory, setAnswerHistory] = useState([]);
   const [answerStats, setAnswerStats] = useState({});
+  const [timeLeft, setTimeLeft] = useState(20);
+  const [timerActive, setTimerActive] = useState(false);
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
@@ -285,10 +287,75 @@ function QuizApp() {
     }
   };
 
-  // 回答を処理する関数
+  // タイマー処理
+  useEffect(() => {
+    let timer;
+    if (timerActive && timeLeft > 0 && !isAnswered) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [timerActive, timeLeft, isAnswered]);
+
+  // 時間切れの処理
+  const handleTimeUp = () => {
+    if (!isAnswered) {
+      const currentQuestion = questions[currentQuestionIndex];
+      setIsAnswered(true);
+      setFeedback({
+        isCorrect: false,
+        correctAnswer: currentQuestion.correct,
+        selectedAnswer: null
+      });
+      setShowFeedback(true);
+
+      setTimeout(() => {
+        const nextQuestion = currentQuestionIndex + 1;
+        if (nextQuestion < questions.length) {
+          setCurrentQuestionIndex(nextQuestion);
+          setIsAnswered(false);
+          setShowFeedback(false);
+          setTimeLeft(20);
+          setTimerActive(true);
+          
+          const nextQuestionData = questions[nextQuestion];
+          const nextOptions = shuffleArray([
+            nextQuestionData.correct,
+            ...nextQuestionData.distractors
+          ]);
+          setOptions(nextOptions);
+        } else {
+          if (isQuizKingMode) {
+            setShowNameInput(true);
+          } else {
+            setShowScore(true);
+          }
+        }
+      }, 1500);
+    }
+  };
+
+  // 問題表示時にタイマーを開始
+  useEffect(() => {
+    if (questions.length > 0 && currentQuestionIndex < questions.length && !isAnswered) {
+      setTimeLeft(20);
+      setTimerActive(true);
+    }
+  }, [questions, currentQuestionIndex]);
+
+  // 回答処理の修正
   const handleAnswerOptionClick = async (selectedOption) => {
     if (isAnswered) return;
     
+    setTimerActive(false);
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = selectedOption === currentQuestion.correct;
     
@@ -297,7 +364,6 @@ function QuizApp() {
       setScore(prevScore => prevScore + 1);
     }
     
-    // フィードバックを表示
     setFeedback({
       isCorrect,
       correctAnswer: currentQuestion.correct,
@@ -305,10 +371,8 @@ function QuizApp() {
     });
     setShowFeedback(true);
     
-    // 回答データを保存
     await saveAnswerStat(currentQuestion.question, isCorrect);
     
-    // 回答履歴を更新
     setAnswerHistory(prev => [...prev, {
       question: currentQuestion.question,
       selectedAnswer: selectedOption,
@@ -316,15 +380,15 @@ function QuizApp() {
       isCorrect
     }]);
     
-    // 少し待ってから次の問題へ
     setTimeout(() => {
       const nextQuestion = currentQuestionIndex + 1;
       if (nextQuestion < questions.length) {
         setCurrentQuestionIndex(nextQuestion);
         setIsAnswered(false);
         setShowFeedback(false);
+        setTimeLeft(20);
+        setTimerActive(true);
         
-        // 次の問題の選択肢をセット
         const nextQuestionData = questions[nextQuestion];
         const nextOptions = shuffleArray([
           nextQuestionData.correct,
@@ -476,6 +540,18 @@ function QuizApp() {
     return (
       <div className="app">
         <div className="question-section">
+          <div className="timer-section">
+            <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
+              残り時間: {timeLeft}秒
+            </div>
+            <div 
+              className="timer-bar"
+              style={{
+                width: `${(timeLeft / 20) * 100}%`,
+                backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
+              }}
+            />
+          </div>
           <div className="question-count">
             <span>質問 {currentQuestionIndex + 1}</span>/{questions.length}
           </div>
