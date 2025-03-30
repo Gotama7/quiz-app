@@ -60,7 +60,7 @@ h2 {
   font-size: 1.2rem;
   border: none;
   border-radius: 8px;
-  background-color: #2196F3;
+  background-color: #333;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -72,7 +72,9 @@ h2 {
 }
 
 .category-button:hover {
-  background-color: #1976D2;
+  background-color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* クイズ画面 */
@@ -959,4 +961,24 @@ h2 {
     width: 80px;
     height: 80px;
   }
+}
+
+.subcategory-button {
+  padding: 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+.subcategory-button:hover {
+  background-color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 } 
