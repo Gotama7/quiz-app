@@ -409,30 +409,34 @@ function QuizApp() {
   if (!selectedCategory && !isQuizKingMode) {
     return (
       <div className="app">
-        <h1>クイズアプリ</h1>
-        <div className="category-selection">
-          <h2>カテゴリーを選択してください</h2>
-          <div className="category-grid">
-            {Object.entries(quizData.categories).map(([key, category]) => (
-              <button
-                key={key}
-                onClick={() => setSelectedCategory(key)}
-                className="category-button"
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-          <div className="quiz-king-section">
-            <h2>クイズ王チャレンジ</h2>
-            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
+        <div className="title-section">
+          <h1>バルバロッサクイズ！</h1>
+          <img 
+            src={require('./images/barbarossa.jpg')} 
+            alt="Frederick I Barbarossa" 
+            className="title-image"
+          />
+        </div>
+        <div className="category-grid">
+          {Object.entries(quizData.categories).map(([key, category]) => (
             <button
-              onClick={startQuizKingChallenge}
-              className="quiz-king-button"
+              key={key}
+              className="category-button"
+              onClick={() => setSelectedCategory(key)}
             >
-              チャレンジ開始
+              {category.name}
             </button>
-          </div>
+          ))}
+        </div>
+        <div className="quiz-king-section">
+          <h2>クイズ王チャレンジ</h2>
+          <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
+          <button
+            onClick={startQuizKingChallenge}
+            className="quiz-king-button"
+          >
+            チャレンジ開始
+          </button>
         </div>
       </div>
     );
