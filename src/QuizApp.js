@@ -280,7 +280,7 @@ function QuizApp() {
   };
 
   // カテゴリー選択画面
-  if (!selectedCategory) {
+  if (!selectedCategory && !isQuizKingMode) {
     return (
       <div className="app">
         <h1>クイズアプリ</h1>
@@ -313,7 +313,7 @@ function QuizApp() {
   }
 
   // サブカテゴリー選択画面
-  if (!selectedSubcategory) {
+  if (!selectedSubcategory && !isQuizKingMode) {
     const category = quizData.categories[selectedCategory];
     return (
       <div className="app">
@@ -390,10 +390,17 @@ function QuizApp() {
         <div className="question-count">
           <span>質問 {currentQuestionIndex + 1}</span>/{questions.length}
         </div>
-        <div className="category-name">
-          {quizData.categories[selectedCategory].name} - 
-          {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
-        </div>
+        {isQuizKingMode ? (
+          <div className="category-name">
+            {questions[currentQuestionIndex].categoryName} - 
+            {questions[currentQuestionIndex].subcategoryName}
+          </div>
+        ) : (
+          <div className="category-name">
+            {quizData.categories[selectedCategory].name} - 
+            {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
+          </div>
+        )}
         <div className="question-text">
           {questions[currentQuestionIndex].question}
         </div>
