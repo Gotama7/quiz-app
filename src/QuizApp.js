@@ -620,6 +620,23 @@ function QuizApp() {
             </button>
           ))}
         </div>
+        <div className="navigation-buttons">
+          {isQuizKingMode ? (
+            <button
+              onClick={handleBackToCategories}
+              className="nav-button"
+            >
+              トップに戻る
+            </button>
+          ) : (
+            <button
+              onClick={handleBackToSubcategories}
+              className="nav-button"
+            >
+              サブカテゴリー選択に戻る
+            </button>
+          )}
+        </div>
       </div>
     );
   }
