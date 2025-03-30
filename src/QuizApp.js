@@ -85,37 +85,66 @@ function QuizApp() {
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
     if (selectedCategory && selectedSubcategory) {
+      console.log('カテゴリーとサブカテゴリーが選択されました:', {
+        category: selectedCategory,
+        subcategory: selectedSubcategory
+      });
+
       const subcategoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+      console.log('取得した問題:', subcategoryQuestions);
       
       if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
+        console.log('問題が見つかりませんでした');
         setQuestions([]);
         setShowScore(true);
         return;
       }
 
-      const formattedQuestions = subcategoryQuestions.map(q => ({
-        question: q.question,
-        correct: q.correct,
-        distractors: q.distractors,
-        categoryName: quizData.categories[selectedCategory].name,
-        subcategoryName: quizData.categories[selectedCategory].subcategories[selectedSubcategory].name
-      }));
-      const shuffledQuestions = shuffleArray([...formattedQuestions]).slice(0, 10);
-      setQuestions(shuffledQuestions);
-      setCurrentQuestionIndex(0);
-      setScore(0);
-      setShowScore(false);
-      setIsAnswered(false);
-      setShowFeedback(false);
+      try {
+        const formattedQuestions = subcategoryQuestions.map(q => {
+          if (!q.question || !q.correct || !q.distractors || q.distractors.length !== 3) {
+            console.log('不正な問題データ:', q);
+            return null;
+          }
+          return {
+            question: q.question,
+            correct: q.correct,
+            distractors: q.distractors,
+            categoryName: quizData.categories[selectedCategory].name,
+            subcategoryName: quizData.categories[selectedCategory].subcategories[selectedSubcategory].name
+          };
+        }).filter(q => q !== null);
 
-      // 最初の問題の選択肢をセット
-      if (shuffledQuestions.length > 0) {
+        console.log('フォーマットされた問題:', formattedQuestions);
+
+        if (formattedQuestions.length === 0) {
+          console.log('有効な問題がありません');
+          setQuestions([]);
+          setShowScore(true);
+          return;
+        }
+
+        const shuffledQuestions = shuffleArray([...formattedQuestions]).slice(0, 10);
+        console.log('シャッフルされた問題:', shuffledQuestions);
+
+        setQuestions(shuffledQuestions);
+        setCurrentQuestionIndex(0);
+        setScore(0);
+        setShowScore(false);
+        setIsAnswered(false);
+        setShowFeedback(false);
+
+        // 最初の問題の選択肢をセット
         const firstQuestion = shuffledQuestions[0];
         const initialOptions = shuffleArray([
           firstQuestion.correct,
           ...firstQuestion.distractors
         ]);
         setOptions(initialOptions);
+      } catch (error) {
+        console.error('問題の処理中にエラーが発生しました:', error);
+        setQuestions([]);
+        setShowScore(true);
       }
     }
   }, [selectedCategory, selectedSubcategory]);
@@ -406,6 +435,12 @@ function QuizApp() {
               <div className="score-text">
                 このカテゴリーにはまだ問題が登録されていません。
               </div>
+              <button
+                onClick={handleBackToSubcategories}
+                className="back-button"
+              >
+                サブカテゴリー選択に戻る
+              </button>
             </>
           ) : (
             <>
@@ -413,14 +448,14 @@ function QuizApp() {
               <div className="score-text">
                 あなたのスコアは {score} / {questions.length} です
               </div>
+              <button
+                onClick={handleBackToSubcategories}
+                className="back-button"
+              >
+                サブカテゴリー選択に戻る
+              </button>
             </>
           )}
-          <button
-            onClick={handleBackToSubcategories}
-            className="back-button"
-          >
-            サブカテゴリー選択に戻る
-          </button>
         </div>
       </div>
     );
