@@ -448,7 +448,15 @@ function QuizApp() {
     const category = quizData.categories[selectedCategory];
     return (
       <div className="quiz-container">
-        <h1>{category.name}</h1>
+        <div className="title-section">
+          <img 
+            src={barbarossaImage} 
+            alt="Frederick I Barbarossa" 
+            className="title-image"
+          />
+          <h1>バルバロッサクイズ！</h1>
+        </div>
+        <h2 className="selected-category-name">{category.name}</h2>
         <div className="category-selection">
           <h2>サブカテゴリーを選択してください</h2>
           <div className="category-grid">
