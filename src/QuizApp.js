@@ -14,17 +14,20 @@ function getAllQuestions() {
     Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
       if (subcategory.questions && subcategory.questions.length > 0) {
         subcategory.questions.forEach(q => {
-          allQuestions.push({
-            question: q.question,
-            correct: q.correct,
-            distractors: q.distractors,
-            categoryName: category.name,
-            subcategoryName: subcategory.name
-          });
+          if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
+            allQuestions.push({
+              question: q.question,
+              correct: q.correct,
+              distractors: q.distractors,
+              categoryName: category.name,
+              subcategoryName: subcategory.name
+            });
+          }
         });
       }
     });
   });
+  console.log('取得した問題数:', allQuestions.length); // デバッグ用
   return shuffleArray(allQuestions).slice(0, 30);
 }
 
@@ -175,16 +178,29 @@ function QuizApp() {
 
   // クイズ王チャレンジモード開始
   const startQuizKingChallenge = () => {
+    console.log('クイズ王チャレンジ開始'); // デバッグ用
     const allQuestions = getAllQuestions();
-    setQuestions(allQuestions);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setShowScore(false);
-    setFeedback(null);
-    setIsAnswered(false);
-    setIsQuizKingMode(true);
-    setSelectedCategory(null);
-    setSelectedSubcategory(null);
+    console.log('選択された問題:', allQuestions); // デバッグ用
+    
+    if (allQuestions.length > 0) {
+      setQuestions(allQuestions);
+      setCurrentQuestionIndex(0);
+      setScore(0);
+      setShowScore(false);
+      setIsQuizKingMode(true);
+      setSelectedCategory(null);
+      setSelectedSubcategory(null);
+      
+      // 最初の問題の選択肢をセット
+      const firstQuestion = allQuestions[0];
+      const initialOptions = shuffleArray([
+        firstQuestion.correct,
+        ...firstQuestion.distractors
+      ]);
+      setOptions(initialOptions);
+    } else {
+      console.error('利用可能な問題がありません');
+    }
   };
 
   // 問題が切り替わるたびに選択肢の順序をシャッフル
@@ -193,9 +209,7 @@ function QuizApp() {
       const currentQuestion = questions[currentQuestionIndex];
       const allOptions = shuffleArray([
         currentQuestion.correct,
-        currentQuestion.distractors[0],
-        currentQuestion.distractors[1],
-        currentQuestion.distractors[2]
+        ...currentQuestion.distractors
       ]);
       setOptions(allOptions);
       setShowFeedback(false);
@@ -203,59 +217,45 @@ function QuizApp() {
     }
   }, [currentQuestionIndex, questions]);
 
-  // 回答ボタンをクリックしたときの処理
+  // 回答を処理する関数
   const handleAnswerOptionClick = async (selectedOption) => {
-    if (isAnswered) return;
-    setIsAnswered(true);
-
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = selectedOption === currentQuestion.correct;
     
-    // フィードバックを設定
-    setFeedback({
-      isCorrect,
-      correctAnswer: currentQuestion.correct,
-      selectedAnswer: selectedOption
-    });
-    setShowFeedback(true);
-
-    // 正解の場合、スコアを加算
-    if (isCorrect) {
-      setScore(prevScore => prevScore + 1);
-    }
-
-    // 回答統計を保存
-    try {
-      await saveAnswerStat(currentQuestion.question, isCorrect);
-    } catch (error) {
-      console.error('回答統計の保存に失敗:', error);
-    }
-
-    // 回答履歴に追加
-    const newAnswer = {
-      questionNumber: currentQuestionIndex + 1,
-      question: currentQuestion.question,
-      selectedAnswer: selectedOption,
-      correctAnswer: currentQuestion.correct,
-      isCorrect: isCorrect,
-      category: isQuizKingMode ? currentQuestion.categoryName : quizData.categories[selectedCategory].name,
-      subcategoryName: currentQuestion.subcategoryName
-    };
-    setAnswerHistory(prev => [...prev, newAnswer]);
-
-    // 3秒後に次の問題へ
-    setTimeout(() => {
-      const nextQuestion = currentQuestionIndex + 1;
-      if (nextQuestion < questions.length) {
-        setCurrentQuestionIndex(nextQuestion);
-      } else {
-        if (isQuizKingMode) {
-          setShowNameInput(true);
-        } else {
-          setShowScore(true);
-        }
+    if (!isAnswered) {
+      setIsAnswered(true);
+      if (isCorrect) {
+        setScore(prevScore => prevScore + 1);
       }
-    }, 3000);
+      
+      // フィードバックを表示
+      setFeedback({
+        isCorrect,
+        correctAnswer: currentQuestion.correct
+      });
+      setShowFeedback(true);
+      
+      // 回答データを保存
+      await saveAnswerStat(currentQuestion.question, isCorrect);
+      
+      // 回答履歴を更新
+      setAnswerHistory(prev => [...prev, {
+        question: currentQuestion.question,
+        selectedAnswer: selectedOption,
+        correctAnswer: currentQuestion.correct,
+        isCorrect
+      }]);
+      
+      // 少し待ってから次の問題へ
+      setTimeout(() => {
+        const nextQuestion = currentQuestionIndex + 1;
+        if (nextQuestion < questions.length) {
+          setCurrentQuestionIndex(nextQuestion);
+        } else {
+          setShowNameInput(true);
+        }
+      }, 1500);
+    }
   };
 
   // プレイヤー名を保存
