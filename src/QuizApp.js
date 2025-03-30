@@ -459,10 +459,10 @@ function QuizApp() {
                 <button onClick={handleNameSubmit}>結果を保存</button>
               </div>
               <button
-                onClick={handleBackToSubcategories}
+                onClick={isQuizKingMode ? handleBackToCategories : handleBackToSubcategories}
                 className="back-button"
               >
-                サブカテゴリー選択に戻る
+                {isQuizKingMode ? 'トップに戻る' : 'サブカテゴリー選択に戻る'}
               </button>
             </>
           )}
