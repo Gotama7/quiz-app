@@ -263,9 +263,9 @@ function QuizApp() {
 
   // クイズ王チャレンジモード開始
   const startQuizKingChallenge = () => {
-    console.log('クイズ王チャレンジ開始'); // デバッグ用
+    console.log('クイズ王チャレンジ開始');
     const allQuestions = getAllQuestions();
-    console.log('選択された問題:', allQuestions); // デバッグ用
+    console.log('選択された問題:', allQuestions);
     
     if (allQuestions.length > 0) {
       setQuestions(allQuestions);
@@ -279,6 +279,7 @@ function QuizApp() {
       setShowFeedback(false);
       setTimeLeft(15);
       setTimerActive(true);
+      setFeedback(null);
       
       // 最初の問題の選択肢をセット
       const firstQuestion = allQuestions[0];
