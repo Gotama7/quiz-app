@@ -90,17 +90,17 @@ function QuizApp() {
         subcategory: selectedSubcategory
       });
 
-      const subcategoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
-      console.log('取得した問題:', subcategoryQuestions);
-      
-      if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
-        console.log('問題が見つかりませんでした');
-        setQuestions([]);
-        setShowScore(true);
-        return;
-      }
-
       try {
+        const subcategoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+        console.log('取得した問題:', subcategoryQuestions);
+        
+        if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
+          console.log('問題が見つかりませんでした');
+          setQuestions([]);
+          setShowScore(true);
+          return;
+        }
+
         const formattedQuestions = subcategoryQuestions.map(q => {
           if (!q.question || !q.correct || !q.distractors || q.distractors.length !== 3) {
             console.log('不正な問題データ:', q);
@@ -462,45 +462,65 @@ function QuizApp() {
   }
 
   // クイズ画面
-  return (
-    <div className="app">
-      <div className="question-section">
-        <div className="question-count">
-          <span>質問 {currentQuestionIndex + 1}</span>/{questions.length}
-        </div>
-        {isQuizKingMode ? (
-          <div className="category-name">
-            {questions[currentQuestionIndex].categoryName} - 
-            {questions[currentQuestionIndex].subcategoryName}
+  if (questions.length > 0 && currentQuestionIndex < questions.length) {
+    return (
+      <div className="app">
+        <div className="question-section">
+          <div className="question-count">
+            <span>質問 {currentQuestionIndex + 1}</span>/{questions.length}
           </div>
-        ) : (
-          <div className="category-name">
-            {quizData.categories[selectedCategory].name} - 
-            {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
+          {isQuizKingMode ? (
+            <div className="category-name">
+              {questions[currentQuestionIndex].categoryName} - 
+              {questions[currentQuestionIndex].subcategoryName}
+            </div>
+          ) : (
+            <div className="category-name">
+              {quizData.categories[selectedCategory].name} - 
+              {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
+            </div>
+          )}
+          <div className="question-text">
+            {questions[currentQuestionIndex].question}
+          </div>
+        </div>
+        <div className="answer-section">
+          {options.map((option, index) => (
+            <button 
+              key={index} 
+              onClick={() => handleAnswerOptionClick(option)}
+              className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
+                option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
+              disabled={isAnswered}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+        {showFeedback && (
+          <div className={`feedback ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
+            {feedback.isCorrect ? '正解！' : `不正解... 正解は ${feedback.correctAnswer} です`}
           </div>
         )}
-        <div className="question-text">
-          {questions[currentQuestionIndex].question}
-        </div>
       </div>
-      <div className="answer-section">
-        {options.map((option, index) => (
-          <button 
-            key={index} 
-            onClick={() => handleAnswerOptionClick(option)}
-            className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
-              option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
-            disabled={isAnswered}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-      {showFeedback && (
-        <div className={`feedback ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
-          {feedback.isCorrect ? '正解！' : `不正解... 正解は ${feedback.correctAnswer} です`}
+    );
+  }
+
+  // 問題がない場合のエラー画面
+  return (
+    <div className="app">
+      <div className="score-section">
+        <h2>申し訳ありません</h2>
+        <div className="score-text">
+          このカテゴリーにはまだ問題が登録されていません。
         </div>
-      )}
+        <button
+          onClick={handleBackToSubcategories}
+          className="back-button"
+        >
+          サブカテゴリー選択に戻る
+        </button>
+      </div>
     </div>
   );
 }
