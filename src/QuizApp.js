@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import quizData from './quizData.json';
 import './styles.css';
+import barbarossaImage from './barbarossa.jpg';
 
 // 選択肢をランダムに並べ替える関数
 function shuffleArray(array) {
@@ -410,6 +411,11 @@ function QuizApp() {
     return (
       <div className="quiz-container">
         <div className="title-section">
+          <img 
+            src={barbarossaImage} 
+            alt="Frederick I Barbarossa" 
+            className="title-image"
+          />
           <h1>バルバロッサクイズ！</h1>
         </div>
         <div className="category-grid">
