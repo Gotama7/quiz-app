@@ -86,6 +86,13 @@ function QuizApp() {
   useEffect(() => {
     if (selectedCategory && selectedSubcategory) {
       const subcategoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+      
+      if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
+        setQuestions([]);
+        setShowScore(true);
+        return;
+      }
+
       const formattedQuestions = subcategoryQuestions.map(q => ({
         question: q.question,
         correct: q.correct,
@@ -387,10 +394,21 @@ function QuizApp() {
     return (
       <div className="app">
         <div className="score-section">
-          <h2>クイズ終了！</h2>
-          <div className="score-text">
-            あなたのスコアは {score} / {questions.length} です
-          </div>
+          {questions.length === 0 ? (
+            <>
+              <h2>申し訳ありません</h2>
+              <div className="score-text">
+                このカテゴリーにはまだ問題が登録されていません。
+              </div>
+            </>
+          ) : (
+            <>
+              <h2>クイズ終了！</h2>
+              <div className="score-text">
+                あなたのスコアは {score} / {questions.length} です
+              </div>
+            </>
+          )}
           <button
             onClick={handleBackToSubcategories}
             className="back-button"
