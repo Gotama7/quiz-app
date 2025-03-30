@@ -408,14 +408,9 @@ function QuizApp() {
   // カテゴリー選択画面
   if (!selectedCategory && !isQuizKingMode) {
     return (
-      <div className="app">
+      <div className="quiz-container">
         <div className="title-section">
           <h1>バルバロッサクイズ！</h1>
-          <img 
-            src={require('./images/barbarossa.jpg')} 
-            alt="Frederick I Barbarossa" 
-            className="title-image"
-          />
         </div>
         <div className="category-grid">
           {Object.entries(quizData.categories).map(([key, category]) => (
@@ -446,7 +441,7 @@ function QuizApp() {
   if (!selectedSubcategory && !isQuizKingMode) {
     const category = quizData.categories[selectedCategory];
     return (
-      <div className="app">
+      <div className="quiz-container">
         <h1>{category.name}</h1>
         <div className="category-selection">
           <h2>サブカテゴリーを選択してください</h2>
@@ -475,7 +470,7 @@ function QuizApp() {
   // プレイヤー名入力画面
   if (showNameInput) {
     return (
-      <div className="app">
+      <div className="quiz-container">
         <div className="name-input-section">
           <h2>クイズ王チャレンジ終了！</h2>
           <p>スコア: {score} / {questions.length}</p>
@@ -496,7 +491,7 @@ function QuizApp() {
   // スコア表示画面
   if (showScore) {
     return (
-      <div className="app">
+      <div className="quiz-container">
         <div className="score-section">
           {questions.length === 0 ? (
             <>
@@ -542,7 +537,7 @@ function QuizApp() {
   // クイズ画面
   if (questions.length > 0 && currentQuestionIndex < questions.length) {
     return (
-      <div className="app">
+      <div className="quiz-container">
         <div className="question-section">
           <div className="timer-section">
             <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
@@ -598,7 +593,7 @@ function QuizApp() {
 
   // 問題がない場合のエラー画面
   return (
-    <div className="app">
+    <div className="quiz-container">
       <div className="score-section">
         <h2>申し訳ありません</h2>
         <div className="score-text">
