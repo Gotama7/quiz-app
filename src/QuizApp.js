@@ -275,6 +275,10 @@ function QuizApp() {
       setIsQuizKingMode(true);
       setSelectedCategory(null);
       setSelectedSubcategory(null);
+      setIsAnswered(false);
+      setShowFeedback(false);
+      setTimeLeft(15);
+      setTimerActive(true);
       
       // 最初の問題の選択肢をセット
       const firstQuestion = allQuestions[0];
