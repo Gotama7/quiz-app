@@ -209,7 +209,7 @@ function QuizApp() {
   };
 
   // スコアを保存する関数
-  const saveScore = async () => {
+  const saveScore = () => {
     if (!playerName.trim()) return;
 
     const scoreData = {
@@ -217,18 +217,19 @@ function QuizApp() {
       score: score,
       total: questions.length,
       category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
-      mode: isQuizKingMode ? 'quizKing' : 'normal'
+      timestamp: new Date().toISOString()
     };
 
-    const result = await saveScoreToServer(scoreData);
-    if (result) {
-      const updatedRankings = await fetchRankings(isQuizKingMode ? 'quizKing' : 'normal');
-      setRankings(prev => ({
-        ...prev,
-        [isQuizKingMode ? 'quizKing' : 'normal']: updatedRankings
-      }));
-      setShowScore(true);
-    }
+    // localStorageから既存のスコアを取得
+    const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+    
+    // 新しいスコアを追加
+    existingScores.push(scoreData);
+    
+    // スコアを保存
+    localStorage.setItem('quizScores', JSON.stringify(existingScores));
+    
+    setShowScore(true);
   };
 
   // 名前入力後の処理
@@ -447,6 +448,15 @@ function QuizApp() {
               <h2>クイズ終了！</h2>
               <div className="score-text">
                 あなたのスコアは {score} / {questions.length} です
+              </div>
+              <div className="name-input">
+                <input
+                  type="text"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  placeholder="あなたの名前を入力"
+                />
+                <button onClick={handleNameSubmit}>結果を保存</button>
               </div>
               <button
                 onClick={handleBackToSubcategories}
