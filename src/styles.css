@@ -489,30 +489,25 @@ h2 {
 
 /* クイズ王チャレンジセクション */
 .quiz-king-section {
-  margin-top: 2rem;
-  padding: 2rem;
-  background: #f5f5f5;
-  border-radius: 8px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e0e0e0;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 90%;
 }
 
 .quiz-king-section h2 {
-  color: #333;
-  font-size: 1.8rem;
-  text-shadow: none;
-  margin-bottom: 1rem;
-  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.5em;
 }
 
 .quiz-king-section p {
   color: #666;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
   line-height: 1.6;
 }
 
@@ -996,5 +991,16 @@ h2 {
   .selected-category-name {
     font-size: 1.5em;
     margin: 15px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .quiz-king-section {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .quiz-king-section h2 {
+    font-size: 1.3em;
   }
 } 
