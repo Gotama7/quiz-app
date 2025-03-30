@@ -202,6 +202,32 @@ function QuizApp() {
     }
   };
 
+  // 名前入力後の処理
+  const handleNameSubmit = () => {
+    if (playerName.trim()) {
+      saveScore();
+      setShowNameInput(false);
+    }
+  };
+
+  // カテゴリー選択画面に戻る
+  const handleBackToCategories = () => {
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setQuestions([]);
+    setShowScore(false);
+    setIsQuizKingMode(false);
+  };
+
+  // サブカテゴリー選択画面に戻る
+  const handleBackToSubcategories = () => {
+    setSelectedSubcategory(null);
+    setQuestions([]);
+    setShowScore(false);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+  };
+
   // クイズ王チャレンジモード開始
   const startQuizKingChallenge = () => {
     console.log('クイズ王チャレンジ開始'); // デバッグ用
@@ -229,80 +255,60 @@ function QuizApp() {
     }
   };
 
-  // 問題が切り替わるたびに選択肢の順序をシャッフル
-  useEffect(() => {
-    if (questions.length > 0 && currentQuestionIndex < questions.length) {
-      const currentQuestion = questions[currentQuestionIndex];
-      const allOptions = shuffleArray([
-        currentQuestion.correct,
-        ...currentQuestion.distractors
-      ]);
-      setOptions(allOptions);
-      setShowFeedback(false);
-      setIsAnswered(false);
-    }
-  }, [currentQuestionIndex, questions]);
-
   // 回答を処理する関数
   const handleAnswerOptionClick = async (selectedOption) => {
+    if (isAnswered) return;
+    
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = selectedOption === currentQuestion.correct;
     
-    if (!isAnswered) {
-      setIsAnswered(true);
-      if (isCorrect) {
-        setScore(prevScore => prevScore + 1);
-      }
-      
-      // フィードバックを表示
-      setFeedback({
-        isCorrect,
-        correctAnswer: currentQuestion.correct
-      });
-      setShowFeedback(true);
-      
-      // 回答データを保存
-      await saveAnswerStat(currentQuestion.question, isCorrect);
-      
-      // 回答履歴を更新
-      setAnswerHistory(prev => [...prev, {
-        question: currentQuestion.question,
-        selectedAnswer: selectedOption,
-        correctAnswer: currentQuestion.correct,
-        isCorrect
-      }]);
-      
-      // 少し待ってから次の問題へ
-      setTimeout(() => {
-        const nextQuestion = currentQuestionIndex + 1;
-        if (nextQuestion < questions.length) {
-          setCurrentQuestionIndex(nextQuestion);
-        } else {
+    setIsAnswered(true);
+    if (isCorrect) {
+      setScore(prevScore => prevScore + 1);
+    }
+    
+    // フィードバックを表示
+    setFeedback({
+      isCorrect,
+      correctAnswer: currentQuestion.correct,
+      selectedAnswer: selectedOption
+    });
+    setShowFeedback(true);
+    
+    // 回答データを保存
+    await saveAnswerStat(currentQuestion.question, isCorrect);
+    
+    // 回答履歴を更新
+    setAnswerHistory(prev => [...prev, {
+      question: currentQuestion.question,
+      selectedAnswer: selectedOption,
+      correctAnswer: currentQuestion.correct,
+      isCorrect
+    }]);
+    
+    // 少し待ってから次の問題へ
+    setTimeout(() => {
+      const nextQuestion = currentQuestionIndex + 1;
+      if (nextQuestion < questions.length) {
+        setCurrentQuestionIndex(nextQuestion);
+        setIsAnswered(false);
+        setShowFeedback(false);
+        
+        // 次の問題の選択肢をセット
+        const nextQuestionData = questions[nextQuestion];
+        const nextOptions = shuffleArray([
+          nextQuestionData.correct,
+          ...nextQuestionData.distractors
+        ]);
+        setOptions(nextOptions);
+      } else {
+        if (isQuizKingMode) {
           setShowNameInput(true);
+        } else {
+          setShowScore(true);
         }
-      }, 1500);
-    }
-  };
-
-  // プレイヤー名を保存
-  const handleNameSubmit = async () => {
-    try {
-      await saveScore();
-    } catch (error) {
-      console.error('ランキングの保存に失敗:', error);
-    }
-  };
-
-  const handleBackToCategories = () => {
-    setSelectedCategory(null);
-    setSelectedSubcategory(null);
-    setQuestions([]);
-  };
-
-  const handleBackToSubcategories = () => {
-    setSelectedSubcategory(null);
-    setQuestions([]);
-    setShowScore(false);
+      }
+    }, 1500);
   };
 
   // カテゴリー選択画面
