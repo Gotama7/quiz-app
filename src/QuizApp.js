@@ -50,7 +50,7 @@ function QuizApp() {
   const [showNextButton, setShowNextButton] = useState(false);
 
   // スコアを保存する関数
-  const saveScore = () => {
+  const saveScore = useCallback(() => {
     if (!playerName.trim()) return;
 
     const scoreData = {
@@ -71,7 +71,7 @@ function QuizApp() {
     localStorage.setItem('quizScores', JSON.stringify(existingScores));
     
     setShowScore(true);
-  };
+  }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
