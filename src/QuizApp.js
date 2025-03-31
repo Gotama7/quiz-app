@@ -84,6 +84,7 @@ function QuizApp() {
   const [answerStats, setAnswerStats] = useState({});
   const [timeLeft, setTimeLeft] = useState(15);
   const [timerActive, setTimerActive] = useState(false);
+  const [showNextButton, setShowNextButton] = useState(false);
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
@@ -358,57 +359,41 @@ function QuizApp() {
   }, [questions, currentQuestionIndex]);
 
   // 回答処理の修正
-  const handleAnswerOptionClick = async (selectedOption) => {
+  const handleAnswerOptionClick = (selectedAnswer) => {
     if (isAnswered) return;
     
-    setTimerActive(false);
-    const currentQuestion = questions[currentQuestionIndex];
-    const isCorrect = selectedOption === currentQuestion.correct;
-    
     setIsAnswered(true);
-    if (isCorrect) {
-      setScore(prevScore => prevScore + 1);
-    }
+    setTimerActive(false);
     
+    const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
     setFeedback({
       isCorrect,
-      correctAnswer: currentQuestion.correct,
-      selectedAnswer: selectedOption
+      selectedAnswer,
+      correctAnswer: questions[currentQuestionIndex].correct
     });
-    setShowFeedback(true);
     
-    await saveAnswerStat(currentQuestion.question, isCorrect);
-    
-    setAnswerHistory(prev => [...prev, {
-      question: currentQuestion.question,
-      selectedAnswer: selectedOption,
-      correctAnswer: currentQuestion.correct,
-      isCorrect
-    }]);
-    
-    setTimeout(() => {
-      const nextQuestion = currentQuestionIndex + 1;
-      if (nextQuestion < questions.length) {
-        setCurrentQuestionIndex(nextQuestion);
-        setIsAnswered(false);
-        setShowFeedback(false);
-        setTimeLeft(15);
-        setTimerActive(true);
-        
-        const nextQuestionData = questions[nextQuestion];
-        const nextOptions = shuffleArray([
-          nextQuestionData.correct,
-          ...nextQuestionData.distractors
-        ]);
-        setOptions(nextOptions);
-      } else {
-        if (isQuizKingMode) {
-          setShowNameInput(true);
-        } else {
-          setShowScore(true);
-        }
-      }
-    }, 1500);
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+      setTimeout(() => {
+        handleNextQuestion();
+      }, 1500);
+    } else {
+      // 不正解の場合は即時遷移せず、次へボタンを表示
+      setShowNextButton(true);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+      setIsAnswered(false);
+      setFeedback(null);
+      setShowNextButton(false);
+      setTimeLeft(15);
+      setTimerActive(true);
+    } else {
+      handleQuizComplete();
+    }
   };
 
   // カテゴリー選択画面
@@ -606,23 +591,35 @@ function QuizApp() {
             </button>
           ))}
         </div>
-        <div className="navigation-buttons">
-          {isQuizKingMode ? (
+        {showNextButton && (
+          <div className="navigation-buttons">
+            <button
+              onClick={handleNextQuestion}
+              className="nav-button"
+            >
+              次へ
+            </button>
+          </div>
+        )}
+        {isQuizKingMode ? (
+          <div className="navigation-buttons">
             <button
               onClick={handleBackToCategories}
               className="nav-button"
             >
               トップに戻る
             </button>
-          ) : (
+          </div>
+        ) : (
+          <div className="navigation-buttons">
             <button
               onClick={handleBackToSubcategories}
               className="nav-button"
             >
               サブカテゴリー選択に戻る
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
