@@ -556,70 +556,60 @@ function QuizApp() {
             />
           </div>
           <div className="question-count">
-            <span>質問 {currentQuestionIndex + 1}</span>/{questions.length}
+            問題 {currentQuestionIndex + 1} / {questions.length}
           </div>
-          {isQuizKingMode ? (
-            <div className="category-name">
-              {questions[currentQuestionIndex].categoryName} - 
-              {questions[currentQuestionIndex].subcategoryName}
-            </div>
-          ) : (
-            <div className="category-name">
-              {quizData.categories[selectedCategory].name} - 
-              {quizData.categories[selectedCategory].subcategories[selectedSubcategory].name}
-            </div>
-          )}
-          {showFeedback && (
-            <div className={`feedback ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
-              {feedback.isCorrect ? '正解！' : `不正解... 正解は ${feedback.correctAnswer} です`}
-            </div>
-          )}
+          <div className="category-info">
+            <div className="category-name">{selectedCategory}</div>
+            {selectedSubcategory && (
+              <div className="subcategory-name">{selectedSubcategory}</div>
+            )}
+          </div>
           <div className="question-text">
             {questions[currentQuestionIndex].question}
           </div>
+          <div className="answer-section">
+            {options.map((option, index) => (
+              <button 
+                key={index} 
+                onClick={() => handleAnswerOptionClick(option)}
+                className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
+                  option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
+                disabled={isAnswered}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          {showNextButton && (
+            <div className="navigation-buttons">
+              <button
+                onClick={handleNextQuestion}
+                className="nav-button"
+              >
+                次へ
+              </button>
+            </div>
+          )}
+          {isQuizKingMode ? (
+            <div className="navigation-buttons">
+              <button
+                onClick={handleBackToCategories}
+                className="nav-button"
+              >
+                トップに戻る
+              </button>
+            </div>
+          ) : (
+            <div className="navigation-buttons">
+              <button
+                onClick={handleBackToSubcategories}
+                className="nav-button"
+              >
+                サブカテゴリー選択に戻る
+              </button>
+            </div>
+          )}
         </div>
-        <div className="answer-section">
-          {options.map((option, index) => (
-            <button 
-              key={index} 
-              onClick={() => handleAnswerOptionClick(option)}
-              className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
-                option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
-              disabled={isAnswered}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-        {showNextButton && (
-          <div className="navigation-buttons">
-            <button
-              onClick={handleNextQuestion}
-              className="nav-button"
-            >
-              次へ
-            </button>
-          </div>
-        )}
-        {isQuizKingMode ? (
-          <div className="navigation-buttons">
-            <button
-              onClick={handleBackToCategories}
-              className="nav-button"
-            >
-              トップに戻る
-            </button>
-          </div>
-        ) : (
-          <div className="navigation-buttons">
-            <button
-              onClick={handleBackToSubcategories}
-              className="nav-button"
-            >
-              サブカテゴリー選択に戻る
-            </button>
-          </div>
-        )}
       </div>
     );
   }
