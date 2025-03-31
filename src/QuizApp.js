@@ -82,17 +82,10 @@ function QuizApp() {
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
     if (selectedCategory && selectedSubcategory) {
-      console.log('カテゴリーとサブカテゴリーが選択されました:', {
-        category: selectedCategory,
-        subcategory: selectedSubcategory
-      });
-
       try {
         const subcategoryQuestions = quizData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
-        console.log('取得した問題:', subcategoryQuestions);
         
         if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
-          console.log('問題が見つかりませんでした');
           setQuestions([]);
           setShowScore(true);
           return;
@@ -100,7 +93,6 @@ function QuizApp() {
 
         const formattedQuestions = subcategoryQuestions.map(q => {
           if (!q.question || !q.correct || !q.distractors || q.distractors.length !== 3) {
-            console.log('不正な問題データ:', q);
             return null;
           }
           return {
@@ -112,23 +104,20 @@ function QuizApp() {
           };
         }).filter(q => q !== null);
 
-        console.log('フォーマットされた問題:', formattedQuestions);
-
         if (formattedQuestions.length === 0) {
-          console.log('有効な問題がありません');
           setQuestions([]);
           setShowScore(true);
           return;
         }
 
         const shuffledQuestions = shuffleArray([...formattedQuestions]).slice(0, 10);
-        console.log('シャッフルされた問題:', shuffledQuestions);
-
         setQuestions(shuffledQuestions);
         setCurrentQuestionIndex(0);
         setScore(0);
         setShowScore(false);
         setIsAnswered(false);
+        setTimeLeft(15);
+        setTimerActive(true);
 
         // 最初の問題の選択肢をセット
         const firstQuestion = shuffledQuestions[0];
@@ -260,9 +249,7 @@ function QuizApp() {
 
   // クイズ王チャレンジモード開始
   const startQuizKingChallenge = () => {
-    console.log('クイズ王チャレンジ開始');
     const allQuestions = getAllQuestions();
-    console.log('選択された問題:', allQuestions);
     
     if (allQuestions.length > 0) {
       setQuestions(allQuestions);
@@ -273,7 +260,6 @@ function QuizApp() {
       setSelectedCategory(null);
       setSelectedSubcategory(null);
       setIsAnswered(false);
-      setShowFeedback(false);
       setTimeLeft(15);
       setTimerActive(true);
       setFeedback(null);
