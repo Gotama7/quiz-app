@@ -48,6 +48,14 @@ function QuizApp() {
   const [timerActive, setTimerActive] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
 
+  // クイズ完了時の処理
+  const handleQuizComplete = useCallback(() => {
+    setShowScore(true);
+    setTimerActive(false);
+    setShowNameInput(true);
+    setShowNextButton(false);
+  }, []);
+
   // 次の問題に進む処理
   const handleNextQuestion = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -60,7 +68,7 @@ function QuizApp() {
     } else {
       handleQuizComplete();
     }
-  }, [currentQuestionIndex, questions.length]);
+  }, [currentQuestionIndex, questions.length, handleQuizComplete]);
 
   // 時間切れの処理
   const handleTimeUp = useCallback(() => {
@@ -121,14 +129,6 @@ function QuizApp() {
     
     setShowScore(true);
   }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
-
-  // クイズ完了時の処理
-  const handleQuizComplete = useCallback(() => {
-    setShowScore(true);
-    setTimerActive(false);
-    setShowNameInput(true);
-    setShowNextButton(false);
-  }, []);
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
