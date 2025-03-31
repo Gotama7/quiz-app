@@ -32,30 +32,6 @@ function getAllQuestions() {
   return shuffleArray(allQuestions).slice(0, 30);
 }
 
-// スコアを保存する関数
-const saveScore = () => {
-  if (!playerName.trim()) return;
-
-  const scoreData = {
-    name: playerName,
-    score: score,
-    total: questions.length,
-    category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
-    timestamp: new Date().toISOString()
-  };
-
-  // localStorageから既存のスコアを取得
-  const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
-  
-  // 新しいスコアを追加
-  existingScores.push(scoreData);
-  
-  // スコアを保存
-  localStorage.setItem('quizScores', JSON.stringify(existingScores));
-  
-  setShowScore(true);
-};
-
 function QuizApp() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -72,6 +48,30 @@ function QuizApp() {
   const [timeLeft, setTimeLeft] = useState(15);
   const [timerActive, setTimerActive] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+
+  // スコアを保存する関数
+  const saveScore = () => {
+    if (!playerName.trim()) return;
+
+    const scoreData = {
+      name: playerName,
+      score: score,
+      total: questions.length,
+      category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
+      timestamp: new Date().toISOString()
+    };
+
+    // localStorageから既存のスコアを取得
+    const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+    
+    // 新しいスコアを追加
+    existingScores.push(scoreData);
+    
+    // スコアを保存
+    localStorage.setItem('quizScores', JSON.stringify(existingScores));
+    
+    setShowScore(true);
+  };
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
