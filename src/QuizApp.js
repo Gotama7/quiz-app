@@ -32,34 +32,28 @@ function getAllQuestions() {
   return shuffleArray(allQuestions).slice(0, 30);
 }
 
-// ランキングをサーバーに保存する関数
-const saveScoreToServer = async (scoreData) => {
-  try {
-    const response = await fetch('http://localhost:3001/api/rankings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(scoreData)
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('ランキング保存エラー:', error);
-    return null;
-  }
-};
+// スコアを保存する関数
+const saveScore = () => {
+  if (!playerName.trim()) return;
 
-// ランキングをサーバーから取得する関数
-const fetchRankings = async (mode) => {
-  try {
-    const response = await fetch(`http://localhost:3001/api/rankings/${mode}`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('ランキング取得エラー:', error);
-    return [];
-  }
+  const scoreData = {
+    name: playerName,
+    score: score,
+    total: questions.length,
+    category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
+    timestamp: new Date().toISOString()
+  };
+
+  // localStorageから既存のスコアを取得
+  const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+  
+  // 新しいスコアを追加
+  existingScores.push(scoreData);
+  
+  // スコアを保存
+  localStorage.setItem('quizScores', JSON.stringify(existingScores));
+  
+  setShowScore(true);
 };
 
 function QuizApp() {
@@ -133,89 +127,6 @@ function QuizApp() {
       }
     }
   }, [selectedCategory, selectedSubcategory]);
-
-  // ランキングデータを読み込む
-  useEffect(() => {
-    const loadRankings = async () => {
-      const normalRankings = await fetchRankings('normal');
-      const quizKingRankings = await fetchRankings('quizKing');
-      setRankings({
-        normal: normalRankings,
-        quizKing: quizKingRankings
-      });
-    };
-    loadRankings();
-  }, [showScore]);
-
-  // 問題の正答率を取得
-  const fetchAnswerStats = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/answer-stats');
-      const data = await response.json();
-      const statsMap = {};
-      data.forEach(stat => {
-        statsMap[stat.question_text] = {
-          total: stat.total_attempts,
-          correct: stat.correct_attempts,
-          percentage: stat.correct_percentage
-        };
-      });
-      setAnswerStats(statsMap);
-    } catch (error) {
-      console.error('正答率取得エラー:', error);
-    }
-  };
-
-  // コンポーネントマウント時に正答率を取得
-  useEffect(() => {
-    fetchAnswerStats();
-  }, []);
-
-  // 回答データを保存
-  const saveAnswerStat = async (question, isCorrect) => {
-    try {
-      await fetch('http://localhost:3001/api/answer-stats', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          category: isQuizKingMode ? questions[currentQuestionIndex].categoryName : quizData.categories[selectedCategory].name,
-          subcategory: questions[currentQuestionIndex].subcategoryName,
-          question: question,
-          isCorrect: isCorrect
-        })
-      });
-      // 正答率を再取得
-      fetchAnswerStats();
-    } catch (error) {
-      console.error('回答統計保存エラー:', error);
-    }
-  };
-
-  // スコアを保存する関数
-  const saveScore = () => {
-    if (!playerName.trim()) return;
-
-    const scoreData = {
-      name: playerName,
-      score: score,
-      total: questions.length,
-      category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
-      timestamp: new Date().toISOString()
-    };
-
-    // localStorageから既存のスコアを取得
-    const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
-    
-    // 新しいスコアを追加
-    existingScores.push(scoreData);
-    
-    // スコアを保存
-    localStorage.setItem('quizScores', JSON.stringify(existingScores));
-    
-    setShowScore(true);
-  };
 
   // 名前入力後の処理
   const handleNameSubmit = () => {
