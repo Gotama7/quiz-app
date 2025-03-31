@@ -277,7 +277,6 @@ function QuizApp() {
         handleNextQuestion();
       }, 1500);
     } else {
-      // 不正解の場合は即時遷移せず、次へボタンを表示
       setShowNextButton(true);
     }
   };
