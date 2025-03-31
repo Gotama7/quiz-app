@@ -362,6 +362,14 @@ function QuizApp() {
     }
   }, [questions, currentQuestionIndex]);
 
+  // クイズ完了時の処理
+  const handleQuizComplete = () => {
+    setShowScore(true);
+    setTimerActive(false);
+    setShowNameInput(true);
+    setShowNextButton(false);
+  };
+
   // 回答処理の修正
   const handleAnswerOptionClick = (selectedAnswer) => {
     if (isAnswered) return;
@@ -398,13 +406,6 @@ function QuizApp() {
     } else {
       handleQuizComplete();
     }
-  };
-
-  const handleQuizComplete = () => {
-    setShowScore(true);
-    setTimerActive(false);
-    setShowNameInput(true);
-    setShowNextButton(false);
   };
 
   // カテゴリー選択画面
