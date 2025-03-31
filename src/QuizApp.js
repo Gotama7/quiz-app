@@ -11,8 +11,8 @@ function shuffleArray(array) {
 // 全カテゴリーから問題を取得する関数
 function getAllQuestions() {
   const allQuestions = [];
-  Object.entries(quizData.categories).forEach(([categoryKey, category]) => {
-    Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
+  Object.entries(quizData.categories).forEach(([_, category]) => {
+    Object.entries(category.subcategories).forEach(([_, subcategory]) => {
       if (subcategory.questions && subcategory.questions.length > 0) {
         subcategory.questions.forEach(q => {
           if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
@@ -28,7 +28,6 @@ function getAllQuestions() {
       }
     });
   });
-  console.log('取得した問題数:', allQuestions.length);
   return shuffleArray(allQuestions).slice(0, 30);
 }
 
@@ -49,29 +48,19 @@ function QuizApp() {
   const [timerActive, setTimerActive] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
 
-  // スコアを保存する関数
-  const saveScore = useCallback(() => {
-    if (!playerName.trim()) return;
-
-    const scoreData = {
-      name: playerName,
-      score: score,
-      total: questions.length,
-      category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
-      timestamp: new Date().toISOString()
-    };
-
-    // localStorageから既存のスコアを取得
-    const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
-    
-    // 新しいスコアを追加
-    existingScores.push(scoreData);
-    
-    // スコアを保存
-    localStorage.setItem('quizScores', JSON.stringify(existingScores));
-    
-    setShowScore(true);
-  }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
+  // 次の問題に進む処理
+  const handleNextQuestion = useCallback(() => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+      setIsAnswered(false);
+      setFeedback(null);
+      setShowNextButton(false);
+      setTimeLeft(15);
+      setTimerActive(true);
+    } else {
+      handleQuizComplete();
+    }
+  }, [currentQuestionIndex, questions.length]);
 
   // 時間切れの処理
   const handleTimeUp = useCallback(() => {
@@ -109,23 +98,37 @@ function QuizApp() {
     }
   }, [currentQuestionIndex, isAnswered, questions, isQuizKingMode]);
 
-  // タイマー処理
-  useEffect(() => {
-    let timer;
-    if (timerActive && timeLeft > 0 && !isAnswered) {
-      timer = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            handleTimeUp();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isAnswered, handleTimeUp]);
+  // スコアを保存する関数
+  const saveScore = useCallback(() => {
+    if (!playerName.trim()) return;
+
+    const scoreData = {
+      name: playerName,
+      score: score,
+      total: questions.length,
+      category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData.categories[selectedCategory].name,
+      timestamp: new Date().toISOString()
+    };
+
+    // localStorageから既存のスコアを取得
+    const existingScores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+    
+    // 新しいスコアを追加
+    existingScores.push(scoreData);
+    
+    // スコアを保存
+    localStorage.setItem('quizScores', JSON.stringify(existingScores));
+    
+    setShowScore(true);
+  }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
+
+  // クイズ完了時の処理
+  const handleQuizComplete = useCallback(() => {
+    setShowScore(true);
+    setTimerActive(false);
+    setShowNameInput(true);
+    setShowNextButton(false);
+  }, []);
 
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
@@ -249,14 +252,6 @@ function QuizApp() {
     }
   }, [questions, currentQuestionIndex, isAnswered]);
 
-  // クイズ完了時の処理
-  const handleQuizComplete = () => {
-    setShowScore(true);
-    setTimerActive(false);
-    setShowNameInput(true);
-    setShowNextButton(false);
-  };
-
   // 回答処理の修正
   const handleAnswerOptionClick = (selectedAnswer) => {
     if (isAnswered) return;
@@ -278,19 +273,6 @@ function QuizApp() {
       }, 1500);
     } else {
       setShowNextButton(true);
-    }
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-      setIsAnswered(false);
-      setFeedback(null);
-      setShowNextButton(false);
-      setTimeLeft(15);
-      setTimerActive(true);
-    } else {
-      handleQuizComplete();
     }
   };
 
