@@ -11,8 +11,8 @@ function shuffleArray(array) {
 // 全カテゴリーから問題を取得する関数
 function getAllQuestions() {
   const allQuestions = [];
-  Object.entries(quizData.categories).forEach(([_, category]) => {
-    Object.entries(category.subcategories).forEach(([_, subcategory]) => {
+  Object.entries(quizData.categories).forEach(([, category]) => {
+    Object.entries(category.subcategories).forEach(([, subcategory]) => {
       if (subcategory.questions && subcategory.questions.length > 0) {
         subcategory.questions.forEach(q => {
           if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
@@ -45,13 +45,29 @@ function QuizApp() {
   const [playerName, setPlayerName] = useState('');
   const [showNameInput, setShowNameInput] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
-  const [timerActive, setTimerActive] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+
+  // タイマー処理
+  useEffect(() => {
+    let timer;
+    if (timeLeft > 0 && !isAnswered) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [timeLeft, isAnswered, handleTimeUp]);
 
   // クイズ完了時の処理
   const handleQuizComplete = useCallback(() => {
     setShowScore(true);
-    setTimerActive(false);
     setShowNameInput(true);
     setShowNextButton(false);
   }, []);
@@ -64,7 +80,6 @@ function QuizApp() {
       setFeedback(null);
       setShowNextButton(false);
       setTimeLeft(15);
-      setTimerActive(true);
     } else {
       handleQuizComplete();
     }
@@ -87,7 +102,6 @@ function QuizApp() {
           setCurrentQuestionIndex(nextQuestion);
           setIsAnswered(false);
           setTimeLeft(15);
-          setTimerActive(true);
           
           const nextQuestionData = questions[nextQuestion];
           const nextOptions = shuffleArray([
@@ -168,7 +182,6 @@ function QuizApp() {
         setShowScore(false);
         setIsAnswered(false);
         setTimeLeft(15);
-        setTimerActive(true);
 
         // 最初の問題の選択肢をセット
         const firstQuestion = shuffledQuestions[0];
@@ -202,7 +215,6 @@ function QuizApp() {
     setShowScore(false);
     setIsQuizKingMode(false);
     setTimeLeft(15);
-    setTimerActive(false);
     setShowNextButton(false);
   };
 
@@ -229,7 +241,6 @@ function QuizApp() {
       setSelectedSubcategory(null);
       setIsAnswered(false);
       setTimeLeft(15);
-      setTimerActive(true);
       setFeedback(null);
       
       // 最初の問題の選択肢をセット
@@ -244,20 +255,11 @@ function QuizApp() {
     }
   };
 
-  // 問題表示時にタイマーを開始
-  useEffect(() => {
-    if (questions.length > 0 && currentQuestionIndex < questions.length && !isAnswered) {
-      setTimeLeft(15);
-      setTimerActive(true);
-    }
-  }, [questions, currentQuestionIndex, isAnswered]);
-
   // 回答処理の修正
   const handleAnswerOptionClick = (selectedAnswer) => {
     if (isAnswered) return;
     
     setIsAnswered(true);
-    setTimerActive(false);
     
     const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
     setFeedback({
