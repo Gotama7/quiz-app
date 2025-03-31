@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import quizData from './quizData.json';
 import './styles.css';
 import barbarossaImage from './images/barbarossa.jpeg';
@@ -28,7 +28,7 @@ function getAllQuestions() {
       }
     });
   });
-  console.log('取得した問題数:', allQuestions.length); // デバッグ用
+  console.log('取得した問題数:', allQuestions.length);
   return shuffleArray(allQuestions).slice(0, 30);
 }
 
@@ -71,17 +71,10 @@ function QuizApp() {
   const [options, setOptions] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [isQuizKingMode, setIsQuizKingMode] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [showNameInput, setShowNameInput] = useState(false);
-  const [rankings, setRankings] = useState({
-    normal: [],
-    quizKing: []
-  });
-  const [answerHistory, setAnswerHistory] = useState([]);
-  const [answerStats, setAnswerStats] = useState({});
   const [timeLeft, setTimeLeft] = useState(15);
   const [timerActive, setTimerActive] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
@@ -136,7 +129,6 @@ function QuizApp() {
         setScore(0);
         setShowScore(false);
         setIsAnswered(false);
-        setShowFeedback(false);
 
         // 最初の問題の選択肢をセット
         const firstQuestion = shuffledQuestions[0];
@@ -314,10 +306,10 @@ function QuizApp() {
       }, 1000);
     }
     return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isAnswered]);
+  }, [timerActive, timeLeft, isAnswered, handleTimeUp]);
 
   // 時間切れの処理
-  const handleTimeUp = () => {
+  const handleTimeUp = useCallback(() => {
     if (!isAnswered) {
       const currentQuestion = questions[currentQuestionIndex];
       setIsAnswered(true);
@@ -326,14 +318,12 @@ function QuizApp() {
         correctAnswer: currentQuestion.correct,
         selectedAnswer: null
       });
-      setShowFeedback(true);
 
       setTimeout(() => {
         const nextQuestion = currentQuestionIndex + 1;
         if (nextQuestion < questions.length) {
           setCurrentQuestionIndex(nextQuestion);
           setIsAnswered(false);
-          setShowFeedback(false);
           setTimeLeft(15);
           setTimerActive(true);
           
@@ -352,7 +342,7 @@ function QuizApp() {
         }
       }, 1500);
     }
-  };
+  }, [currentQuestionIndex, isAnswered, questions, isQuizKingMode]);
 
   // 問題表示時にタイマーを開始
   useEffect(() => {
@@ -360,7 +350,7 @@ function QuizApp() {
       setTimeLeft(15);
       setTimerActive(true);
     }
-  }, [questions, currentQuestionIndex]);
+  }, [questions, currentQuestionIndex, isAnswered]);
 
   // クイズ完了時の処理
   const handleQuizComplete = () => {
