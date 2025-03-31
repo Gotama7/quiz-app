@@ -73,6 +73,60 @@ function QuizApp() {
     setShowScore(true);
   }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
 
+  // 時間切れの処理
+  const handleTimeUp = useCallback(() => {
+    if (!isAnswered) {
+      const currentQuestion = questions[currentQuestionIndex];
+      setIsAnswered(true);
+      setFeedback({
+        isCorrect: false,
+        correctAnswer: currentQuestion.correct,
+        selectedAnswer: null
+      });
+
+      setTimeout(() => {
+        const nextQuestion = currentQuestionIndex + 1;
+        if (nextQuestion < questions.length) {
+          setCurrentQuestionIndex(nextQuestion);
+          setIsAnswered(false);
+          setTimeLeft(15);
+          setTimerActive(true);
+          
+          const nextQuestionData = questions[nextQuestion];
+          const nextOptions = shuffleArray([
+            nextQuestionData.correct,
+            ...nextQuestionData.distractors
+          ]);
+          setOptions(nextOptions);
+        } else {
+          if (isQuizKingMode) {
+            setShowNameInput(true);
+          } else {
+            setShowScore(true);
+          }
+        }
+      }, 1500);
+    }
+  }, [currentQuestionIndex, isAnswered, questions, isQuizKingMode]);
+
+  // タイマー処理
+  useEffect(() => {
+    let timer;
+    if (timerActive && timeLeft > 0 && !isAnswered) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [timerActive, timeLeft, isAnswered, handleTimeUp]);
+
   // サブカテゴリーが選択されたときに問題を設定
   useEffect(() => {
     if (selectedCategory && selectedSubcategory) {
@@ -186,60 +240,6 @@ function QuizApp() {
       console.error('利用可能な問題がありません');
     }
   };
-
-  // タイマー処理
-  useEffect(() => {
-    let timer;
-    if (timerActive && timeLeft > 0 && !isAnswered) {
-      timer = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            handleTimeUp();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isAnswered, handleTimeUp]);
-
-  // 時間切れの処理
-  const handleTimeUp = useCallback(() => {
-    if (!isAnswered) {
-      const currentQuestion = questions[currentQuestionIndex];
-      setIsAnswered(true);
-      setFeedback({
-        isCorrect: false,
-        correctAnswer: currentQuestion.correct,
-        selectedAnswer: null
-      });
-
-      setTimeout(() => {
-        const nextQuestion = currentQuestionIndex + 1;
-        if (nextQuestion < questions.length) {
-          setCurrentQuestionIndex(nextQuestion);
-          setIsAnswered(false);
-          setTimeLeft(15);
-          setTimerActive(true);
-          
-          const nextQuestionData = questions[nextQuestion];
-          const nextOptions = shuffleArray([
-            nextQuestionData.correct,
-            ...nextQuestionData.distractors
-          ]);
-          setOptions(nextOptions);
-        } else {
-          if (isQuizKingMode) {
-            setShowNameInput(true);
-          } else {
-            setShowScore(true);
-          }
-        }
-      }, 1500);
-    }
-  }, [currentQuestionIndex, isAnswered, questions, isQuizKingMode]);
 
   // 問題表示時にタイマーを開始
   useEffect(() => {
