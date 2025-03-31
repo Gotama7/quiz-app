@@ -248,9 +248,13 @@ function QuizApp() {
   const handleBackToCategories = () => {
     setSelectedCategory(null);
     setSelectedSubcategory(null);
-    setQuestions([]);
+    setCurrentQuestionIndex(0);
+    setScore(0);
     setShowScore(false);
     setIsQuizKingMode(false);
+    setTimeLeft(15);
+    setTimerActive(false);
+    setShowNextButton(false);
   };
 
   // サブカテゴリー選択画面に戻る
@@ -394,6 +398,13 @@ function QuizApp() {
     } else {
       handleQuizComplete();
     }
+  };
+
+  const handleQuizComplete = () => {
+    setShowScore(true);
+    setTimerActive(false);
+    setShowNameInput(true);
+    setShowNextButton(false);
   };
 
   // カテゴリー選択画面
