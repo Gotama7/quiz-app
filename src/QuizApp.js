@@ -47,24 +47,6 @@ function QuizApp() {
   const [timeLeft, setTimeLeft] = useState(15);
   const [showNextButton, setShowNextButton] = useState(false);
 
-  // タイマー処理
-  useEffect(() => {
-    let timer;
-    if (timeLeft > 0 && !isAnswered) {
-      timer = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            handleTimeUp();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [timeLeft, isAnswered, handleTimeUp]);
-
   // クイズ完了時の処理
   const handleQuizComplete = useCallback(() => {
     setShowScore(true);
@@ -119,6 +101,24 @@ function QuizApp() {
       }, 1500);
     }
   }, [currentQuestionIndex, isAnswered, questions, isQuizKingMode]);
+
+  // タイマー処理
+  useEffect(() => {
+    let timer;
+    if (timeLeft > 0 && !isAnswered) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [timeLeft, isAnswered, handleTimeUp]);
 
   // スコアを保存する関数
   const saveScore = useCallback(() => {
