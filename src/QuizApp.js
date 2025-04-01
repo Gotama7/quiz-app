@@ -218,7 +218,14 @@ function QuizApp() {
 
   // カテゴリー選択画面に戻る
   const handleBackToCategories = () => {
-    setCurrentStep('category');
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setShowScore(false);
+    setIsQuizKingMode(false);
+    setTimeLeft(15);
+    setShowNextButton(false);
     navigate('/');
   };
 
