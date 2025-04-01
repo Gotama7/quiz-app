@@ -68,8 +68,10 @@ function QuizApp() {
 
   // 時間切れの処理
   const handleTimeUp = useCallback(() => {
-    if (!isAnswered) {
+    if (!isAnswered && questions && questions.length > 0) {
       const currentQuestion = questions[currentQuestionIndex];
+      if (!currentQuestion) return;
+      
       setIsAnswered(true);
       setFeedback({
         isCorrect: false,
