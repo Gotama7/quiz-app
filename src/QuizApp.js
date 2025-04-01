@@ -466,6 +466,19 @@ function QuizApp() {
             <h2>{currentQuestion.question}</h2>
           </div>
           
+          {isAnswered && (
+            <div className={`feedback ${feedback?.isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`}>
+              <p>{feedback?.isCorrect ? '正解！' : '不正解...'}</p>
+              {!feedback?.isCorrect && <p>正解は: {currentQuestion.correct}</p>}
+            </div>
+          )}
+          
+          {showNextButton && (
+            <button onClick={handleNextQuestion} className="next-button">
+              次の問題へ
+            </button>
+          )}
+          
           <div className="options-container">
             {options.map((option, index) => (
               <button
@@ -486,19 +499,6 @@ function QuizApp() {
               </button>
             ))}
           </div>
-          
-          {isAnswered && (
-            <div className={`feedback ${feedback?.isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`}>
-              <p>{feedback?.isCorrect ? '正解！' : '不正解...'}</p>
-              {!feedback?.isCorrect && <p>正解は: {currentQuestion.correct}</p>}
-            </div>
-          )}
-          
-          {showNextButton && (
-            <button onClick={handleNextQuestion} className="next-button">
-              次の問題へ
-            </button>
-          )}
         </div>
       </div>
     );

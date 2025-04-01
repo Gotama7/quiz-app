@@ -436,21 +436,48 @@ h2 {
 
 /* フィードバック表示 */
 .feedback {
-  margin-top: 20px;
+  margin: 0 auto 20px;
   padding: 15px;
-  border-radius: 5px;
-  font-size: 1.2em;
-  animation: fadeIn 0.3s ease-in;
+  border-radius: 8px;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+  max-width: 500px;
 }
 
-.feedback.correct {
-  background-color: #e8f5e9;
+.feedback p {
+  margin: 5px 0;
+  font-size: 1.2rem;
+}
+
+.correct-feedback {
+  background-color: rgba(76, 175, 80, 0.1);
+  border: 2px solid #4CAF50;
   color: #2e7d32;
 }
 
-.feedback.incorrect {
-  background-color: #ffebee;
+.incorrect-feedback {
+  background-color: rgba(244, 67, 54, 0.1);
+  border: 2px solid #f44336;
   color: #c62828;
+}
+
+.next-button {
+  display: block;
+  background-color: #2196F3;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 auto 20px;
+  width: 200px;
+}
+
+.next-button:hover {
+  background-color: #1976D2;
+  transform: translateY(-2px);
 }
 
 /* 回答履歴セクション */
