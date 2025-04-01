@@ -448,8 +448,17 @@ function QuizApp() {
               <p>カテゴリー: {currentQuestion.categoryName}</p>
               <p>サブカテゴリー: {currentQuestion.subcategoryName}</p>
             </div>
-            <div className="timer">
-              残り時間: {timeLeft}秒
+            <div className="timer-section">
+              <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
+                残り時間: {timeLeft}秒
+              </div>
+              <div 
+                className="timer-bar"
+                style={{
+                  width: `${(timeLeft / 15) * 100}%`,
+                  backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
+                }}
+              />
             </div>
           </div>
           
