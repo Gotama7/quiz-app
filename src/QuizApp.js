@@ -256,15 +256,16 @@ function QuizApp() {
 
   // 回答処理の修正
   const handleAnswerOptionClick = (selectedAnswer) => {
-    if (isAnswered) return;
+    if (isAnswered || !questions[currentQuestionIndex]) return;
     
     setIsAnswered(true);
     
-    const isCorrect = selectedAnswer === questions[currentQuestionIndex].correct;
+    const currentQuestion = questions[currentQuestionIndex];
+    const isCorrect = selectedAnswer === currentQuestion?.correct;
     setFeedback({
       isCorrect,
       selectedAnswer,
-      correctAnswer: questions[currentQuestionIndex].correct
+      correctAnswer: currentQuestion?.correct
     });
     
     if (isCorrect) {
