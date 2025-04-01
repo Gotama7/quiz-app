@@ -442,11 +442,13 @@ h2 {
   text-align: center;
   animation: fadeIn 0.5s ease;
   max-width: 500px;
+  width: 100%;
 }
 
 .feedback p {
   margin: 5px 0;
   font-size: 1.2rem;
+  text-align: center;
 }
 
 .correct-feedback {
@@ -463,7 +465,7 @@ h2 {
 
 .next-button {
   display: block;
-  background-color: #2196F3;
+  background-color: #333;
   color: white;
   padding: 12px 24px;
   border: none;
@@ -476,7 +478,7 @@ h2 {
 }
 
 .next-button:hover {
-  background-color: #1976D2;
+  background-color: #000;
   transform: translateY(-2px);
 }
 
@@ -1285,11 +1287,13 @@ h2 {
 }
 
 .feedback {
-  margin: 20px 0;
+  margin: 0 auto 20px;
   padding: 15px;
   border-radius: 8px;
   text-align: center;
   animation: fadeIn 0.5s ease;
+  max-width: 500px;
+  width: 100%;
 }
 
 .correct-feedback {
@@ -1305,7 +1309,8 @@ h2 {
 }
 
 .next-button {
-  background-color: #2196F3;
+  display: block;
+  background-color: #333;
   color: white;
   padding: 12px 24px;
   border: none;
@@ -1313,11 +1318,12 @@ h2 {
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 20px;
+  margin: 0 auto 20px;
+  width: 200px;
 }
 
 .next-button:hover {
-  background-color: #1976D2;
+  background-color: #000;
   transform: translateY(-2px);
 }
 
