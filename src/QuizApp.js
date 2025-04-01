@@ -441,19 +441,17 @@ function QuizApp() {
     const currentQuestion = questions[currentQuestionIndex];
     return (
       <div className="app">
-        <div className="timer-bar-container">
-          <div 
-            className="timer-bar"
-            style={{
-              width: `${(timeLeft / 15) * 100}%`,
-              backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
-            }}
-          />
-        </div>
         <div className="quiz-container">
           <div className="quiz-header">
             <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
               残り時間：{timeLeft}秒
+              <div 
+                className="timer-bar"
+                style={{
+                  width: `${(timeLeft / 15) * 100}%`,
+                  backgroundColor: timeLeft <= 5 ? '#ef4444' : '#22c55e'
+                }}
+              />
             </div>
             <div className="quiz-info">
               <p>問題 {currentQuestionIndex + 1} / {questions.length}</p>
