@@ -281,35 +281,37 @@ function QuizApp() {
   // カテゴリー選択画面
   if (!selectedCategory && !isQuizKingMode) {
     return (
-      <div className="quiz-container">
-        <div className="title-section">
-          <img 
-            src={barbarossaImage} 
-            alt="Frederick I Barbarossa" 
-            className="title-image"
-          />
-          <h1>バルバロッサクイズ！</h1>
-        </div>
-        <div className="category-grid">
-          {Object.entries(quizData.categories).map(([key, category]) => (
+      <div className="app">
+        <div className="quiz-container">
+          <div className="title-section">
+            <img 
+              src={barbarossaImage} 
+              alt="Frederick I Barbarossa" 
+              className="title-image"
+            />
+            <h1>バルバロッサクイズ！</h1>
+          </div>
+          <div className="category-grid">
+            {Object.entries(quizData.categories).map(([key, category]) => (
+              <button
+                key={key}
+                className="category-button"
+                onClick={() => setSelectedCategory(key)}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+          <div className="quiz-king-section">
+            <h2>クイズ王チャレンジ</h2>
+            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
             <button
-              key={key}
-              className="category-button"
-              onClick={() => setSelectedCategory(key)}
+              onClick={startQuizKingChallenge}
+              className="quiz-king-button"
             >
-              {category.name}
+              チャレンジ開始
             </button>
-          ))}
-        </div>
-        <div className="quiz-king-section">
-          <h2>クイズ王チャレンジ</h2>
-          <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
-          <button
-            onClick={startQuizKingChallenge}
-            className="quiz-king-button"
-          >
-            チャレンジ開始
-          </button>
+          </div>
         </div>
       </div>
     );
@@ -319,35 +321,37 @@ function QuizApp() {
   if (!selectedSubcategory && !isQuizKingMode) {
     const category = quizData.categories[selectedCategory];
     return (
-      <div className="quiz-container">
-        <div className="title-section">
-          <img 
-            src={barbarossaImage} 
-            alt="Frederick I Barbarossa" 
-            className="title-image"
-          />
-          <h1>バルバロッサクイズ！</h1>
-        </div>
-        <h2 className="selected-category-name">{category.name}</h2>
-        <div className="category-selection">
-          <h2>サブカテゴリーを選択してください</h2>
-          <div className="category-grid">
-            {Object.entries(category.subcategories).map(([key, subcategory]) => (
-              <button
-                key={key}
-                onClick={() => setSelectedSubcategory(key)}
-                className="category-button"
-              >
-                {subcategory.name}
-              </button>
-            ))}
+      <div className="app">
+        <div className="quiz-container">
+          <div className="title-section">
+            <img 
+              src={barbarossaImage} 
+              alt="Frederick I Barbarossa" 
+              className="title-image"
+            />
+            <h1>バルバロッサクイズ！</h1>
           </div>
-          <button
-            onClick={handleBackToCategories}
-            className="back-button"
-          >
-            カテゴリー選択に戻る
-          </button>
+          <h2 className="selected-category-name">{category.name}</h2>
+          <div className="category-selection">
+            <h2>サブカテゴリーを選択してください</h2>
+            <div className="category-grid">
+              {Object.entries(category.subcategories).map(([key, subcategory]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedSubcategory(key)}
+                  className="category-button"
+                >
+                  {subcategory.name}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={handleBackToCategories}
+              className="back-button"
+            >
+              カテゴリー選択に戻る
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -356,18 +360,20 @@ function QuizApp() {
   // プレイヤー名入力画面
   if (showNameInput) {
     return (
-      <div className="quiz-container">
-        <div className="name-input-section">
-          <h2>クイズ王チャレンジ終了！</h2>
-          <p>スコア: {score} / {questions.length}</p>
-          <div className="name-input">
-            <input
-              type="text"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              placeholder="あなたの名前を入力"
-            />
-            <button onClick={handleNameSubmit}>結果を保存</button>
+      <div className="app">
+        <div className="quiz-container">
+          <div className="name-input-section">
+            <h2>クイズ王チャレンジ終了！</h2>
+            <p>スコア: {score} / {questions.length}</p>
+            <div className="name-input">
+              <input
+                type="text"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value)}
+                placeholder="あなたの名前を入力"
+              />
+              <button onClick={handleNameSubmit}>結果を保存</button>
+            </div>
           </div>
         </div>
       </div>
@@ -377,44 +383,46 @@ function QuizApp() {
   // スコア表示画面
   if (showScore) {
     return (
-      <div className="quiz-container">
-        <div className="score-section">
-          {questions.length === 0 ? (
-            <>
-              <h2>申し訳ありません</h2>
-              <div className="score-text">
-                このカテゴリーにはまだ問題が登録されていません。
-              </div>
-              <button
-                onClick={handleBackToSubcategories}
-                className="back-button"
-              >
-                サブカテゴリー選択に戻る
-              </button>
-            </>
-          ) : (
-            <>
-              <h2>クイズ終了！</h2>
-              <div className="score-text">
-                あなたのスコアは {score} / {questions.length} です
-              </div>
-              <div className="name-input">
-                <input
-                  type="text"
-                  value={playerName}
-                  onChange={(e) => setPlayerName(e.target.value)}
-                  placeholder="あなたの名前を入力"
-                />
-                <button onClick={handleNameSubmit}>結果を保存</button>
-              </div>
-              <button
-                onClick={isQuizKingMode ? handleBackToCategories : handleBackToSubcategories}
-                className="back-button"
-              >
-                {isQuizKingMode ? 'トップに戻る' : 'サブカテゴリー選択に戻る'}
-              </button>
-            </>
-          )}
+      <div className="app">
+        <div className="quiz-container">
+          <div className="score-section">
+            {questions.length === 0 ? (
+              <>
+                <h2>申し訳ありません</h2>
+                <div className="score-text">
+                  このカテゴリーにはまだ問題が登録されていません。
+                </div>
+                <button
+                  onClick={handleBackToSubcategories}
+                  className="back-button"
+                >
+                  サブカテゴリー選択に戻る
+                </button>
+              </>
+            ) : (
+              <>
+                <h2>クイズ終了！</h2>
+                <div className="score-text">
+                  あなたのスコアは {score} / {questions.length} です
+                </div>
+                <div className="name-input">
+                  <input
+                    type="text"
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value)}
+                    placeholder="あなたの名前を入力"
+                  />
+                  <button onClick={handleNameSubmit}>結果を保存</button>
+                </div>
+                <button
+                  onClick={isQuizKingMode ? handleBackToCategories : handleBackToSubcategories}
+                  className="back-button"
+                >
+                  {isQuizKingMode ? 'トップに戻る' : 'サブカテゴリー選択に戻る'}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -423,74 +431,76 @@ function QuizApp() {
   // クイズ画面
   if (questions.length > 0 && currentQuestionIndex < questions.length) {
     return (
-      <div className="quiz-container">
-        <div className="question-section">
-          <div className="timer-section">
-            <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
-              残り時間: {timeLeft}秒
+      <div className="app">
+        <div className="quiz-container">
+          <div className="question-section">
+            <div className="timer-section">
+              <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
+                残り時間: {timeLeft}秒
+              </div>
+              <div 
+                className="timer-bar"
+                style={{
+                  width: `${(timeLeft / 15) * 100}%`,
+                  backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
+                }}
+              />
             </div>
-            <div 
-              className="timer-bar"
-              style={{
-                width: `${(timeLeft / 15) * 100}%`,
-                backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
-              }}
-            />
-          </div>
-          <div className="question-count">
-            問題 {currentQuestionIndex + 1} / {questions.length}
-          </div>
-          <div className="category-info">
-            <div className="category-name">{selectedCategory}</div>
-            {selectedSubcategory && (
-              <div className="subcategory-name">{selectedSubcategory}</div>
+            <div className="question-count">
+              問題 {currentQuestionIndex + 1} / {questions.length}
+            </div>
+            <div className="category-info">
+              <div className="category-name">{selectedCategory}</div>
+              {selectedSubcategory && (
+                <div className="subcategory-name">{selectedSubcategory}</div>
+              )}
+            </div>
+            <div className="question-text">
+              {questions[currentQuestionIndex].question}
+            </div>
+            <div className="answer-section">
+              {options.map((option, index) => (
+                <button 
+                  key={index} 
+                  onClick={() => handleAnswerOptionClick(option)}
+                  className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
+                    option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
+                  disabled={isAnswered}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+            {showNextButton && (
+              <div className="navigation-buttons">
+                <button
+                  onClick={handleNextQuestion}
+                  className="nav-button"
+                >
+                  次へ
+                </button>
+              </div>
+            )}
+            {isQuizKingMode ? (
+              <div className="navigation-buttons">
+                <button
+                  onClick={handleBackToCategories}
+                  className="nav-button"
+                >
+                  トップに戻る
+                </button>
+              </div>
+            ) : (
+              <div className="navigation-buttons">
+                <button
+                  onClick={handleBackToSubcategories}
+                  className="nav-button"
+                >
+                  サブカテゴリー選択に戻る
+                </button>
+              </div>
             )}
           </div>
-          <div className="question-text">
-            {questions[currentQuestionIndex].question}
-          </div>
-          <div className="answer-section">
-            {options.map((option, index) => (
-              <button 
-                key={index} 
-                onClick={() => handleAnswerOptionClick(option)}
-                className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
-                  option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
-                disabled={isAnswered}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-          {showNextButton && (
-            <div className="navigation-buttons">
-              <button
-                onClick={handleNextQuestion}
-                className="nav-button"
-              >
-                次へ
-              </button>
-            </div>
-          )}
-          {isQuizKingMode ? (
-            <div className="navigation-buttons">
-              <button
-                onClick={handleBackToCategories}
-                className="nav-button"
-              >
-                トップに戻る
-              </button>
-            </div>
-          ) : (
-            <div className="navigation-buttons">
-              <button
-                onClick={handleBackToSubcategories}
-                className="nav-button"
-              >
-                サブカテゴリー選択に戻る
-              </button>
-            </div>
-          )}
         </div>
       </div>
     );
@@ -498,18 +508,20 @@ function QuizApp() {
 
   // 問題がない場合のエラー画面
   return (
-    <div className="quiz-container">
-      <div className="score-section">
-        <h2>申し訳ありません</h2>
-        <div className="score-text">
-          このカテゴリーにはまだ問題が登録されていません。
+    <div className="app">
+      <div className="quiz-container">
+        <div className="score-section">
+          <h2>申し訳ありません</h2>
+          <div className="score-text">
+            このカテゴリーにはまだ問題が登録されていません。
+          </div>
+          <button
+            onClick={handleBackToSubcategories}
+            className="back-button"
+          >
+            サブカテゴリー選択に戻る
+          </button>
         </div>
-        <button
-          onClick={handleBackToSubcategories}
-          className="back-button"
-        >
-          サブカテゴリー選択に戻る
-        </button>
       </div>
     </div>
   );
