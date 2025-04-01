@@ -10,13 +10,17 @@ function shuffleArray(array) {
 
 // 全カテゴリーから問題を取得する関数
 function getAllQuestions() {
-  const allQuestions = [];
-  Object.entries(quizData.categories).forEach(([, category]) => {
+  // カテゴリーごとの問題を格納するオブジェクト
+  const questionsByCategory = {};
+  
+  // 各カテゴリーの問題を収集
+  Object.entries(quizData.categories).forEach(([categoryKey, category]) => {
+    const categoryQuestions = [];
     Object.entries(category.subcategories).forEach(([, subcategory]) => {
       if (subcategory.questions && subcategory.questions.length > 0) {
         subcategory.questions.forEach(q => {
           if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
-            allQuestions.push({
+            categoryQuestions.push({
               question: q.question,
               correct: q.correct,
               distractors: q.distractors,
@@ -27,8 +31,28 @@ function getAllQuestions() {
         });
       }
     });
+    if (categoryQuestions.length > 0) {
+      questionsByCategory[categoryKey] = shuffleArray(categoryQuestions);
+    }
   });
-  return shuffleArray(allQuestions).slice(0, 30);
+
+  // 各カテゴリーから均等に問題を選ぶ
+  const categories = Object.keys(questionsByCategory);
+  const questionsPerCategory = Math.ceil(30 / categories.length);
+  const selectedQuestions = [];
+  
+  // カテゴリーの順序をランダム化
+  const shuffledCategories = shuffleArray([...categories]);
+  
+  // 各カテゴリーから問題を選択
+  shuffledCategories.forEach(categoryKey => {
+    const categoryQuestions = questionsByCategory[categoryKey];
+    const questionsToTake = Math.min(questionsPerCategory, categoryQuestions.length);
+    selectedQuestions.push(...categoryQuestions.slice(0, questionsToTake));
+  });
+
+  // 最終的な問題数を30問に調整
+  return shuffleArray(selectedQuestions).slice(0, 30);
 }
 
 function QuizApp() {
