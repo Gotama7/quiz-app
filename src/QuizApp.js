@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import quizData from './quizData.json';
 import './styles.css';
@@ -47,7 +47,6 @@ function QuizApp() {
   const [showNameInput, setShowNameInput] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
   const [showNextButton, setShowNextButton] = useState(false);
-  const [currentStep, setCurrentStep] = useState('category');
 
   // 次の問題へ進む処理
   const handleNextQuestion = useCallback(() => {
@@ -292,13 +291,11 @@ function QuizApp() {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setCurrentStep('level');
     navigate(`/quiz/${category}`, { state: { category } });
   };
 
   const handleLevelSelect = (level) => {
     setSelectedSubcategory(level);
-    setCurrentStep('quiz');
     navigate(`/quiz/${selectedCategory}/${level}`, { 
       state: { category: selectedCategory, level } 
     });
