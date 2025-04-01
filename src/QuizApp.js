@@ -53,18 +53,31 @@ function QuizApp() {
     setShowNextButton(false);
   }, []);
 
-  // 次の問題に進む処理
+  // 次の問題へ進む処理
   const handleNextQuestion = useCallback(() => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+    const nextQuestion = currentQuestionIndex + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestionIndex(nextQuestion);
       setIsAnswered(false);
+      setTimeLeft(15);
       setFeedback(null);
       setShowNextButton(false);
-      setTimeLeft(15);
+      
+      // 次の問題の選択肢をセット
+      const nextQuestionData = questions[nextQuestion];
+      const nextOptions = shuffleArray([
+        nextQuestionData.correct,
+        ...nextQuestionData.distractors
+      ]);
+      setOptions(nextOptions);
     } else {
-      handleQuizComplete();
+      if (isQuizKingMode) {
+        setShowNameInput(true);
+      } else {
+        setShowScore(true);
+      }
     }
-  }, [currentQuestionIndex, questions.length, handleQuizComplete]);
+  }, [currentQuestionIndex, questions, isQuizKingMode]);
 
   // 時間切れの処理
   const handleTimeUp = useCallback(() => {
@@ -432,77 +445,58 @@ function QuizApp() {
 
   // クイズ画面
   if (questions.length > 0 && currentQuestionIndex < questions.length) {
+    const currentQuestion = questions[currentQuestionIndex];
     return (
       <div className="app">
         <div className="quiz-container">
-          <div className="question-section">
-            <div className="timer-section">
-              <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
-                残り時間: {timeLeft}秒
-              </div>
-              <div 
-                className="timer-bar"
-                style={{
-                  width: `${(timeLeft / 15) * 100}%`,
-                  backgroundColor: timeLeft <= 5 ? '#ff4444' : '#4CAF50'
-                }}
-              />
+          <div className="quiz-header">
+            <div className="quiz-info">
+              <p>問題 {currentQuestionIndex + 1} / {questions.length}</p>
+              <p>カテゴリー: {currentQuestion.categoryName}</p>
+              <p>サブカテゴリー: {currentQuestion.subcategoryName}</p>
             </div>
-            <div className="question-count">
-              問題 {currentQuestionIndex + 1} / {questions.length}
+            <div className="timer">
+              残り時間: {timeLeft}秒
             </div>
-            <div className="category-info">
-              <div className="category-name">{selectedCategory}</div>
-              {selectedSubcategory && (
-                <div className="subcategory-name">{selectedSubcategory}</div>
-              )}
-            </div>
-            <div className="question-text">
-              {questions[currentQuestionIndex].question}
-            </div>
-            <div className="answer-section">
-              {options.map((option, index) => (
-                <button 
-                  key={index} 
-                  onClick={() => handleAnswerOptionClick(option)}
-                  className={`answer-button ${isAnswered ? (option === questions[currentQuestionIndex].correct ? 'correct' : 
-                    option === feedback?.selectedAnswer ? 'incorrect' : '') : ''}`}
-                  disabled={isAnswered}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            {showNextButton && (
-              <div className="navigation-buttons">
-                <button
-                  onClick={handleNextQuestion}
-                  className="nav-button"
-                >
-                  次へ
-                </button>
-              </div>
-            )}
-            {isQuizKingMode ? (
-              <div className="navigation-buttons">
-                <button
-                  onClick={handleBackToCategories}
-                  className="nav-button"
-                >
-                  トップに戻る
-                </button>
-              </div>
-            ) : (
-              <div className="navigation-buttons">
-                <button
-                  onClick={handleBackToSubcategories}
-                  className="nav-button"
-                >
-                  サブカテゴリー選択に戻る
-                </button>
-              </div>
-            )}
           </div>
+          
+          <div className="question-section">
+            <h2>{currentQuestion.question}</h2>
+          </div>
+          
+          <div className="options-container">
+            {options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerOptionClick(option)}
+                className={`option-button ${
+                  isAnswered
+                    ? option === currentQuestion.correct
+                      ? 'correct'
+                      : option === feedback?.selectedAnswer
+                      ? 'incorrect'
+                      : ''
+                    : ''
+                }`}
+                disabled={isAnswered}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          
+          {isAnswered && (
+            <div className={`feedback ${feedback?.isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`}>
+              <p>{feedback?.isCorrect ? '正解！' : '不正解...'}</p>
+              {!feedback?.isCorrect && <p>正解は: {currentQuestion.correct}</p>}
+            </div>
+          )}
+          
+          {showNextButton && (
+            <button onClick={handleNextQuestion} className="next-button">
+              次の問題へ
+            </button>
+          )}
         </div>
       </div>
     );
