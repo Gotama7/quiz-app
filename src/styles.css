@@ -129,15 +129,46 @@ h2 {
 .option-button {
   width: 100%;
   padding: 15px;
-  margin: 5px 0;
+  margin: 10px 0;
   border: 2px solid #ddd;
   border-radius: 8px;
   background-color: white;
+  color: #333;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
   line-height: 1.4;
+  -webkit-text-fill-color: #333;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option-button:hover:not([disabled]) {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  color: #333;
+  -webkit-text-fill-color: #333;
+}
+
+.option-button.correct {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #45a049;
+  -webkit-text-fill-color: white;
+}
+
+.option-button.incorrect {
+  background-color: #f44336;
+  color: white;
+  border-color: #da190b;
+  -webkit-text-fill-color: white;
+}
+
+.option-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  color: #333;
+  -webkit-text-fill-color: #333;
 }
 
 .answer-section {
@@ -1188,26 +1219,42 @@ h2 {
   border: 2px solid #ddd;
   border-radius: 8px;
   background-color: white;
+  color: #333;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-align: left;
+  line-height: 1.4;
+  -webkit-text-fill-color: #333;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .option-button:hover:not([disabled]) {
   background-color: #f0f0f0;
   transform: translateY(-2px);
+  color: #333;
+  -webkit-text-fill-color: #333;
 }
 
 .option-button.correct {
   background-color: #4CAF50;
   color: white;
   border-color: #45a049;
+  -webkit-text-fill-color: white;
 }
 
 .option-button.incorrect {
   background-color: #f44336;
   color: white;
   border-color: #da190b;
+  -webkit-text-fill-color: white;
+}
+
+.option-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  color: #333;
+  -webkit-text-fill-color: #333;
 }
 
 .feedback {
