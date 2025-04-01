@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import quizData from './quizData.json';
 import './styles.css';
 
@@ -31,6 +32,7 @@ function getAllQuestions() {
 }
 
 function QuizApp() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -45,6 +47,7 @@ function QuizApp() {
   const [showNameInput, setShowNameInput] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
   const [showNextButton, setShowNextButton] = useState(false);
+  const [currentStep, setCurrentStep] = useState('category');
 
   // 次の問題へ進む処理
   const handleNextQuestion = useCallback(() => {
@@ -215,14 +218,8 @@ function QuizApp() {
 
   // カテゴリー選択画面に戻る
   const handleBackToCategories = () => {
-    setSelectedCategory(null);
-    setSelectedSubcategory(null);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setShowScore(false);
-    setIsQuizKingMode(false);
-    setTimeLeft(15);
-    setShowNextButton(false);
+    setCurrentStep('category');
+    navigate('/');
   };
 
   // サブカテゴリー選択画面に戻る
@@ -286,6 +283,20 @@ function QuizApp() {
     }
   };
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    setCurrentStep('level');
+    navigate(`/quiz/${category}`, { state: { category } });
+  };
+
+  const handleLevelSelect = (level) => {
+    setSelectedSubcategory(level);
+    setCurrentStep('quiz');
+    navigate(`/quiz/${selectedCategory}/${level}`, { 
+      state: { category: selectedCategory, level } 
+    });
+  };
+
   // カテゴリー選択画面
   if (!selectedCategory && !isQuizKingMode) {
     return (
@@ -304,7 +315,7 @@ function QuizApp() {
               <button
                 key={key}
                 className="category-button"
-                onClick={() => setSelectedCategory(key)}
+                onClick={() => handleCategorySelect(key)}
               >
                 {category.name}
               </button>
@@ -346,7 +357,7 @@ function QuizApp() {
               {Object.entries(category.subcategories).map(([key, subcategory]) => (
                 <button
                   key={key}
-                  onClick={() => setSelectedSubcategory(key)}
+                  onClick={() => handleLevelSelect(key)}
                   className="category-button"
                 >
                   {subcategory.name}
