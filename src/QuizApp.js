@@ -46,13 +46,6 @@ function QuizApp() {
   const [timeLeft, setTimeLeft] = useState(15);
   const [showNextButton, setShowNextButton] = useState(false);
 
-  // クイズ完了時の処理
-  const handleQuizComplete = useCallback(() => {
-    setShowScore(true);
-    setShowNameInput(true);
-    setShowNextButton(false);
-  }, []);
-
   // 次の問題へ進む処理
   const handleNextQuestion = useCallback(() => {
     const nextQuestion = currentQuestionIndex + 1;
