@@ -452,13 +452,13 @@ function QuizApp() {
         </div>
         <div className="quiz-container">
           <div className="quiz-header">
+            <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
+              残り時間：{timeLeft}秒
+            </div>
             <div className="quiz-info">
               <p>問題 {currentQuestionIndex + 1} / {questions.length}</p>
-              <p>カテゴリー: {currentQuestion.categoryName}</p>
-              <p>サブカテゴリー: {currentQuestion.subcategoryName}</p>
-            </div>
-            <div className={`timer ${timeLeft <= 5 ? 'warning' : ''}`}>
-              残り時間: {timeLeft}秒
+              <p>カテゴリー：{currentQuestion.categoryName}</p>
+              <p>サブカテゴリー：{currentQuestion.subcategoryName}</p>
             </div>
           </div>
           

@@ -1260,35 +1260,23 @@ h2 {
 
 .quiz-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 20px;
   padding: 15px;
   background-color: #f8f9fa;
   border-radius: 8px;
-}
-
-.quiz-info {
-  text-align: left;
-  flex-grow: 1;
-}
-
-.quiz-info p {
-  margin: 5px 0;
-  color: #666;
-  font-size: 1.1rem;
-}
-
-.timer-section {
-  min-width: 150px;
-  text-align: right;
+  gap: 10px;
 }
 
 .timer {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2196F3;
-  padding-left: 20px;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 }
 
 .timer.warning {
@@ -1296,22 +1284,15 @@ h2 {
   animation: pulse 1s infinite;
 }
 
-.timer-bar {
-  height: 100%;
-  background-color: #4CAF50;
-  transition: width 1s linear, background-color 0.3s;
+.quiz-info {
+  width: 100%;
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+.quiz-info p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 1.1rem;
+  text-align: left;
 }
 
 .timer-bar-container {
