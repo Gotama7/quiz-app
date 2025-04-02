@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import indexData from './data/index.json';
+import artSubcultureData from './data/art_subculture.json';
+import historyLiteratureData from './data/history_literature.json';
+import livingThingsData from './data/living_things.json';
+import mathScienceData from './data/math_science.json';
+import sportsData from './data/sports.json';
+import vehiclesHobbiesData from './data/vehicles_hobbies.json';
 import './styles.css';
 
 // カテゴリーデータを読み込む関数
-async function loadCategoryData(categoryKey) {
-  try {
-    const response = await import(`./data/${categoryKey}.json`);
-    return response.default[categoryKey];
-  } catch (error) {
-    console.error('Error loading category data:', error);
-    return null;
-  }
+function loadCategoryData(categoryKey) {
+  const categoryDataMap = {
+    'art_subculture': artSubcultureData.art_subculture,
+    'history_literature': historyLiteratureData.history_literature,
+    'living_things': livingThingsData.living_things,
+    'math_science': mathScienceData.math_science,
+    'sports': sportsData.sports,
+    'vehicles_hobbies': vehiclesHobbiesData.vehicles_hobbies
+  };
+  
+  return categoryDataMap[categoryKey] || null;
 }
 
 // 選択肢をランダムに並べ替える関数
@@ -20,13 +29,13 @@ function shuffleArray(array) {
 }
 
 // 全カテゴリーから問題を取得する関数
-async function getAllQuestions() {
+function getAllQuestions() {
   // カテゴリーごとの問題を格納するオブジェクト
   const questionsByCategory = {};
   
   // 各カテゴリーの問題を収集
   for (const [categoryKey, category] of Object.entries(indexData.categories)) {
-    const categoryData = await loadCategoryData(categoryKey);
+    const categoryData = loadCategoryData(categoryKey);
     if (!categoryData) continue;
 
     const categoryQuestions = [];
@@ -70,8 +79,8 @@ async function getAllQuestions() {
 }
 
 // 特定のカテゴリーの全サブカテゴリーから問題を取得する関数
-async function getCategoryQuestions(categoryKey) {
-  const categoryData = await loadCategoryData(categoryKey);
+function getCategoryQuestions(categoryKey) {
+  const categoryData = loadCategoryData(categoryKey);
   if (!categoryData) return [];
 
   const questionsBySubcategory = {};
@@ -274,7 +283,7 @@ function QuizApp() {
   }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
 
   // カテゴリー選択時の処理
-  const handleCategorySelect = useCallback(async (categoryKey) => {
+  const handleCategorySelect = useCallback((categoryKey) => {
     try {
       setSelectedCategory(categoryKey);
       
@@ -282,7 +291,7 @@ function QuizApp() {
         setIsLoading(true);
         setQuestions([]);
         
-        const categoryQuestions = await getCategoryQuestions(categoryKey);
+        const categoryQuestions = getCategoryQuestions(categoryKey);
         setIsLoading(false);
         
         if (categoryQuestions.length > 0) {
@@ -307,13 +316,13 @@ function QuizApp() {
   }, [isQuizKingMode]);
 
   // クイズ王モード開始時の処理
-  const handleQuizKingStart = useCallback(async () => {
+  const handleQuizKingStart = useCallback(() => {
     try {
       setIsQuizKingMode(true);
       setIsLoading(true);
       setQuestions([]);
       
-      const allQuestions = await getAllQuestions();
+      const allQuestions = getAllQuestions();
       setIsLoading(false);
       
       if (allQuestions.length > 0) {
@@ -335,14 +344,14 @@ function QuizApp() {
   }, []);
 
   // サブカテゴリー選択時の処理
-  const handleSubcategorySelect = useCallback(async (subcategoryKey) => {
+  const handleSubcategorySelect = useCallback((subcategoryKey) => {
     try {
       setSelectedSubcategory(subcategoryKey);
       setIsLoading(true);
       setQuestions([]);
       
       if (selectedCategory) {
-        const categoryData = await loadCategoryData(selectedCategory);
+        const categoryData = loadCategoryData(selectedCategory);
         if (!categoryData) {
           console.error('Category data not found');
           setIsLoading(false);
