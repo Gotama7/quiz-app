@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './styles.css';
 
 // 画像のURLを設定
@@ -24,6 +24,9 @@ function QuizApp() {
   const [showNextButton, setShowNextButton] = useState(false);
   const [quizData, setQuizData] = useState({ categories: {} });
   const [isLoading, setIsLoading] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef(null);
 
   // JSONデータを読み込む
   useEffect(() => {
@@ -57,77 +60,98 @@ function QuizApp() {
     loadData();
   }, []);
 
-  // サブカテゴリー選択ハンドラー
-  const handleSubcategorySelect = (subcategoryId) => {
-    setSelectedSubcategory(subcategoryId);
-    
-    // 選択されたサブカテゴリーの問題を取得
-    const categoryQuestions = quizData.categories[selectedCategory].subcategories[subcategoryId].questions;
-    
-    // 問題を10問ランダムに選択
-    const selectedQuestions = [];
-    const tempQuestions = [...categoryQuestions];
-    
-    const numQuestionsToSelect = Math.min(10, tempQuestions.length);
-    
-    for (let i = 0; i < numQuestionsToSelect; i++) {
-      const randomIndex = Math.floor(Math.random() * tempQuestions.length);
-      const selectedQuestion = tempQuestions.splice(randomIndex, 1)[0];
+  // タイマー制御
+  useEffect(() => {
+    if (view === 'quiz' && !isAnswered && !isPaused) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timerRef.current);
+            // 時間切れで不正解扱い
+            const currentQuestion = questions[currentQuestionIndex];
+            setIsAnswered(true);
+            setFeedback({
+              isCorrect: false,
+              selectedAnswer: null,
+              correctAnswer: currentQuestion.options.find(opt => opt.isCorrect).text
+            });
+            setShowNextButton(true);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
       
-      // 選択肢を作成
-      const options = [
-        { text: selectedQuestion.correct, isCorrect: true },
-        { text: selectedQuestion.distractors[0], isCorrect: false },
-        { text: selectedQuestion.distractors[1], isCorrect: false },
-        { text: selectedQuestion.distractors[2], isCorrect: false }
-      ];
-      
-      // 選択肢をシャッフル
-      const shuffledOptions = shuffleArray(options);
-      
-      selectedQuestions.push({
-        ...selectedQuestion,
-        options: shuffledOptions
+      return () => clearInterval(timerRef.current);
+    }
+  }, [view, currentQuestionIndex, isAnswered, isPaused, questions]);
+
+  // 問題変更時にタイマーをリセット
+  useEffect(() => {
+    if (view === 'quiz') {
+      setTimeLeft(15);
+    }
+  }, [currentQuestionIndex, view]);
+
+  // クイズ王チャレンジ処理
+  const handleQuizKingChallenge = () => {
+    // 全カテゴリーから問題を集める
+    const allQuestions = [];
+    
+    // 各カテゴリーとサブカテゴリーから問題を集める
+    Object.keys(quizData.categories).forEach(categoryId => {
+      const category = quizData.categories[categoryId];
+      Object.keys(category.subcategories).forEach(subcategoryId => {
+        const subcategory = category.subcategories[subcategoryId];
+        if (subcategory.questions && subcategory.questions.length > 0) {
+          subcategory.questions.forEach(question => {
+            if (question.question && question.correct && question.distractors && question.distractors.length === 3) {
+              allQuestions.push({
+                ...question,
+                categoryName: category.name,
+                subcategoryName: subcategory.name
+              });
+            }
+          });
+        }
       });
+    });
+    
+    // 十分な問題がない場合
+    if (allQuestions.length < 30) {
+      alert('十分な問題がありません。問題を追加してください。');
+      return;
     }
     
-    setQuestions(selectedQuestions);
+    // 問題をシャッフルして最初の30問を選択
+    const shuffledQuestions = shuffleArray([...allQuestions]);
+    const selectedQuestions = shuffledQuestions.slice(0, 30);
+    
+    // 選択肢の準備
+    const questionsWithOptions = selectedQuestions.map(q => {
+      const options = [
+        { text: q.correct, isCorrect: true },
+        { text: q.distractors[0], isCorrect: false },
+        { text: q.distractors[1], isCorrect: false },
+        { text: q.distractors[2], isCorrect: false }
+      ];
+      
+      return {
+        ...q,
+        options: shuffleArray(options)
+      };
+    });
+    
+    // クイズの状態をセット
+    setQuestions(questionsWithOptions);
     setCurrentQuestionIndex(0);
     setScore(0);
     setShowScore(false);
+    setIsAnswered(false);
+    setFeedback(null);
+    setShowNextButton(false);
+    setTimeLeft(15);
     setView('quiz');
-  };
-
-  // 回答ボタンクリックハンドラー
-  const handleAnswerClick = (selectedIndex, isCorrect) => {
-    setIsAnswered(true);
-    
-    if (isCorrect) {
-      setScore(score + 1);
-    } else {
-      setFeedback(selectedIndex);
-    }
-    
-    setShowNextButton(true);
-  };
-
-  // 次の問題ボタンクリックハンドラー
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setIsAnswered(false);
-      setFeedback(null);
-      setShowNextButton(false);
-    } else {
-      setShowScore(true);
-      setView('result');
-    }
-  };
-
-  // カテゴリー選択ハンドラー
-  const handleCategorySelect = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setView('subcategorySelection');
   };
 
   // カテゴリー選択画面
@@ -174,62 +198,10 @@ function QuizApp() {
     );
   };
 
-  // クイズ王チャレンジ処理
-  const handleQuizKingChallenge = () => {
-    // 全カテゴリーから問題を集める
-    const allQuestions = [];
-    
-    // 各カテゴリーとサブカテゴリーから問題を集める
-    Object.keys(quizData.categories).forEach(categoryId => {
-      const category = quizData.categories[categoryId];
-      Object.keys(category.subcategories).forEach(subcategoryId => {
-        const subcategory = category.subcategories[subcategoryId];
-        if (subcategory.questions && subcategory.questions.length > 0) {
-          subcategory.questions.forEach(question => {
-            allQuestions.push({
-              ...question,
-              categoryName: category.name,
-              subcategoryName: subcategory.name
-            });
-          });
-        }
-      });
-    });
-    
-    // 十分な問題がない場合
-    if (allQuestions.length < 30) {
-      alert('十分な問題がありません。問題を追加してください。');
-      return;
-    }
-    
-    // 問題をシャッフルして最初の30問を選択
-    const shuffledQuestions = shuffleArray([...allQuestions]);
-    const selectedQuestions = shuffledQuestions.slice(0, 30);
-    
-    // 選択肢の準備
-    const questionsWithOptions = selectedQuestions.map(q => {
-      const options = [
-        { text: q.correct, isCorrect: true },
-        { text: q.distractors[0], isCorrect: false },
-        { text: q.distractors[1], isCorrect: false },
-        { text: q.distractors[2], isCorrect: false }
-      ];
-      
-      return {
-        ...q,
-        options: shuffleArray(options)
-      };
-    });
-    
-    // クイズの状態をセット
-    setQuestions(questionsWithOptions);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setShowScore(false);
-    setIsAnswered(false);
-    setFeedback(null);
-    setShowNextButton(false);
-    setView('quiz');
+  // カテゴリー選択ハンドラー
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setView('subcategorySelection');
   };
 
   // サブカテゴリー選択画面
@@ -285,6 +257,63 @@ function QuizApp() {
     );
   };
 
+  // サブカテゴリー選択ハンドラー
+  const handleSubcategorySelect = (subcategoryId) => {
+    setSelectedSubcategory(subcategoryId);
+    
+    // 選択されたサブカテゴリーの問題を取得
+    const categoryQuestions = quizData.categories[selectedCategory].subcategories[subcategoryId].questions;
+    
+    // 有効な問題をフィルタリング
+    const validQuestions = categoryQuestions.filter(q => 
+      q.question && q.correct && q.distractors && q.distractors.length === 3
+    );
+    
+    // 問題を10問ランダムに選択
+    const selectedQuestions = [];
+    const tempQuestions = [...validQuestions];
+    
+    const numQuestionsToSelect = Math.min(10, tempQuestions.length);
+    
+    for (let i = 0; i < numQuestionsToSelect; i++) {
+      const randomIndex = Math.floor(Math.random() * tempQuestions.length);
+      const selectedQuestion = tempQuestions.splice(randomIndex, 1)[0];
+      
+      // 選択肢を作成
+      const options = [
+        { text: selectedQuestion.correct, isCorrect: true },
+        { text: selectedQuestion.distractors[0], isCorrect: false },
+        { text: selectedQuestion.distractors[1], isCorrect: false },
+        { text: selectedQuestion.distractors[2], isCorrect: false }
+      ];
+      
+      // 選択肢をシャッフル
+      const shuffledOptions = shuffleArray(options);
+      
+      selectedQuestions.push({
+        ...selectedQuestion,
+        options: shuffledOptions,
+        categoryName: quizData.categories[selectedCategory].name,
+        subcategoryName: quizData.categories[selectedCategory].subcategories[subcategoryId].name
+      });
+    }
+    
+    if (selectedQuestions.length === 0) {
+      alert('このサブカテゴリーには問題がありません。別のサブカテゴリーを選んでください。');
+      return;
+    }
+    
+    setQuestions(selectedQuestions);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setShowScore(false);
+    setIsAnswered(false);
+    setFeedback(null);
+    setShowNextButton(false);
+    setTimeLeft(15);
+    setView('quiz');
+  };
+
   // カテゴリー王チャレンジの処理
   const handleCategoryKingChallenge = () => {
     if (!selectedCategory) return;
@@ -296,8 +325,13 @@ function QuizApp() {
     Object.keys(category.subcategories).forEach(subcategoryId => {
       const subcategory = category.subcategories[subcategoryId];
       if (subcategory.questions && subcategory.questions.length > 0) {
+        // 有効な問題のみフィルタリング
+        const validQuestions = subcategory.questions.filter(q => 
+          q.question && q.correct && q.distractors && q.distractors.length === 3
+        );
+        
         // 各サブカテゴリーから均等に問題を選ぶように改善
-        const subcategoryQuestions = subcategory.questions.map(question => ({
+        const subcategoryQuestions = validQuestions.map(question => ({
           ...question,
           categoryName: category.name,
           subcategoryName: subcategory.name
@@ -315,8 +349,12 @@ function QuizApp() {
 
     // サブカテゴリーの数を取得
     const subcategoryCount = Object.keys(category.subcategories).filter(
-      subcatId => category.subcategories[subcatId].questions && 
-      category.subcategories[subcatId].questions.length > 0
+      subcatId => {
+        const subcat = category.subcategories[subcatId];
+        return subcat.questions && subcat.questions.some(q => 
+          q.question && q.correct && q.distractors && q.distractors.length === 3
+        );
+      }
     ).length;
 
     // サブカテゴリーごとの基本問題数を計算
@@ -331,7 +369,11 @@ function QuizApp() {
     // 各サブカテゴリーの選択問題数を初期化
     Object.keys(category.subcategories).forEach(subcatId => {
       const subcat = category.subcategories[subcatId];
-      if (subcat.questions && subcat.questions.length > 0) {
+      const validQuestions = subcat.questions ? subcat.questions.filter(q => 
+        q.question && q.correct && q.distractors && q.distractors.length === 3
+      ) : [];
+      
+      if (validQuestions.length > 0) {
         // 基本問題数を設定
         subcategoryQuestionCounts[subcatId] = questionsPerSubcategory;
         
@@ -349,9 +391,14 @@ function QuizApp() {
       const subcat = category.subcategories[subcatId];
       const count = subcategoryQuestionCounts[subcatId];
       
+      // 有効な問題だけをフィルタリング
+      const validQuestions = subcat.questions.filter(q => 
+        q.question && q.correct && q.distractors && q.distractors.length === 3
+      );
+      
       // 問題が十分にある場合はランダムに選択
-      if (subcat.questions.length >= count) {
-        const shuffled = shuffleArray([...subcat.questions]);
+      if (validQuestions.length >= count) {
+        const shuffled = shuffleArray([...validQuestions]);
         const selected = shuffled.slice(0, count);
         selectedQuestions.push(...selected.map(q => ({
           ...q,
@@ -360,7 +407,7 @@ function QuizApp() {
         })));
       } else {
         // 問題が足りない場合は、ある分だけ追加
-        selectedQuestions.push(...subcat.questions.map(q => ({
+        selectedQuestions.push(...validQuestions.map(q => ({
           ...q,
           categoryName: category.name,
           subcategoryName: subcat.name
@@ -407,7 +454,48 @@ function QuizApp() {
     setIsAnswered(false);
     setFeedback(null);
     setShowNextButton(false);
+    setTimeLeft(15);
     setView('quiz');
+  };
+
+  // 回答ボタンクリックハンドラー
+  const handleAnswerClick = (selectedIndex, isCorrect) => {
+    if (isAnswered) return;
+    
+    setIsAnswered(true);
+    clearInterval(timerRef.current);
+    
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    setFeedback({
+      isCorrect,
+      selectedAnswer: currentQuestion.options[selectedIndex].text,
+      correctAnswer: currentQuestion.options.find(opt => opt.isCorrect).text
+    });
+    
+    if (isCorrect) {
+      setScore(score + 1);
+      // 正解の場合は少し待ってから次の問題へ
+      setTimeout(() => {
+        handleNextQuestion();
+      }, 1500);
+    } else {
+      setShowNextButton(true);
+    }
+  };
+
+  // 次の問題ボタンクリックハンドラー
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setIsAnswered(false);
+      setFeedback(null);
+      setShowNextButton(false);
+      setTimeLeft(15);
+    } else {
+      setShowScore(true);
+      setView('result');
+    }
   };
 
   // クイズ画面
@@ -417,25 +505,41 @@ function QuizApp() {
     }
 
     const currentQuestion = questions[currentQuestionIndex];
+    const progressPercentage = (currentQuestionIndex / questions.length) * 100;
 
     return (
       <div className="app">
         <div className="quiz-container">
+          <div className="progress-container">
+            <div 
+              className="progress-bar" 
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
           <div className="quiz-header">
             <div className="quiz-info">
               <p>問題 {currentQuestionIndex + 1} / {questions.length}</p>
               <p>カテゴリー：{currentQuestion.categoryName}</p>
               <p>サブカテゴリー：{currentQuestion.subcategoryName}</p>
             </div>
+            <div className="timer">
+              <div className="time-left">{timeLeft}</div>
+              <div className="timer-bar-container">
+                <div 
+                  className="timer-bar" 
+                  style={{ width: `${(timeLeft / 15) * 100}%` }}
+                ></div>
+              </div>
+            </div>
           </div>
           <div className="question-section">
             <h2>{currentQuestion.question}</h2>
           </div>
 
-          {isAnswered && (
-            <div className={`feedback ${feedback === null ? 'correct-feedback' : 'incorrect-feedback'}`}>
-              <p>{feedback === null ? '正解！' : '不正解...'}</p>
-              {feedback !== null && <p>正解は: {currentQuestion.options.find(opt => opt.isCorrect).text}</p>}
+          {isAnswered && feedback && (
+            <div className={`feedback ${feedback.isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`}>
+              <p>{feedback.isCorrect ? '正解！' : '不正解...'}</p>
+              {!feedback.isCorrect && <p>正解は: {feedback.correctAnswer}</p>}
             </div>
           )}
           
@@ -447,7 +551,7 @@ function QuizApp() {
                   isAnswered
                     ? option.isCorrect
                       ? 'correct'
-                      : feedback === index
+                      : feedback && feedback.selectedAnswer === option.text && !option.isCorrect
                       ? 'incorrect'
                       : ''
                     : ''
@@ -466,7 +570,12 @@ function QuizApp() {
           )}
           <button
             className="back-button"
-            onClick={() => setView('categorySelection')}
+            onClick={() => {
+              if (window.confirm('クイズを中断してトップに戻りますか？')) {
+                clearInterval(timerRef.current);
+                setView('categorySelection');
+              }
+            }}
           >
             トップに戻る
           </button>
@@ -492,6 +601,9 @@ function QuizApp() {
             <h2>クイズ終了！</h2>
             <div className="score-text">
               あなたのスコアは {score} / {questions.length} です
+            </div>
+            <div className="percentage-score">
+              正答率: {Math.round((score / questions.length) * 100)}%
             </div>
             <div className="navigation-buttons">
               <button
