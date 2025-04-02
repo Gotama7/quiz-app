@@ -210,8 +210,8 @@ function QuizApp() {
     );
   };
 
-  // eslint-disable-next-line no-unused-vars
   // 問題ない場合の表示
+  // eslint-disable-next-line no-unused-vars
   const renderNoQuestions = () => (
     <div className="app">
       <div className="quiz-container">
