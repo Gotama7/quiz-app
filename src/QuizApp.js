@@ -3,20 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import indexData from './data/index.json';
 import './styles.css';
 
+// カテゴリーデータを読み込む関数
+async function loadCategoryData(categoryKey) {
+  try {
+    const response = await fetch(`/src/data/${categoryKey}.json`);
+    const data = await response.json();
+    return data[categoryKey];
+  } catch (error) {
+    console.error('Error loading category data:', error);
+    return null;
+  }
+}
+
 // 選択肢をランダムに並べ替える関数
 function shuffleArray(array) {
   return array.sort(() => 0.5 - Math.random());
 }
 
 // 全カテゴリーから問題を取得する関数
-function getAllQuestions() {
+async function getAllQuestions() {
   // カテゴリーごとの問題を格納するオブジェクト
   const questionsByCategory = {};
   
   // 各カテゴリーの問題を収集
-  Object.entries(indexData.categories).forEach(([categoryKey, category]) => {
+  for (const [categoryKey, category] of Object.entries(indexData.categories)) {
+    const categoryData = await loadCategoryData(categoryKey);
+    if (!categoryData) continue;
+
     const categoryQuestions = [];
-    Object.entries(category.subcategories).forEach(([, subcategory]) => {
+    Object.entries(categoryData.subcategories).forEach(([, subcategory]) => {
       if (subcategory.questions && subcategory.questions.length > 0) {
         subcategory.questions.forEach(q => {
           if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
@@ -34,7 +49,7 @@ function getAllQuestions() {
     if (categoryQuestions.length > 0) {
       questionsByCategory[categoryKey] = shuffleArray(categoryQuestions);
     }
-  });
+  }
 
   // 各カテゴリーから均等に問題を選ぶ
   const categories = Object.keys(questionsByCategory);
@@ -56,12 +71,14 @@ function getAllQuestions() {
 }
 
 // 特定のカテゴリーの全サブカテゴリーから問題を取得する関数
-function getCategoryQuestions(categoryKey) {
-  const category = indexData.categories[categoryKey];
+async function getCategoryQuestions(categoryKey) {
+  const categoryData = await loadCategoryData(categoryKey);
+  if (!categoryData) return [];
+
   const questionsBySubcategory = {};
 
   // 各サブカテゴリーの問題を収集
-  Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
+  Object.entries(categoryData.subcategories).forEach(([subcategoryKey, subcategory]) => {
     const subcategoryQuestions = [];
     if (subcategory.questions && subcategory.questions.length > 0) {
       subcategory.questions.forEach(q => {
@@ -70,7 +87,7 @@ function getCategoryQuestions(categoryKey) {
             question: q.question,
             correct: q.correct,
             distractors: q.distractors,
-            categoryName: category.name,
+            categoryName: categoryData.name,
             subcategoryName: subcategory.name
           });
         }
@@ -256,19 +273,55 @@ function QuizApp() {
     setShowScore(true);
   }, [playerName, score, questions.length, isQuizKingMode, selectedCategory]);
 
-  // サブカテゴリーが選択されたときに問題を設定
-  useEffect(() => {
-    if (selectedCategory && selectedSubcategory) {
+  // カテゴリー選択時の処理
+  const handleCategorySelect = useCallback(async (categoryKey) => {
+    if (isQuizKingMode) {
+      setSelectedCategory(categoryKey);
+      const categoryQuestions = await getCategoryQuestions(categoryKey);
+      setQuestions(categoryQuestions);
+      if (categoryQuestions.length > 0) {
+        const firstQuestionOptions = shuffleArray([
+          categoryQuestions[0].correct,
+          ...categoryQuestions[0].distractors
+        ]);
+        setOptions(firstQuestionOptions);
+      }
+    } else {
+      setSelectedCategory(categoryKey);
+      setSelectedSubcategory(null);
+    }
+  }, [isQuizKingMode]);
+
+  // クイズ王モード開始時の処理
+  const handleQuizKingStart = useCallback(async () => {
+    setIsQuizKingMode(true);
+    const allQuestions = await getAllQuestions();
+    setQuestions(allQuestions);
+    if (allQuestions.length > 0) {
+      const firstQuestionOptions = shuffleArray([
+        allQuestions[0].correct,
+        ...allQuestions[0].distractors
+      ]);
+      setOptions(firstQuestionOptions);
+    }
+  }, []);
+
+  // サブカテゴリー選択時の処理
+  const handleSubcategorySelect = useCallback(async (subcategoryKey) => {
+    setSelectedSubcategory(subcategoryKey);
+    if (selectedCategory) {
       try {
-        const subcategoryQuestions = indexData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+        const categoryData = await loadCategoryData(selectedCategory);
+        if (!categoryData) return;
+
+        const subcategoryQuestions = categoryData.subcategories[subcategoryKey].questions;
         
         if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
-          setQuestions([]);
-          setShowScore(true);
+          console.error('No questions found for this subcategory');
           return;
         }
 
-        const formattedQuestions = subcategoryQuestions.map(q => {
+        const validQuestions = subcategoryQuestions.map(q => {
           if (!q.question || !q.correct || !q.distractors || q.distractors.length !== 3) {
             return null;
           }
@@ -276,39 +329,29 @@ function QuizApp() {
             question: q.question,
             correct: q.correct,
             distractors: q.distractors,
-            categoryName: indexData.categories[selectedCategory].name,
-            subcategoryName: indexData.categories[selectedCategory].subcategories[selectedSubcategory].name
+            categoryName: categoryData.name,
+            subcategoryName: categoryData.subcategories[subcategoryKey].name
           };
         }).filter(q => q !== null);
 
-        if (formattedQuestions.length === 0) {
-          setQuestions([]);
-          setShowScore(true);
+        if (validQuestions.length === 0) {
+          console.error('No valid questions found for this subcategory');
           return;
         }
 
-        const shuffledQuestions = shuffleArray([...formattedQuestions]).slice(0, 10);
+        const shuffledQuestions = shuffleArray(validQuestions).slice(0, 10);
         setQuestions(shuffledQuestions);
-        setCurrentQuestionIndex(0);
-        setScore(0);
-        setShowScore(false);
-        setIsAnswered(false);
-        setTimeLeft(15);
 
-        // 最初の問題の選択肢をセット
-        const firstQuestion = shuffledQuestions[0];
-        const initialOptions = shuffleArray([
-          firstQuestion.correct,
-          ...firstQuestion.distractors
+        const firstQuestionOptions = shuffleArray([
+          shuffledQuestions[0].correct,
+          ...shuffledQuestions[0].distractors
         ]);
-        setOptions(initialOptions);
+        setOptions(firstQuestionOptions);
       } catch (error) {
-        console.error('問題の処理中にエラーが発生しました:', error);
-        setQuestions([]);
-        setShowScore(true);
+        console.error('Error loading subcategory questions:', error);
       }
     }
-  }, [selectedCategory, selectedSubcategory]);
+  }, [selectedCategory]);
 
   // 名前入力後の処理
   const handleNameSubmit = () => {
@@ -340,61 +383,6 @@ function QuizApp() {
     setScore(0);
   };
 
-  // クイズ王チャレンジモード開始
-  const startQuizKingChallenge = () => {
-    const allQuestions = getAllQuestions();
-    
-    if (allQuestions.length > 0) {
-      setQuestions(allQuestions);
-      setCurrentQuestionIndex(0);
-      setScore(0);
-      setShowScore(false);
-      setIsQuizKingMode(true);
-      setSelectedCategory(null);
-      setSelectedSubcategory(null);
-      setIsAnswered(false);
-      setTimeLeft(15);
-      setFeedback(null);
-      
-      // 最初の問題の選択肢をセット
-      const firstQuestion = allQuestions[0];
-      const initialOptions = shuffleArray([
-        firstQuestion.correct,
-        ...firstQuestion.distractors
-      ]);
-      setOptions(initialOptions);
-    } else {
-      console.error('利用可能な問題がありません');
-    }
-  };
-
-  // カテゴリー王チャレンジモード開始
-  const startCategoryKingChallenge = () => {
-    const categoryQuestions = getCategoryQuestions(selectedCategory);
-    
-    if (categoryQuestions.length > 0) {
-      setQuestions(categoryQuestions);
-      setCurrentQuestionIndex(0);
-      setScore(0);
-      setShowScore(false);
-      setIsQuizKingMode(true);
-      setSelectedSubcategory(null);
-      setIsAnswered(false);
-      setTimeLeft(15);
-      setFeedback(null);
-      
-      // 最初の問題の選択肢をセット
-      const firstQuestion = categoryQuestions[0];
-      const initialOptions = shuffleArray([
-        firstQuestion.correct,
-        ...firstQuestion.distractors
-      ]);
-      setOptions(initialOptions);
-    } else {
-      console.error('利用可能な問題がありません');
-    }
-  };
-
   // 回答処理の修正
   const handleAnswerOptionClick = (selectedAnswer) => {
     if (isAnswered || !questions[currentQuestionIndex]) return;
@@ -417,11 +405,6 @@ function QuizApp() {
     } else {
       setShowNextButton(true);
     }
-  };
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    navigate(`/quiz/${category}`, { state: { category } });
   };
 
   const handleLevelSelect = (level) => {
@@ -459,7 +442,7 @@ function QuizApp() {
             <h2>クイズ王チャレンジ</h2>
             <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
             <button
-              onClick={startQuizKingChallenge}
+              onClick={handleQuizKingStart}
               className="quiz-king-button"
             >
               チャレンジ開始
@@ -491,7 +474,7 @@ function QuizApp() {
               {Object.entries(category.subcategories).map(([key, subcategory]) => (
                 <button
                   key={key}
-                  onClick={() => handleLevelSelect(key)}
+                  onClick={() => handleSubcategorySelect(key)}
                   className="category-button"
                 >
                   {subcategory.name}
@@ -502,7 +485,7 @@ function QuizApp() {
               <h2>{category.name}王チャレンジ</h2>
               <p>このカテゴリーの全サブカテゴリーからランダムに20問出題！</p>
               <button
-                onClick={startCategoryKingChallenge}
+                onClick={handleQuizKingStart}
                 className="quiz-king-button"
               >
                 チャレンジ開始
