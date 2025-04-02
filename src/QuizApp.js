@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './styles.css';
 
+// 画像のURLを設定
+const titleImageUrl = process.env.PUBLIC_URL + '/favicon.ico';
+
 // eslint-disable-next-line no-unused-vars
 const quizData = {
   categories: {
@@ -207,7 +210,7 @@ function QuizApp() {
       <div className="quiz-container">
         <div className="title-section">
           <img 
-            src="/images/barbarossa.jpeg"
+            src={titleImageUrl}
             alt="バルバロッサ" 
             className="title-image"
           />
@@ -250,7 +253,7 @@ function QuizApp() {
         <div className="quiz-container">
           <div className="title-section">
             <img 
-              src="/images/barbarossa.jpeg"
+              src={titleImageUrl}
               alt="バルバロッサ" 
               className="title-image"
             />
@@ -303,7 +306,7 @@ function QuizApp() {
       <div className="quiz-container">
         <div className="title-section">
           <img 
-            src="/images/barbarossa.jpeg"
+            src={titleImageUrl}
             alt="バルバロッサ" 
             className="title-image"
           />
@@ -401,7 +404,7 @@ function QuizApp() {
       <div className="quiz-container">
         <div className="title-section">
           <img 
-            src="/images/barbarossa.jpeg"
+            src={titleImageUrl}
             alt="バルバロッサ" 
             className="title-image"
           />
@@ -437,7 +440,7 @@ function QuizApp() {
       <div className="quiz-container">
         <div className="title-section">
           <img 
-            src="/images/barbarossa.jpeg"
+            src={titleImageUrl}
             alt="バルバロッサ" 
             className="title-image"
           />
@@ -463,7 +466,7 @@ function QuizApp() {
       <div className="quiz-container">
         <div className="title-section">
           <img 
-            src="/images/barbarossa.jpeg"
+            src={titleImageUrl}
             alt="バルバロッサ" 
             className="title-image"
           />
