@@ -59,7 +59,6 @@ function getAllQuestions() {
 function getCategoryQuestions(categoryKey) {
   const category = quizData.categories[categoryKey];
   const questionsBySubcategory = {};
-  let totalQuestions = 0;
 
   // 各サブカテゴリーの問題を収集
   Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
@@ -79,7 +78,6 @@ function getCategoryQuestions(categoryKey) {
     }
     if (subcategoryQuestions.length > 0) {
       questionsBySubcategory[subcategoryKey] = shuffleArray(subcategoryQuestions);
-      totalQuestions += subcategoryQuestions.length;
     }
   });
 
