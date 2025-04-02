@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles.css';
 
-// サンプルデータ（最低限必要なデータ構造）
+// eslint-disable-next-line no-unused-vars
 const quizData = {
   categories: {
     history_literature: {
@@ -98,10 +98,12 @@ function shuffleArray(array) {
 function QuizApp() {
   const [view, setView] = useState('categorySelection');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [showScore, setShowScore] = useState(false);
   const [options, setOptions] = useState([]);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -488,6 +490,7 @@ function QuizApp() {
     case 'quiz':
       return renderQuiz();
     case 'score':
+      // showScoreがtrueの場合もスコア画面を表示
       return renderScore();
     case 'noQuestions':
       return renderNoQuestions();
@@ -497,6 +500,11 @@ function QuizApp() {
       return renderCategoryKingComingSoon();
     case 'categorySelection':
     default:
+      // selectedSubcategoryとshowScoreをリセット
+      if (selectedSubcategory || showScore) {
+        setSelectedSubcategory(null);
+        setShowScore(false);
+      }
       return renderCategorySelection();
   }
 }
