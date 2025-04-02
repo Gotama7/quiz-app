@@ -407,13 +407,6 @@ function QuizApp() {
     }
   };
 
-  const handleLevelSelect = (level) => {
-    setSelectedSubcategory(level);
-    navigate(`/quiz/${selectedCategory}/${level}`, { 
-      state: { category: selectedCategory, level } 
-    });
-  };
-
   // カテゴリー選択画面
   if (!selectedCategory && !isQuizKingMode) {
     return (
