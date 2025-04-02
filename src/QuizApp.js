@@ -1,26 +1,91 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import indexData from './data/index.json';
-import artSubcultureData from './data/art_subculture.json';
-import historyLiteratureData from './data/history_literature.json';
-import livingThingsData from './data/living_things.json';
-import mathScienceData from './data/math_science.json';
-import sportsData from './data/sports.json';
-import vehiclesHobbiesData from './data/vehicles_hobbies.json';
+
+// JSONデータのインポート
+let indexData, artSubcultureData, historyLiteratureData, livingThingsData, mathScienceData, sportsData, vehiclesHobbiesData;
+
+// データのロード試行
+try {
+  indexData = require('./data/index.json');
+  console.log('Index data loaded:', indexData ? 'success' : 'failed');
+} catch (e) {
+  console.error('Failed to load index data:', e);
+  indexData = { categories: {} };
+}
+
+try {
+  artSubcultureData = require('./data/art_subculture.json');
+} catch (e) {
+  console.error('Failed to load art_subculture data');
+  artSubcultureData = { art_subculture: { name: "芸術・サブカルチャー", subcategories: {} } };
+}
+
+try {
+  historyLiteratureData = require('./data/history_literature.json');
+} catch (e) {
+  console.error('Failed to load history_literature data');
+  historyLiteratureData = { history_literature: { name: "歴史・文学", subcategories: {} } };
+}
+
+try {
+  livingThingsData = require('./data/living_things.json');
+} catch (e) {
+  console.error('Failed to load living_things data');
+  livingThingsData = { living_things: { name: "生物", subcategories: {} } };
+}
+
+try {
+  mathScienceData = require('./data/math_science.json');
+} catch (e) {
+  console.error('Failed to load math_science data');
+  mathScienceData = { math_science: { name: "数学・科学", subcategories: {} } };
+}
+
+try {
+  sportsData = require('./data/sports.json');
+} catch (e) {
+  console.error('Failed to load sports data');
+  sportsData = { sports: { name: "スポーツ", subcategories: {} } };
+}
+
+try {
+  vehiclesHobbiesData = require('./data/vehicles_hobbies.json');
+} catch (e) {
+  console.error('Failed to load vehicles_hobbies data');
+  vehiclesHobbiesData = { vehicles_hobbies: { name: "乗り物・趣味", subcategories: {} } };
+}
+
 import './styles.css';
 
 // カテゴリーデータを読み込む関数
 function loadCategoryData(categoryKey) {
-  const categoryDataMap = {
-    'art_subculture': artSubcultureData.art_subculture,
-    'history_literature': historyLiteratureData.history_literature,
-    'living_things': livingThingsData.living_things,
-    'math_science': mathScienceData.math_science,
-    'sports': sportsData.sports,
-    'vehicles_hobbies': vehiclesHobbiesData.vehicles_hobbies
-  };
+  console.log('Loading category data for:', categoryKey);
+  console.log('Available categories:', {
+    'art_subculture': artSubcultureData ? 'loaded' : 'not loaded',
+    'history_literature': historyLiteratureData ? 'loaded' : 'not loaded',
+    'living_things': livingThingsData ? 'loaded' : 'not loaded',
+    'math_science': mathScienceData ? 'loaded' : 'not loaded',
+    'sports': sportsData ? 'loaded' : 'not loaded',
+    'vehicles_hobbies': vehiclesHobbiesData ? 'loaded' : 'not loaded'
+  });
   
-  return categoryDataMap[categoryKey] || null;
+  try {
+    const categoryDataMap = {
+      'art_subculture': artSubcultureData.art_subculture,
+      'history_literature': historyLiteratureData.history_literature,
+      'living_things': livingThingsData.living_things,
+      'math_science': mathScienceData.math_science,
+      'sports': sportsData.sports,
+      'vehicles_hobbies': vehiclesHobbiesData.vehicles_hobbies
+    };
+    
+    console.log('Data for', categoryKey, ':', categoryDataMap[categoryKey] ? 'found' : 'not found');
+    
+    return categoryDataMap[categoryKey] || null;
+  } catch (error) {
+    console.error('Error in loadCategoryData:', error);
+    return null;
+  }
 }
 
 // 選択肢をランダムに並べ替える関数
@@ -469,6 +534,10 @@ function QuizApp() {
 
   // カテゴリー選択画面
   if (!selectedCategory && !isQuizKingMode) {
+    // デバッグ情報を表示
+    console.log('Index data:', indexData);
+    console.log('Categories in index:', indexData.categories ? Object.keys(indexData.categories) : 'none');
+    
     return (
       <div className="app">
         <div className="quiz-container">
@@ -480,28 +549,40 @@ function QuizApp() {
             />
             <h1>バルバロッサクイズ！</h1>
           </div>
-          <div className="category-grid">
-            {Object.entries(indexData.categories).map(([key, category]) => (
-              <button
-                key={key}
-                className="category-button"
-                onClick={() => handleCategorySelect(key)}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
-          <div className="quiz-king-section">
-            <h2>クイズ王チャレンジ</h2>
-            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
-            <button
-              onClick={handleQuizKingStart}
-              className="quiz-king-button"
-              disabled={isLoading}
-            >
-              チャレンジ開始
-            </button>
-          </div>
+          
+          {/* データの検証 */}
+          {(!indexData || !indexData.categories || Object.keys(indexData.categories).length === 0) ? (
+            <div className="error-message">
+              <h2>データの読み込みに失敗しました</h2>
+              <p>アプリケーションデータを読み込めませんでした。</p>
+              <button onClick={() => window.location.reload()}>再読み込み</button>
+            </div>
+          ) : (
+            <>
+              <div className="category-grid">
+                {Object.entries(indexData.categories).map(([key, category]) => (
+                  <button
+                    key={key}
+                    className="category-button"
+                    onClick={() => handleCategorySelect(key)}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+              <div className="quiz-king-section">
+                <h2>クイズ王チャレンジ</h2>
+                <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
+                <button
+                  onClick={handleQuizKingStart}
+                  className="quiz-king-button"
+                  disabled={isLoading}
+                >
+                  チャレンジ開始
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );

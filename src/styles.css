@@ -1427,4 +1427,33 @@ h2 {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* エラーメッセージ */
+.error-message {
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.error-message h2 {
+  color: #b91c1c;
+  margin-bottom: 10px;
+}
+
+.error-message button {
+  background-color: #ef4444;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.error-message button:hover {
+  background-color: #b91c1c;
 } 
