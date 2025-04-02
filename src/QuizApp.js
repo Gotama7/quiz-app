@@ -492,7 +492,7 @@ function QuizApp() {
       <div className="app">
         <div className="quiz-container">
           <div className="name-input-section">
-            <h2>クイズ王チャレンジ終了！</h2>
+            <h2>クイズ{isQuizKingMode ? '王' : `${quizData.categories[selectedCategory].name}王`}チャレンジ終了！</h2>
             <p>スコア: {score} / {questions.length}</p>
             <div className="name-input">
               <input
@@ -503,6 +503,13 @@ function QuizApp() {
               />
               <button onClick={handleNameSubmit}>結果を保存</button>
             </div>
+            <button
+              onClick={handleBackToCategories}
+              className="back-button"
+              style={{ marginTop: '20px' }}
+            >
+              トップに戻る
+            </button>
           </div>
         </div>
       </div>
@@ -534,21 +541,33 @@ function QuizApp() {
                 <div className="score-text">
                   あなたのスコアは {score} / {questions.length} です
                 </div>
-                <div className="name-input">
-                  <input
-                    type="text"
-                    value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value)}
-                    placeholder="あなたの名前を入力"
-                  />
-                  <button onClick={handleNameSubmit}>結果を保存</button>
+                {!isQuizKingMode && (
+                  <div className="name-input">
+                    <input
+                      type="text"
+                      value={playerName}
+                      onChange={(e) => setPlayerName(e.target.value)}
+                      placeholder="あなたの名前を入力"
+                    />
+                    <button onClick={handleNameSubmit}>結果を保存</button>
+                  </div>
+                )}
+                <div className="navigation-buttons">
+                  <button
+                    onClick={handleBackToCategories}
+                    className="nav-button"
+                  >
+                    トップに戻る
+                  </button>
+                  {!isQuizKingMode && (
+                    <button
+                      onClick={handleBackToSubcategories}
+                      className="nav-button"
+                    >
+                      サブカテゴリー選択に戻る
+                    </button>
+                  )}
                 </div>
-                <button
-                  onClick={isQuizKingMode ? handleBackToCategories : handleBackToSubcategories}
-                  className="back-button"
-                >
-                  {isQuizKingMode ? 'トップに戻る' : 'サブカテゴリー選択に戻る'}
-                </button>
               </>
             )}
           </div>
