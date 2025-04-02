@@ -2,27 +2,27 @@
   "categories": {
     "history_literature": {
       "name": "歴史・人文",
-      "file": "categories/history_literature.json"
+      "file": "history_literature.json"
     },
     "math_science": {
       "name": "数学・科学",
-      "file": "categories/math_science.json"
+      "file": "math_science.json"
     },
     "living_things": {
       "name": "いきもの",
-      "file": "categories/living_things.json"
+      "file": "living_things.json"
     },
     "sports": {
       "name": "スポーツ",
-      "file": "categories/sports.json"
+      "file": "sports.json"
     },
     "art_subculture": {
       "name": "アート・サブカル",
-      "file": "categories/art_subculture.json"
+      "file": "art_subculture.json"
     },
     "vehicles_hobbies": {
       "name": "のりもの・ホビー",
-      "file": "categories/vehicles_hobbies.json"
+      "file": "vehicles_hobbies.json"
     }
   }
 }
