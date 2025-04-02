@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import indexData from './data/index.json';
+import quizData from './quizData.json';
 import './styles.css';
 
 // 選択肢をランダムに並べ替える関数
@@ -14,7 +14,7 @@ function getAllQuestions() {
   const questionsByCategory = {};
   
   // 各カテゴリーの問題を収集
-  Object.entries(indexData.categories).forEach(([categoryKey, category]) => {
+  Object.entries(quizData).forEach(([categoryKey, category]) => {
     const categoryQuestions = [];
     Object.entries(category.subcategories).forEach(([, subcategory]) => {
       if (subcategory.questions && subcategory.questions.length > 0) {
@@ -57,7 +57,7 @@ function getAllQuestions() {
 
 // 特定のカテゴリーの全サブカテゴリーから問題を取得する関数
 function getCategoryQuestions(categoryKey) {
-  const category = indexData.categories[categoryKey];
+  const category = quizData[categoryKey];
   const questionsBySubcategory = {};
 
   // 各サブカテゴリーの問題を収集
@@ -240,7 +240,7 @@ function QuizApp() {
       name: playerName,
       score: score,
       total: questions.length,
-      category: isQuizKingMode ? 'クイズ王チャレンジ' : indexData.categories[selectedCategory].name,
+      category: isQuizKingMode ? 'クイズ王チャレンジ' : quizData[selectedCategory].name,
       timestamp: new Date().toISOString()
     };
 
@@ -260,7 +260,7 @@ function QuizApp() {
   useEffect(() => {
     if (selectedCategory && selectedSubcategory) {
       try {
-        const subcategoryQuestions = indexData.categories[selectedCategory].subcategories[selectedSubcategory].questions;
+        const subcategoryQuestions = quizData[selectedCategory].subcategories[selectedSubcategory].questions;
         
         if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
           setQuestions([]);
@@ -276,8 +276,8 @@ function QuizApp() {
             question: q.question,
             correct: q.correct,
             distractors: q.distractors,
-            categoryName: indexData.categories[selectedCategory].name,
-            subcategoryName: indexData.categories[selectedCategory].subcategories[selectedSubcategory].name
+            categoryName: quizData[selectedCategory].name,
+            subcategoryName: quizData[selectedCategory].subcategories[selectedSubcategory].name
           };
         }).filter(q => q !== null);
 
@@ -445,7 +445,7 @@ function QuizApp() {
             <h1>バルバロッサクイズ！</h1>
           </div>
           <div className="category-grid">
-            {Object.entries(indexData.categories).map(([key, category]) => (
+            {Object.entries(quizData).map(([key, category]) => (
               <button
                 key={key}
                 className="category-button"
@@ -472,7 +472,7 @@ function QuizApp() {
 
   // サブカテゴリー選択画面
   if (!selectedSubcategory && !isQuizKingMode) {
-    const category = indexData.categories[selectedCategory];
+    const category = quizData[selectedCategory];
     return (
       <div className="app">
         <div className="quiz-container">
@@ -526,7 +526,7 @@ function QuizApp() {
       <div className="app">
         <div className="quiz-container">
           <div className="name-input-section">
-            <h2>クイズ{isQuizKingMode ? '王' : `${indexData.categories[selectedCategory].name}王`}チャレンジ終了！</h2>
+            <h2>クイズ{isQuizKingMode ? '王' : `${quizData[selectedCategory].name}王`}チャレンジ終了！</h2>
             <p>スコア: {score} / {questions.length}</p>
             <div className="name-input">
               <input
