@@ -25,6 +25,7 @@ function QuizApp() {
   const [quizData, setQuizData] = useState({ categories: {} });
   const [isLoading, setIsLoading] = useState(true);
   const [timeLeft, setTimeLeft] = useState(15);
+  // eslint-disable-next-line no-unused-vars
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
 
@@ -93,6 +94,109 @@ function QuizApp() {
     }
   }, [currentQuestionIndex, view]);
 
+  // カテゴリー選択ハンドラー
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setView('subcategorySelection');
+  };
+
+  // 次の問題ボタンクリックハンドラー
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setIsAnswered(false);
+      setFeedback(null);
+      setShowNextButton(false);
+      setTimeLeft(15);
+    } else {
+      setShowScore(true);
+      setView('result');
+    }
+  };
+
+  // 回答ボタンクリックハンドラー
+  const handleAnswerClick = (selectedIndex, isCorrect) => {
+    if (isAnswered) return;
+    
+    setIsAnswered(true);
+    clearInterval(timerRef.current);
+    
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    setFeedback({
+      isCorrect,
+      selectedAnswer: currentQuestion.options[selectedIndex].text,
+      correctAnswer: currentQuestion.options.find(opt => opt.isCorrect).text
+    });
+    
+    if (isCorrect) {
+      setScore(score + 1);
+      // 正解の場合は少し待ってから次の問題へ
+      setTimeout(() => {
+        handleNextQuestion();
+      }, 1500);
+    } else {
+      setShowNextButton(true);
+    }
+  };
+
+  // サブカテゴリー選択ハンドラー
+  const handleSubcategorySelect = (subcategoryId) => {
+    setSelectedSubcategory(subcategoryId);
+    
+    // 選択されたサブカテゴリーの問題を取得
+    const categoryQuestions = quizData.categories[selectedCategory].subcategories[subcategoryId].questions;
+    
+    // 有効な問題をフィルタリング
+    const validQuestions = categoryQuestions.filter(q => 
+      q.question && q.correct && q.distractors && q.distractors.length === 3
+    );
+    
+    // 問題を10問ランダムに選択
+    const selectedQuestions = [];
+    const tempQuestions = [...validQuestions];
+    
+    const numQuestionsToSelect = Math.min(10, tempQuestions.length);
+    
+    for (let i = 0; i < numQuestionsToSelect; i++) {
+      const randomIndex = Math.floor(Math.random() * tempQuestions.length);
+      const selectedQuestion = tempQuestions.splice(randomIndex, 1)[0];
+      
+      // 選択肢を作成
+      const options = [
+        { text: selectedQuestion.correct, isCorrect: true },
+        { text: selectedQuestion.distractors[0], isCorrect: false },
+        { text: selectedQuestion.distractors[1], isCorrect: false },
+        { text: selectedQuestion.distractors[2], isCorrect: false }
+      ];
+      
+      // 選択肢をシャッフル
+      const shuffledOptions = shuffleArray(options);
+      
+      selectedQuestions.push({
+        ...selectedQuestion,
+        options: shuffledOptions,
+        categoryName: quizData.categories[selectedCategory].name,
+        subcategoryName: quizData.categories[selectedCategory].subcategories[subcategoryId].name
+      });
+    }
+    
+    if (selectedQuestions.length === 0) {
+      alert('このサブカテゴリーには問題がありません。別のサブカテゴリーを選んでください。');
+      return;
+    }
+    
+    setQuestions(selectedQuestions);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setShowScore(false);
+    setIsAnswered(false);
+    setFeedback(null);
+    setShowNextButton(false);
+    setTimeLeft(15);
+    setView('quiz');
+  };
+
   // クイズ王チャレンジ処理
   const handleQuizKingChallenge = () => {
     // 全カテゴリーから問題を集める
@@ -144,166 +248,6 @@ function QuizApp() {
     
     // クイズの状態をセット
     setQuestions(questionsWithOptions);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setShowScore(false);
-    setIsAnswered(false);
-    setFeedback(null);
-    setShowNextButton(false);
-    setTimeLeft(15);
-    setView('quiz');
-  };
-
-  // カテゴリー選択画面
-  const renderCategorySelection = () => {
-    if (isLoading) {
-      return <div className="loading">データを読み込み中...</div>;
-    }
-
-    return (
-      <div className="app">
-        <div className="quiz-container">
-          <div className="title-section">
-            <img 
-              src={titleImageUrl}
-              alt="バルバロッサ" 
-              className="title-image"
-            />
-            <h1>バルバロッサクイズ！</h1>
-          </div>
-          <h2>カテゴリーを選択してください</h2>
-          <div className="category-grid">
-            {Object.keys(quizData.categories).map((categoryId) => (
-              <button
-                key={categoryId}
-                className="category-button"
-                onClick={() => handleCategorySelect(categoryId)}
-              >
-                {quizData.categories[categoryId].name}
-              </button>
-            ))}
-          </div>
-          <div className="quiz-king-section">
-            <h2>クイズ王チャレンジ</h2>
-            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
-            <button 
-              className="quiz-king-button"
-              onClick={handleQuizKingChallenge}
-            >
-              チャレンジ開始
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // カテゴリー選択ハンドラー
-  const handleCategorySelect = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setView('subcategorySelection');
-  };
-
-  // サブカテゴリー選択画面
-  const renderSubcategorySelection = () => {
-    if (!selectedCategory || !quizData.categories[selectedCategory]) {
-      return <div>カテゴリーが選択されていません</div>;
-    }
-
-    return (
-      <div className="app">
-        <div className="quiz-container">
-          <div className="title-section">
-            <img 
-              src={titleImageUrl}
-              alt="バルバロッサ" 
-              className="title-image"
-            />
-            <h1>バルバロッサクイズ！</h1>
-          </div>
-          <h2 className="selected-category-name">
-            {quizData.categories[selectedCategory].name}
-          </h2>
-          <h3>サブカテゴリーを選択してください</h3>
-          <div className="category-grid">
-            {Object.keys(quizData.categories[selectedCategory].subcategories).map((subcategoryId) => (
-              <button
-                key={subcategoryId}
-                className="category-button"
-                onClick={() => handleSubcategorySelect(subcategoryId)}
-              >
-                {quizData.categories[selectedCategory].subcategories[subcategoryId].name}
-              </button>
-            ))}
-          </div>
-          <div className="category-king-section">
-            <h2>{quizData.categories[selectedCategory].name}王チャレンジ</h2>
-            <p>このカテゴリーの全サブカテゴリーからランダムに20問出題！</p>
-            <button
-              className="quiz-king-button"
-              onClick={handleCategoryKingChallenge}
-            >
-              チャレンジ開始
-            </button>
-          </div>
-          <button 
-            className="back-button"
-            onClick={() => setView('categorySelection')}
-          >
-            カテゴリー選択に戻る
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  // サブカテゴリー選択ハンドラー
-  const handleSubcategorySelect = (subcategoryId) => {
-    setSelectedSubcategory(subcategoryId);
-    
-    // 選択されたサブカテゴリーの問題を取得
-    const categoryQuestions = quizData.categories[selectedCategory].subcategories[subcategoryId].questions;
-    
-    // 有効な問題をフィルタリング
-    const validQuestions = categoryQuestions.filter(q => 
-      q.question && q.correct && q.distractors && q.distractors.length === 3
-    );
-    
-    // 問題を10問ランダムに選択
-    const selectedQuestions = [];
-    const tempQuestions = [...validQuestions];
-    
-    const numQuestionsToSelect = Math.min(10, tempQuestions.length);
-    
-    for (let i = 0; i < numQuestionsToSelect; i++) {
-      const randomIndex = Math.floor(Math.random() * tempQuestions.length);
-      const selectedQuestion = tempQuestions.splice(randomIndex, 1)[0];
-      
-      // 選択肢を作成
-      const options = [
-        { text: selectedQuestion.correct, isCorrect: true },
-        { text: selectedQuestion.distractors[0], isCorrect: false },
-        { text: selectedQuestion.distractors[1], isCorrect: false },
-        { text: selectedQuestion.distractors[2], isCorrect: false }
-      ];
-      
-      // 選択肢をシャッフル
-      const shuffledOptions = shuffleArray(options);
-      
-      selectedQuestions.push({
-        ...selectedQuestion,
-        options: shuffledOptions,
-        categoryName: quizData.categories[selectedCategory].name,
-        subcategoryName: quizData.categories[selectedCategory].subcategories[subcategoryId].name
-      });
-    }
-    
-    if (selectedQuestions.length === 0) {
-      alert('このサブカテゴリーには問題がありません。別のサブカテゴリーを選んでください。');
-      return;
-    }
-    
-    setQuestions(selectedQuestions);
     setCurrentQuestionIndex(0);
     setScore(0);
     setShowScore(false);
@@ -458,44 +402,101 @@ function QuizApp() {
     setView('quiz');
   };
 
-  // 回答ボタンクリックハンドラー
-  const handleAnswerClick = (selectedIndex, isCorrect) => {
-    if (isAnswered) return;
-    
-    setIsAnswered(true);
-    clearInterval(timerRef.current);
-    
-    const currentQuestion = questions[currentQuestionIndex];
-    
-    setFeedback({
-      isCorrect,
-      selectedAnswer: currentQuestion.options[selectedIndex].text,
-      correctAnswer: currentQuestion.options.find(opt => opt.isCorrect).text
-    });
-    
-    if (isCorrect) {
-      setScore(score + 1);
-      // 正解の場合は少し待ってから次の問題へ
-      setTimeout(() => {
-        handleNextQuestion();
-      }, 1500);
-    } else {
-      setShowNextButton(true);
+  // カテゴリー選択画面
+  const renderCategorySelection = () => {
+    if (isLoading) {
+      return <div className="loading">データを読み込み中...</div>;
     }
+
+    return (
+      <div className="app">
+        <div className="quiz-container">
+          <div className="title-section">
+            <img 
+              src={titleImageUrl}
+              alt="バルバロッサ" 
+              className="title-image"
+            />
+            <h1>バルバロッサクイズ！</h1>
+          </div>
+          <h2>カテゴリーを選択してください</h2>
+          <div className="category-grid">
+            {Object.keys(quizData.categories).map((categoryId) => (
+              <button
+                key={categoryId}
+                className="category-button"
+                onClick={() => handleCategorySelect(categoryId)}
+              >
+                {quizData.categories[categoryId].name}
+              </button>
+            ))}
+          </div>
+          <div className="quiz-king-section">
+            <h2>クイズ王チャレンジ</h2>
+            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
+            <button 
+              className="quiz-king-button"
+              onClick={handleQuizKingChallenge}
+            >
+              チャレンジ開始
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   };
 
-  // 次の問題ボタンクリックハンドラー
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setIsAnswered(false);
-      setFeedback(null);
-      setShowNextButton(false);
-      setTimeLeft(15);
-    } else {
-      setShowScore(true);
-      setView('result');
+  // サブカテゴリー選択画面
+  const renderSubcategorySelection = () => {
+    if (!selectedCategory || !quizData.categories[selectedCategory]) {
+      return <div>カテゴリーが選択されていません</div>;
     }
+
+    return (
+      <div className="app">
+        <div className="quiz-container">
+          <div className="title-section">
+            <img 
+              src={titleImageUrl}
+              alt="バルバロッサ" 
+              className="title-image"
+            />
+            <h1>バルバロッサクイズ！</h1>
+          </div>
+          <h2 className="selected-category-name">
+            {quizData.categories[selectedCategory].name}
+          </h2>
+          <h3>サブカテゴリーを選択してください</h3>
+          <div className="category-grid">
+            {Object.keys(quizData.categories[selectedCategory].subcategories).map((subcategoryId) => (
+              <button
+                key={subcategoryId}
+                className="category-button"
+                onClick={() => handleSubcategorySelect(subcategoryId)}
+              >
+                {quizData.categories[selectedCategory].subcategories[subcategoryId].name}
+              </button>
+            ))}
+          </div>
+          <div className="category-king-section">
+            <h2>{quizData.categories[selectedCategory].name}王チャレンジ</h2>
+            <p>このカテゴリーの全サブカテゴリーからランダムに20問出題！</p>
+            <button
+              className="quiz-king-button"
+              onClick={handleCategoryKingChallenge}
+            >
+              チャレンジ開始
+            </button>
+          </div>
+          <button 
+            className="back-button"
+            onClick={() => setView('categorySelection')}
+          >
+            カテゴリー選択に戻る
+          </button>
+        </div>
+      </div>
+    );
   };
 
   // クイズ画面
