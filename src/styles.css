@@ -1379,4 +1379,24 @@ h2 {
   height: 8px;
   background-color: #ddd;
   z-index: 1000;
+}
+
+.category-king-section {
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.category-king-section h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.category-king-section p {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
 } 

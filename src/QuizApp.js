@@ -55,6 +55,51 @@ function getAllQuestions() {
   return shuffleArray(selectedQuestions).slice(0, 30);
 }
 
+// 特定のカテゴリーの全サブカテゴリーから問題を取得する関数
+function getCategoryQuestions(categoryKey) {
+  const category = quizData.categories[categoryKey];
+  const allCategoryQuestions = [];
+  const questionsBySubcategory = {};
+
+  // 各サブカテゴリーの問題を収集
+  Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
+    const subcategoryQuestions = [];
+    if (subcategory.questions && subcategory.questions.length > 0) {
+      subcategory.questions.forEach(q => {
+        if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
+          subcategoryQuestions.push({
+            question: q.question,
+            correct: q.correct,
+            distractors: q.distractors,
+            categoryName: category.name,
+            subcategoryName: subcategory.name
+          });
+        }
+      });
+    }
+    if (subcategoryQuestions.length > 0) {
+      questionsBySubcategory[subcategoryKey] = shuffleArray(subcategoryQuestions);
+    }
+  });
+
+  // 各サブカテゴリーから均等に問題を選ぶ
+  const subcategories = Object.keys(questionsBySubcategory);
+  const questionsPerSubcategory = Math.ceil(20 / subcategories.length);
+  
+  // サブカテゴリーの順序をランダム化
+  const shuffledSubcategories = shuffleArray([...subcategories]);
+  
+  // 各サブカテゴリーから問題を選択
+  shuffledSubcategories.forEach(subcategoryKey => {
+    const subQuestions = questionsBySubcategory[subcategoryKey];
+    const questionsToTake = Math.min(questionsPerSubcategory, subQuestions.length);
+    allCategoryQuestions.push(...subQuestions.slice(0, questionsToTake));
+  });
+
+  // 最終的な問題数を20問に調整
+  return shuffleArray(allCategoryQuestions).slice(0, 20);
+}
+
 function QuizApp() {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -289,6 +334,33 @@ function QuizApp() {
     }
   };
 
+  // カテゴリー王チャレンジモード開始
+  const startCategoryKingChallenge = () => {
+    const categoryQuestions = getCategoryQuestions(selectedCategory);
+    
+    if (categoryQuestions.length > 0) {
+      setQuestions(categoryQuestions);
+      setCurrentQuestionIndex(0);
+      setScore(0);
+      setShowScore(false);
+      setIsQuizKingMode(true);
+      setSelectedSubcategory(null);
+      setIsAnswered(false);
+      setTimeLeft(15);
+      setFeedback(null);
+      
+      // 最初の問題の選択肢をセット
+      const firstQuestion = categoryQuestions[0];
+      const initialOptions = shuffleArray([
+        firstQuestion.correct,
+        ...firstQuestion.distractors
+      ]);
+      setOptions(initialOptions);
+    } else {
+      console.error('利用可能な問題がありません');
+    }
+  };
+
   // 回答処理の修正
   const handleAnswerOptionClick = (selectedAnswer) => {
     if (isAnswered || !questions[currentQuestionIndex]) return;
@@ -391,6 +463,16 @@ function QuizApp() {
                   {subcategory.name}
                 </button>
               ))}
+            </div>
+            <div className="category-king-section">
+              <h2>{category.name}王チャレンジ</h2>
+              <p>このカテゴリーの全サブカテゴリーからランダムに20問出題！</p>
+              <button
+                onClick={startCategoryKingChallenge}
+                className="quiz-king-button"
+              >
+                チャレンジ開始
+              </button>
             </div>
             <button
               onClick={handleBackToCategories}
