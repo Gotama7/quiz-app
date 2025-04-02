@@ -26,21 +26,35 @@ function QuizApp() {
   const [quizData, setQuizData] = useState({ categories: {} });
   const [isLoading, setIsLoading] = useState(true);
 
-  // データの読み込み
+  // JSONデータを読み込む
   useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const indexResponse = await fetch(`${process.env.PUBLIC_URL}/data/index.json`);
-        const indexData = await indexResponse.json();
-        setQuizData(indexData);
+        // src/data/index.jsonを読み込む
+        const indexData = await import('./data/index.json');
+        
+        // カテゴリーデータを作成
+        const categoriesData = {};
+        
+        // 各カテゴリーのJSONファイルを読み込む
+        for (const [categoryKey, categoryInfo] of Object.entries(indexData.categories)) {
+          try {
+            const categoryData = await import(`./data/${categoryInfo.file}`);
+            categoriesData[categoryKey] = categoryData[categoryKey];
+          } catch (error) {
+            console.error(`Error loading category ${categoryKey}:`, error);
+          }
+        }
+        
+        setQuizData({ categories: categoriesData });
+        setIsLoading(false);
       } catch (error) {
-        console.error('データの読み込み中にエラーが発生しました:', error);
-      } finally {
+        console.error('Failed to load quiz data:', error);
         setIsLoading(false);
       }
     };
-
+    
     loadData();
   }, []);
 
