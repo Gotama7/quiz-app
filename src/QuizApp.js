@@ -511,14 +511,14 @@ function QuizApp() {
     return (
       <div className="app">
         <div className="quiz-container">
-          <div className="time-left-display">
-            残り時間: {timeLeft}秒
-          </div>
           <div className="progress-container">
             <div 
               className="progress-bar" 
               style={{ width: `${progressPercentage}%` }}
             ></div>
+          </div>
+          <div className="time-left-display">
+            残り時間: {timeLeft}秒
           </div>
           <div className="quiz-header">
             <div className="quiz-info">
@@ -529,7 +529,7 @@ function QuizApp() {
             <div className="timer">
               <div className="timer-bar-container">
                 <div 
-                  className="timer-bar" 
+                  className={`timer-bar ${timeLeft <= 5 ? 'warning' : ''}`}
                   style={{ width: `${(timeLeft / 15) * 100}%` }}
                 ></div>
               </div>

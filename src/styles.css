@@ -1054,6 +1054,11 @@ h2 {
   margin-top: 8px;
 }
 
+.timer-bar.warning {
+  background-color: #ef4444;
+  animation: pulse 1s infinite;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(1);
