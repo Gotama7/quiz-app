@@ -517,7 +517,7 @@ function QuizApp() {
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
-          <div className="time-left-display">
+          <div className={`time-left-display ${timeLeft <= 5 ? 'warning' : ''}`}>
             残り時間: {timeLeft}秒
           </div>
           <div className="quiz-header">

@@ -1470,4 +1470,9 @@ h2 {
   font-weight: bold;
   margin-bottom: 5px;
   color: #333;
+}
+
+.time-left-display.warning {
+  color: #ef4444;
+  animation: pulse 1s infinite;
 } 
