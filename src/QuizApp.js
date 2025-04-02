@@ -3,18 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import indexData from './data/index.json';
 import './styles.css';
 
-// カテゴリーデータを動的に読み込む関数
-const loadCategoryData = async (categoryKey) => {
-  try {
-    const response = await fetch(`/data/categories/${categoryKey}.json`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('カテゴリーデータの読み込みに失敗しました:', error);
-    return null;
-  }
-};
-
 // 選択肢をランダムに並べ替える関数
 function shuffleArray(array) {
   return array.sort(() => 0.5 - Math.random());
