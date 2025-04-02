@@ -11,7 +11,7 @@ def split_json(input_file, output_dir):
         data = json.load(f)
 
     # カテゴリーごとにファイルを分割
-    for category_key, category_data in data.items():
+    for category_key, category_data in data['categories'].items():
         output_file = os.path.join(output_dir, f'{category_key}.json')
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump({category_key: category_data}, f, ensure_ascii=False, indent=2)
@@ -20,10 +20,10 @@ def split_json(input_file, output_dir):
     index_data = {
         'categories': {
             key: {
-                'name': data[key]['name'],
+                'name': data['categories'][key]['name'],
                 'file': f'{key}.json'
             }
-            for key in data.keys()
+            for key in data['categories'].keys()
         }
     }
     
