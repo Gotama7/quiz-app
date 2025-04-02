@@ -511,6 +511,9 @@ function QuizApp() {
     return (
       <div className="app">
         <div className="quiz-container">
+          <div className="time-left-display">
+            残り時間: {timeLeft}秒
+          </div>
           <div className="progress-container">
             <div 
               className="progress-bar" 
@@ -524,7 +527,6 @@ function QuizApp() {
               <p>サブカテゴリー：{currentQuestion.subcategoryName}</p>
             </div>
             <div className="timer">
-              <div className="time-left">{timeLeft}</div>
               <div className="timer-bar-container">
                 <div 
                   className="timer-bar" 

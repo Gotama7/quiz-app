@@ -1456,4 +1456,13 @@ h2 {
 
 .error-message button:hover {
   background-color: #b91c1c;
+}
+
+/* 残り時間の表示 */
+.time-left-display {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
 } 
