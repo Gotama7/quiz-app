@@ -59,15 +59,13 @@ function getAllQuestions() {
 function getCategoryQuestions(categoryKey) {
   const category = quizData.categories[categoryKey];
   const allCategoryQuestions = [];
-  const questionsBySubcategory = {};
 
-  // 各サブカテゴリーの問題を収集
-  Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
-    const subcategoryQuestions = [];
+  // すべてのサブカテゴリーから有効な問題を収集
+  Object.entries(category.subcategories).forEach(([, subcategory]) => {
     if (subcategory.questions && subcategory.questions.length > 0) {
       subcategory.questions.forEach(q => {
         if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
-          subcategoryQuestions.push({
+          allCategoryQuestions.push({
             question: q.question,
             correct: q.correct,
             distractors: q.distractors,
@@ -77,26 +75,18 @@ function getCategoryQuestions(categoryKey) {
         }
       });
     }
-    if (subcategoryQuestions.length > 0) {
-      questionsBySubcategory[subcategoryKey] = shuffleArray(subcategoryQuestions);
+  });
+
+  // 問題が20問未満の場合は、ランダムに重複を許して20問になるまで追加
+  if (allCategoryQuestions.length < 20) {
+    const originalQuestions = [...allCategoryQuestions];
+    while (allCategoryQuestions.length < 20) {
+      const randomQuestion = originalQuestions[Math.floor(Math.random() * originalQuestions.length)];
+      allCategoryQuestions.push({...randomQuestion}); // オブジェクトをコピーして追加
     }
-  });
+  }
 
-  // 各サブカテゴリーから均等に問題を選ぶ
-  const subcategories = Object.keys(questionsBySubcategory);
-  const questionsPerSubcategory = Math.ceil(20 / subcategories.length);
-  
-  // サブカテゴリーの順序をランダム化
-  const shuffledSubcategories = shuffleArray([...subcategories]);
-  
-  // 各サブカテゴリーから問題を選択
-  shuffledSubcategories.forEach(subcategoryKey => {
-    const subQuestions = questionsBySubcategory[subcategoryKey];
-    const questionsToTake = Math.min(questionsPerSubcategory, subQuestions.length);
-    allCategoryQuestions.push(...subQuestions.slice(0, questionsToTake));
-  });
-
-  // 最終的な問題数を20問に調整
+  // 問題をシャッフルして20問を返す
   return shuffleArray(allCategoryQuestions).slice(0, 20);
 }
 
