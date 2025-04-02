@@ -6,9 +6,8 @@ import './styles.css';
 // カテゴリーデータを読み込む関数
 async function loadCategoryData(categoryKey) {
   try {
-    const response = await fetch(`/src/data/${categoryKey}.json`);
-    const data = await response.json();
-    return data[categoryKey];
+    const response = await import(`./data/${categoryKey}.json`);
+    return response.default[categoryKey];
   } catch (error) {
     console.error('Error loading category data:', error);
     return null;
@@ -167,6 +166,7 @@ function QuizApp() {
   const [showNameInput, setShowNameInput] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
   const [showNextButton, setShowNextButton] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 次の問題へ進む処理
   const handleNextQuestion = useCallback(() => {
@@ -275,49 +275,94 @@ function QuizApp() {
 
   // カテゴリー選択時の処理
   const handleCategorySelect = useCallback(async (categoryKey) => {
-    if (isQuizKingMode) {
+    try {
       setSelectedCategory(categoryKey);
-      const categoryQuestions = await getCategoryQuestions(categoryKey);
-      setQuestions(categoryQuestions);
-      if (categoryQuestions.length > 0) {
-        const firstQuestionOptions = shuffleArray([
-          categoryQuestions[0].correct,
-          ...categoryQuestions[0].distractors
-        ]);
-        setOptions(firstQuestionOptions);
+      
+      if (isQuizKingMode) {
+        setIsLoading(true);
+        setQuestions([]);
+        
+        const categoryQuestions = await getCategoryQuestions(categoryKey);
+        setIsLoading(false);
+        
+        if (categoryQuestions.length > 0) {
+          setQuestions(categoryQuestions);
+          setCurrentQuestionIndex(0);
+          const firstQuestionOptions = shuffleArray([
+            categoryQuestions[0].correct,
+            ...categoryQuestions[0].distractors
+          ]);
+          setOptions(firstQuestionOptions);
+        } else {
+          setShowScore(true);
+        }
+      } else {
+        setSelectedSubcategory(null);
       }
-    } else {
-      setSelectedCategory(categoryKey);
-      setSelectedSubcategory(null);
+    } catch (error) {
+      console.error('Error in handleCategorySelect:', error);
+      setIsLoading(false);
+      setShowScore(true);
     }
   }, [isQuizKingMode]);
 
   // クイズ王モード開始時の処理
   const handleQuizKingStart = useCallback(async () => {
-    setIsQuizKingMode(true);
-    const allQuestions = await getAllQuestions();
-    setQuestions(allQuestions);
-    if (allQuestions.length > 0) {
-      const firstQuestionOptions = shuffleArray([
-        allQuestions[0].correct,
-        ...allQuestions[0].distractors
-      ]);
-      setOptions(firstQuestionOptions);
+    try {
+      setIsQuizKingMode(true);
+      setIsLoading(true);
+      setQuestions([]);
+      
+      const allQuestions = await getAllQuestions();
+      setIsLoading(false);
+      
+      if (allQuestions.length > 0) {
+        setQuestions(allQuestions);
+        setCurrentQuestionIndex(0);
+        const firstQuestionOptions = shuffleArray([
+          allQuestions[0].correct,
+          ...allQuestions[0].distractors
+        ]);
+        setOptions(firstQuestionOptions);
+      } else {
+        setShowScore(true);
+      }
+    } catch (error) {
+      console.error('Error in handleQuizKingStart:', error);
+      setIsLoading(false);
+      setShowScore(true);
     }
   }, []);
 
   // サブカテゴリー選択時の処理
   const handleSubcategorySelect = useCallback(async (subcategoryKey) => {
-    setSelectedSubcategory(subcategoryKey);
-    if (selectedCategory) {
-      try {
+    try {
+      setSelectedSubcategory(subcategoryKey);
+      setIsLoading(true);
+      setQuestions([]);
+      
+      if (selectedCategory) {
         const categoryData = await loadCategoryData(selectedCategory);
-        if (!categoryData) return;
+        if (!categoryData) {
+          console.error('Category data not found');
+          setIsLoading(false);
+          setShowScore(true);
+          return;
+        }
 
-        const subcategoryQuestions = categoryData.subcategories[subcategoryKey].questions;
-        
+        const subcategory = categoryData.subcategories[subcategoryKey];
+        if (!subcategory) {
+          console.error('Subcategory not found');
+          setIsLoading(false);
+          setShowScore(true);
+          return;
+        }
+
+        const subcategoryQuestions = subcategory.questions;
         if (!subcategoryQuestions || subcategoryQuestions.length === 0) {
           console.error('No questions found for this subcategory');
+          setIsLoading(false);
+          setShowScore(true);
           return;
         }
 
@@ -330,26 +375,32 @@ function QuizApp() {
             correct: q.correct,
             distractors: q.distractors,
             categoryName: categoryData.name,
-            subcategoryName: categoryData.subcategories[subcategoryKey].name
+            subcategoryName: subcategory.name
           };
         }).filter(q => q !== null);
 
         if (validQuestions.length === 0) {
           console.error('No valid questions found for this subcategory');
+          setIsLoading(false);
+          setShowScore(true);
           return;
         }
 
         const shuffledQuestions = shuffleArray(validQuestions).slice(0, 10);
         setQuestions(shuffledQuestions);
+        setCurrentQuestionIndex(0);
+        setIsLoading(false);
 
         const firstQuestionOptions = shuffleArray([
           shuffledQuestions[0].correct,
           ...shuffledQuestions[0].distractors
         ]);
         setOptions(firstQuestionOptions);
-      } catch (error) {
-        console.error('Error loading subcategory questions:', error);
       }
+    } catch (error) {
+      console.error('Error in handleSubcategorySelect:', error);
+      setIsLoading(false);
+      setShowScore(true);
     }
   }, [selectedCategory]);
 
@@ -437,6 +488,7 @@ function QuizApp() {
             <button
               onClick={handleQuizKingStart}
               className="quiz-king-button"
+              disabled={isLoading}
             >
               チャレンジ開始
             </button>
@@ -446,6 +498,20 @@ function QuizApp() {
     );
   }
 
+  // ローディング表示
+  if (isLoading) {
+    return (
+      <div className="app">
+        <div className="quiz-container">
+          <div className="loading-section">
+            <h2>データを読み込み中...</h2>
+            <div className="loading-spinner"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
   // サブカテゴリー選択画面
   if (!selectedSubcategory && !isQuizKingMode) {
     const category = indexData.categories[selectedCategory];
@@ -469,6 +535,7 @@ function QuizApp() {
                   key={key}
                   onClick={() => handleSubcategorySelect(key)}
                   className="category-button"
+                  disabled={isLoading}
                 >
                   {subcategory.name}
                 </button>
@@ -480,6 +547,7 @@ function QuizApp() {
               <button
                 onClick={handleQuizKingStart}
                 className="quiz-king-button"
+                disabled={isLoading}
               >
                 チャレンジ開始
               </button>
