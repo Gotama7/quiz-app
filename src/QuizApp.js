@@ -19,6 +19,7 @@ function QuizApp() {
   const [score, setScore] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [showScore, setShowScore] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [options, setOptions] = useState([]);
   const [isAnswered, setIsAnswered] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -209,6 +210,7 @@ function QuizApp() {
     );
   };
 
+  // eslint-disable-next-line no-unused-vars
   // 問題ない場合の表示
   const renderNoQuestions = () => (
     <div className="app">
