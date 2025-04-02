@@ -19,8 +19,6 @@ function QuizApp() {
   const [score, setScore] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [showScore, setShowScore] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [options, setOptions] = useState([]);
   const [isAnswered, setIsAnswered] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
@@ -209,33 +207,6 @@ function QuizApp() {
       </div>
     );
   };
-
-  // 問題ない場合の表示
-  // eslint-disable-next-line no-unused-vars
-  const renderNoQuestions = () => (
-    <div className="app">
-      <div className="quiz-container">
-        <div className="title-section">
-          <img 
-            src={titleImageUrl}
-            alt="バルバロッサ" 
-            className="title-image"
-          />
-          <h1>バルバロッサクイズ！</h1>
-        </div>
-        <div className="score-section">
-          <h2>申し訳ありません</h2>
-          <p>このサブカテゴリーにはまだ問題が登録されていません。</p>
-          <button 
-            className="back-button"
-            onClick={() => setView('subcategorySelection')}
-          >
-            サブカテゴリー選択に戻る
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 
   // クイズ画面
   const renderQuiz = () => {
