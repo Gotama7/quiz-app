@@ -58,14 +58,16 @@ function getAllQuestions() {
 // 特定のカテゴリーの全サブカテゴリーから問題を取得する関数
 function getCategoryQuestions(categoryKey) {
   const category = quizData.categories[categoryKey];
-  const allCategoryQuestions = [];
+  const questionsBySubcategory = {};
+  let totalQuestions = 0;
 
-  // すべてのサブカテゴリーから有効な問題を収集
-  Object.entries(category.subcategories).forEach(([, subcategory]) => {
+  // 各サブカテゴリーの問題を収集
+  Object.entries(category.subcategories).forEach(([subcategoryKey, subcategory]) => {
+    const subcategoryQuestions = [];
     if (subcategory.questions && subcategory.questions.length > 0) {
       subcategory.questions.forEach(q => {
         if (q.question && q.correct && q.distractors && q.distractors.length === 3) {
-          allCategoryQuestions.push({
+          subcategoryQuestions.push({
             question: q.question,
             correct: q.correct,
             distractors: q.distractors,
@@ -75,19 +77,63 @@ function getCategoryQuestions(categoryKey) {
         }
       });
     }
+    if (subcategoryQuestions.length > 0) {
+      questionsBySubcategory[subcategoryKey] = shuffleArray(subcategoryQuestions);
+      totalQuestions += subcategoryQuestions.length;
+    }
   });
 
-  // 問題が20問未満の場合は、ランダムに重複を許して20問になるまで追加
-  if (allCategoryQuestions.length < 20) {
-    const originalQuestions = [...allCategoryQuestions];
-    while (allCategoryQuestions.length < 20) {
-      const randomQuestion = originalQuestions[Math.floor(Math.random() * originalQuestions.length)];
-      allCategoryQuestions.push({...randomQuestion}); // オブジェクトをコピーして追加
+  const subcategories = Object.keys(questionsBySubcategory);
+  if (subcategories.length === 0) return [];
+
+  // 各サブカテゴリーから最低限取得する問題数を計算
+  const baseQuestionsPerSubcategory = Math.floor(20 / subcategories.length);
+  const remainingQuestions = 20 % subcategories.length;
+  
+  let selectedQuestions = [];
+
+  // 各サブカテゴリーから均等に問題を選択
+  subcategories.forEach((subcategoryKey, index) => {
+    const questionsFromThisSubcategory = baseQuestionsPerSubcategory + (index < remainingQuestions ? 1 : 0);
+    const subcategoryQuestions = questionsBySubcategory[subcategoryKey];
+    
+    // サブカテゴリーの問題数が足りない場合は、全問題を使用
+    if (subcategoryQuestions.length <= questionsFromThisSubcategory) {
+      selectedQuestions.push(...subcategoryQuestions);
+    } else {
+      selectedQuestions.push(...subcategoryQuestions.slice(0, questionsFromThisSubcategory));
+    }
+  });
+
+  // 20問に満たない場合は、残りの問題をランダムに追加
+  if (selectedQuestions.length < 20) {
+    // 全問題を1つの配列にまとめる
+    const allRemainingQuestions = [];
+    subcategories.forEach(subcategoryKey => {
+      const usedCount = selectedQuestions.filter(q => q.subcategoryName === questionsBySubcategory[subcategoryKey][0].subcategoryName).length;
+      const remainingQuestions = questionsBySubcategory[subcategoryKey].slice(usedCount);
+      allRemainingQuestions.push(...remainingQuestions);
+    });
+
+    // 残りの問題からランダムに選択して補完
+    while (selectedQuestions.length < 20 && allRemainingQuestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * allRemainingQuestions.length);
+      selectedQuestions.push(allRemainingQuestions[randomIndex]);
+      allRemainingQuestions.splice(randomIndex, 1);
+    }
+
+    // それでも20問に満たない場合は、既存の問題から重複を許して補完
+    if (selectedQuestions.length < 20) {
+      const originalQuestions = [...selectedQuestions];
+      while (selectedQuestions.length < 20) {
+        const randomQuestion = originalQuestions[Math.floor(Math.random() * originalQuestions.length)];
+        selectedQuestions.push({...randomQuestion});
+      }
     }
   }
 
-  // 問題をシャッフルして20問を返す
-  return shuffleArray(allCategoryQuestions).slice(0, 20);
+  // 最終的な問題をシャッフルして返す
+  return shuffleArray(selectedQuestions);
 }
 
 function QuizApp() {
