@@ -286,19 +286,21 @@ h2 {
 }
 
 .back-button {
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: #666;
+  background-color: #6b7280;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
   transition: background-color 0.3s;
-  margin-top: 1rem;
+  width: 200px;
+  margin: 0 auto;
+  display: block;
 }
 
 .back-button:hover {
-  background-color: #555;
+  background-color: #4b5563;
 }
 
 /* レスポンシブデザイン */

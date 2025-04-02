@@ -637,6 +637,18 @@ function QuizApp() {
               </button>
             ))}
           </div>
+
+          <button
+            onClick={() => {
+              if (window.confirm('クイズを中断してトップに戻りますか？')) {
+                handleBackToCategories();
+              }
+            }}
+            className="back-button"
+            style={{ marginTop: '20px' }}
+          >
+            トップに戻る
+          </button>
         </div>
       </div>
     );
