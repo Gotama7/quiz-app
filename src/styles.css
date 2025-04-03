@@ -438,19 +438,16 @@ h2 {
 
 /* フィードバック表示 */
 .feedback {
-  margin: 0 auto 20px;
-  padding: 15px;
-  border-radius: 8px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
   text-align: center;
-  animation: fadeIn 0.5s ease;
-  max-width: 500px;
-  width: 100%;
+  font-weight: bold;
 }
 
-.feedback p {
-  margin: 5px 0;
-  font-size: 1.2rem;
-  text-align: center;
+.feedback .next-button {
+  margin-top: 10px;
+  font-size: 1rem;
 }
 
 .correct-feedback {
