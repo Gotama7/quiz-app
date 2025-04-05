@@ -4,9 +4,16 @@ import './styles.css';
 // 画像のURLを設定
 const titleImageUrl = process.env.PUBLIC_URL + '/images/barbarossa.jpeg';
 
-// 選択肢をランダムに並べ替える関数
+// 選択肢をランダムに並べ替える関数（Fisherâ€"Yatesアルゴリズム）
 function shuffleArray(array) {
-  return array.sort(() => 0.5 - Math.random());
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    // 0からiまでのランダムなインデックスを選択
+    const j = Math.floor(Math.random() * (i + 1));
+    // 要素を入れ替え
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
 }
 
 function QuizApp() {
