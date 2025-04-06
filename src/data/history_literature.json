@@ -2757,29 +2757,6 @@
           }
         ]
       },
-      "politics_economcs": {
-        "name": "政治・経済",
-        "questions": [
-          {
-            "question": "ベトナム戦争終結を導いた主要要因は何か？",
-            "correct": "国際圧力",
-            "distractors": [
-              "内戦激化",
-              "経済危機",
-              "技術革新"
-            ]
-          },
-          {
-            "question": "冷戦崩壊の直接的な契機となった出来事は何か？",
-            "correct": "ベルリンの壁崩壊",
-            "distractors": [
-              "キューバ危機",
-              "アフガン戦争",
-              "湾岸戦争"
-            ]
-          }
-        ]
-      },
       "philosophy": {
         "name": "思想・哲学",
         "questions": [
