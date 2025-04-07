@@ -3571,6 +3571,15 @@
             ]
           },
           {
+            "question": "B'zのシングルの中で202万枚と一番CD売上本数が多かった曲は？",
+            "correct": "『愛のままにわがままに 僕は君だけを傷つけない』",
+            "distractors": [
+              "『LOVE PHANTOM』",
+              "『BLOWIN’』",
+              "『裸足の女神』"
+            ]
+          },
+          {
             "question": "『Atomic Heart』がオリコンアルバムチャートで1位を獲得した最初の週の売上枚数は？",
             "correct": "約85万枚",
             "distractors": [
