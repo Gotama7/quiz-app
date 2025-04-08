@@ -5023,6 +5023,42 @@
               "ル・マン24時間",
               "パリ・ダカールラリー"
             ]
+          },
+          {
+            "question": "二輪車レースの世界選手権を何と呼ぶか？",
+            "correct": "MotoGP",
+            "distractors": [
+              "F1",
+              "スーパーバイク選手権",
+              "ル・マン24時間"
+            ]
+          },
+          {
+            "question": "2ストローク最後のMotoGPチャンピオンマシンは？",
+            "correct": "ホンダNSR500",
+            "distractors": [
+              "ヤマハYZR500",
+              "スズキRGV500",
+              "アプリリアRS3"
+            ]
+          },
+          {
+            "question": "ケビン・シュワンツが世界タイトルを獲得したバイクは？",
+            "correct": "スズキRGV500",
+            "distractors": [
+              "ヤマハYZR500",
+              "ホンダNSR500",
+              "カワサキZX-RR"
+            ]
+          },
+          {
+            "question": "MotoGP初の4ストロークマシンとして参戦したホンダのバイクは？",
+            "correct": "RC211V",
+            "distractors": [
+              "NSR500",
+              "RC213V",
+              "RS250RW"
+            ]
           }
         ]
       }
