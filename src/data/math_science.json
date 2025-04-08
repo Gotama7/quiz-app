@@ -2325,15 +2325,6 @@
         "name": "地学",
         "questions": [
           {
-            "question": "最も硬度が低い鉱物は何か？",
-            "correct": "滑石",
-            "distractors": [
-              "方解石",
-              "蛍石",
-              "石膏"
-            ]
-          },
-          {
             "question": "鉱物の硬さを示す尺度は何か？",
             "correct": "モース硬度",
             "distractors": [
