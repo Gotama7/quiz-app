@@ -3009,6 +3009,20 @@
           }
         ]
       },
+      "trains": {
+        "name": "鉄道",
+        "questions": [
+          {
+            "question": "東海道新幹線が開業した年は？",
+            "correct": "1964年",
+            "distractors": [
+              "1960年",
+              "1968年",
+              "1972年"
+            ]
+          }
+        ]
+      },
       "military": {
         "name": "ミリタリー",
         "questions": [
