@@ -88,7 +88,7 @@
           },
           {
             "question": "『風の谷のナウシカ』で腐海が放出する有毒ガスの正体は？",
-            "correct": "瘴気（有毒胞子）",
+            "correct": "瘴気",
             "distractors": [
               "硫黄ガス",
               "酸素",
@@ -2059,7 +2059,7 @@
           },
           {
             "question": "『きまぐれオレンジ☆ロード』で鮎川まどかがバイトしている喫茶店の名前は？",
-            "correct": "abcb（アバカブ）",
+            "correct": "アバカブ",
             "distractors": [
               "ピットイン",
               "メゾンカフェ",
@@ -2131,7 +2131,7 @@
           },
           {
             "question": "『機動戦士ガンダム劇場版』でホワイトベースが最初に到達した地球の地点はどこか？",
-            "correct": "北米大陸（北米の西海岸）",
+            "correct": "北米大陸",
             "distractors": [
               "アフリカ大陸",
               "オーストラリア大陸",
@@ -2139,7 +2139,7 @@
             ]
           },
           {
-            "question": "『機動戦士ガンダム めぐりあい宇宙編』で描かれたソロモン攻略戦において、ソーラ・システムが照射されたのはどの宙域か？",
+            "question": "『機動戦士ガンダム めぐりあい宇宙編』において、ソーラ・システムが照射されたのはどの宙域か？",
             "correct": "ソロモン宙域",
             "distractors": [
               "ルナツー宙域",
@@ -2369,7 +2369,7 @@
             "distractors": [
               "ソーラ・システムII",
               "グリプスレーザー",
-              "アクシズ（隕石）"
+              "アクシズ"
             ]
           },
           {
@@ -3130,11 +3130,11 @@
           },
           {
             "question": "『新世紀エヴァンゲリオン』の人類補完計画の発動時刻は？",
-            "correct": "午前0時（零時）",
+            "correct": "午前0時",
             "distractors": [
-              "午前3時（3時）",
-              "午後6時（18時）",
-              "午後11時59分（23時59分）"
+              "午前3時）",
+              "午後6時",
+              "午後11時59分"
             ]
           },
           {
@@ -4130,6 +4130,551 @@
               "宝生舞",
               "櫻井淳子",
               "本田翼"
+            ]
+          }
+        ]
+      },
+      "music": {
+        "name": "音楽",
+        "questions": [
+          {
+            "question": "ビートルズが来日した年は？",
+            "correct": "1966年",
+            "distractors": [
+              "1964年",
+              "1968年",
+              "1970年"
+            ]
+          },
+          {
+            "question": "ビートルズが初めてレコーディングした楽曲は？",
+            "correct": "Love Me Do",
+            "distractors": [
+              "Please Please Me",
+              "She Loves You",
+              "I Want to Hold Your Hand"
+            ]
+          },
+          {
+            "question": "ビートルズが最後に公式ライブを行った場所は？",
+            "correct": "キャンドルスティック・パーク",
+            "distractors": [
+              "シェイ・スタジアム",
+              "アップル・コープス屋上",
+              "カーネギーホール"
+            ]
+          },
+          {
+            "question": "ビートルズが初めて訪米した際に最初に出演したテレビ番組は？",
+            "correct": "エド・サリヴァン・ショー",
+            "distractors": [
+              "アメリカン・バンドスタンド",
+              "トゥナイト・ショー",
+              "デイヴィッド・フロスト・ショー"
+            ]
+          },
+          {
+            "question": "ジョン・レノンがビートルズの解散を非公式に発表した年は？",
+            "correct": "1969年",
+            "distractors": [
+              "1968年",
+              "1970年",
+              "1971年"
+            ]
+          },
+          {
+            "question": "ポール・マッカートニーがビートルズで最後に録音した楽曲は？",
+            "correct": "I Me Mine",
+            "distractors": [
+              "Let It Be",
+              "The Long and Winding Road",
+              "Across the Universe"
+            ]
+          },
+          {
+            "question": "ビートルズが初めて全米1位を獲得した楽曲は？",
+            "correct": "I Want to Hold Your Hand",
+            "distractors": [
+              "Can't Buy Me Love",
+              "Help!",
+              "Yesterday"
+            ]
+          },
+          {
+            "question": "リンゴ・スターが作曲したビートルズ時代の公式楽曲は？",
+            "correct": "Octopus's Garden",
+            "distractors": [
+              "Act Naturally",
+              "With a Little Help from My Friends",
+              "Yellow Submarine"
+            ]
+          },
+          {
+            "question": "ジョージ・ハリスンが初めてシタールを使用したビートルズの楽曲は？",
+            "correct": "Norwegian Wood",
+            "distractors": [
+              "Within You Without You",
+              "Love You To",
+              "Tomorrow Never Knows"
+            ]
+          },
+          {
+            "question": "アルバム「Revolver」のジャケットデザインを担当したアーティストは誰か？",
+            "correct": "クラウス・フォアマン",
+            "distractors": [
+              "アンディ・ウォーホル",
+              "ピーター・ブレイク",
+              "ジョン・レノン"
+            ]
+          },
+          {
+            "question": "ビートルズが最初にレコーディング契約を結んだレコード会社は？",
+            "correct": "パーロフォン",
+            "distractors": [
+              "アップル・レコード",
+              "デッカ・レコード",
+              "キャピトル・レコード"
+            ]
+          },
+          {
+            "question": "ビートルズが初のスタジオ録音を行った都市は？",
+            "correct": "ハンブルク",
+            "distractors": [
+              "ロンドン",
+              "リヴァプール",
+              "ニューヨーク"
+            ]
+          },
+          {
+            "question": "ビートルズの楽曲で唯一フランス語が使用されている曲は？",
+            "correct": "Michelle",
+            "distractors": [
+              "Girl",
+              "Yesterday",
+              "Hello, Goodbye"
+            ]
+          },
+          {
+            "question": "ビートルズがアメリカ公演を最初に行った都市はどこか？",
+            "correct": "ワシントンD.C.",
+            "distractors": [
+              "ニューヨーク",
+              "ロサンゼルス",
+              "シカゴ"
+            ]
+          },
+          {
+            "question": "楽曲『Revolution 9』に繰り返し登場する声のフレーズは？",
+            "correct": "Number nine",
+            "distractors": [
+              "Turn me on",
+              "Hold that line",
+              "Let me out"
+            ]
+          },
+          {
+            "question": "楽曲『Her Majesty』が『Abbey Road』のオリジナルLPで収録されている位置は？",
+            "correct": "B面最後の曲（隠しトラック）",
+            "distractors": [
+              "A面最後",
+              "B面の中央",
+              "A面の冒頭"
+            ]
+          },
+          {
+            "question": "『Sgt. Pepper's』収録の『Being for the Benefit of Mr. Kite!』の歌詞が元になったのは？",
+            "correct": "19世紀のサーカスのポスター",
+            "distractors": [
+              "新聞の広告",
+              "ジョンの夢",
+              "絵本の一節"
+            ]
+          },
+          {
+            "question": "『A Day in the Life』のオーケストラ部分でポールがオーケストラに出した演奏指示は？",
+            "correct": "各自が最低音から最高音へ自由に演奏する",
+            "distractors": [
+              "全員で同じ音程を繰り返す",
+              "楽譜通りに正確に演奏する",
+              "全員が異なる曲を同時に演奏する"
+            ]
+          },
+          {
+            "question": "『Strawberry Fields Forever』の最終版で、異なる2つのテイクを繋げる際にジョージ・マーティンが行った処理は？",
+            "correct": "テンポとピッチを調整して接続した",
+            "distractors": [
+              "エコーを追加してごまかした",
+              "片方を逆回転にした",
+              "2つのテイクを交互に挿入した"
+            ]
+          },
+          {
+            "question": "『Helter Skelter』の録音中にリンゴ・スターが叫んだ有名なフレーズは？",
+            "correct": "I've got blisters on my fingers!",
+            "distractors": [
+              "Turn the volume up!",
+              "Let's do it again!",
+              "I can't hear myself!"
+            ]
+          },
+          {
+            "question": "『I Am the Walrus』の中で聞こえるシェイクスピア劇のラジオ放送の作品名は？",
+            "correct": "リア王",
+            "distractors": [
+              "ハムレット",
+              "マクベス",
+              "ロミオとジュリエット"
+            ]
+          },
+          {
+            "question": "『Blackbird』のギターの伴奏が影響を受けたとポール自身が語っている音楽は？",
+            "correct": "バッハの『ブーレ』",
+            "distractors": [
+              "モーツァルトの『トルコ行進曲』",
+              "ベートーベンの『月光ソナタ』",
+              "ショパンの『ノクターン』"
+            ]
+          },
+          {
+            "question": "『Tomorrow Never Knows』でジョンがボーカル録音時に提案し却下されたアイデアは？",
+            "correct": "天井からロープで吊るして回転しながら歌う",
+            "distractors": [
+              "水中で歌う",
+              "逆再生で録音する",
+              "ヘリコプターの中で歌う"
+            ]
+          },
+          {
+            "question": "『The End』でドラムソロを演奏したビートルズメンバーは誰？",
+            "correct": "リンゴ・スター",
+            "distractors": [
+              "ポール・マッカートニー",
+              "ジョン・レノン",
+              "ジョージ・ハリスン"
+            ]
+          },
+          {
+            "question": "ヤードバーズが1965年にリリースした、ジェフ・ベック参加後初の大ヒット曲は？",
+            "correct": "『Heart Full of Soul』",
+            "distractors": [
+              "『Shapes of Things』",
+              "『For Your Love』",
+              "『Over Under Sideways Down』"
+            ]
+          },
+          {
+            "question": "ヤードバーズに在籍したことがないギタリストは誰か？",
+            "correct": "リッチー・ブラックモア",
+            "distractors": [
+              "ジェフ・ベック",
+              "ジミー・ペイジ",
+              "エリック・クラプトン"
+            ]
+          },
+          {
+            "question": "エリック・クラプトンが初めてソロでリリースしたスタジオアルバムのタイトルは？",
+            "correct": "『Eric Clapton』",
+            "distractors": [
+              "『461 Ocean Boulevard』",
+              "『Slowhand』",
+              "『Backless』"
+            ]
+          },
+          {
+            "question": "エリック・クラプトンが在籍し、1966年にアルバム『Blues Breakers』をリリースしたバンド名は？",
+            "correct": "John Mayall & the Bluesbreakers",
+            "distractors": [
+              "Derek and the Dominos",
+              "Blind Faith",
+              "The Yardbirds"
+            ]
+          },
+          {
+            "question": "クリームの名曲『Sunshine of Your Love』が収録されたアルバムのタイトルは？",
+            "correct": "『Disraeli Gears』",
+            "distractors": [
+              "『Fresh Cream』",
+              "『Wheels of Fire』",
+              "『Goodbye』"
+            ]
+          },
+          {
+            "question": "クリームが1968年に行った伝説の解散コンサートの会場となった場所は？",
+            "correct": "ロイヤル・アルバート・ホール",
+            "distractors": [
+              "カーネギー・ホール",
+              "マディソン・スクエア・ガーデン",
+              "フィルモア・イースト"
+            ]
+          },
+          {
+            "question": "ジェフ・ベックが1975年に発表した全曲インストゥルメンタルの名盤のタイトルは？",
+            "correct": "『Blow by Blow』",
+            "distractors": [
+              "『Wired』",
+              "『Truth』",
+              "『Guitar Shop』"
+            ]
+          },
+          {
+            "question": "ジェフ・ベックが2009年にロックの殿堂入りした際、ペダルをプレゼントしたミュージシャンは？",
+            "correct": "ジミー・ペイジ",
+            "distractors": [
+              "エリック・クラプトン",
+              "ロッド・スチュワート",
+              "ミック・ジャガー"
+            ]
+          },
+          {
+            "question": "ジェフ・ベックが1967年に結成したバンド「ジェフ・ベック・グループ」のボーカリストは？",
+            "correct": "ロッド・スチュワート",
+            "distractors": [
+              "ロバート・プラント",
+              "ジョー・コッカー",
+              "イアン・ギラン"
+            ]
+          },
+          {
+            "question": "レッド・ツェッペリンのデビューアルバム『Led Zeppelin』がリリースされた年は？",
+            "correct": "1969年",
+            "distractors": [
+              "1968年",
+              "1970年",
+              "1971年"
+            ]
+          },
+          {
+            "question": "レッド・ツェッペリンが最後にリリースした公式スタジオアルバムのタイトルは？",
+            "correct": "『In Through the Out Door』",
+            "distractors": [
+              "『Presence』",
+              "『Physical Graffiti』",
+              "『Houses of the Holy』"
+            ]
+          },
+          {
+            "question": "レッド・ツェッペリンが1976年に公開したライブ映画のタイトルは？",
+            "correct": "The Song Remains the Same",
+            "distractors": [
+              "How the West Was Won",
+              "Coda",
+              "Celebration Day"
+            ]
+          },
+          {
+            "question": "ディープ・パープルの第2期ラインナップに加入したベーシストの名前は？",
+            "correct": "ロジャー・グローヴァー",
+            "distractors": [
+              "グレン・ヒューズ",
+              "ニック・シンパー",
+              "ジョン・ロード"
+            ]
+          },
+          {
+            "question": "ディープ・パープルの楽曲『Smoke on the Water』が収録されたアルバム名は？",
+            "correct": "『Machine Head』",
+            "distractors": [
+              "『In Rock』",
+              "『Fireball』",
+              "『Stormbringer』"
+            ]
+          },
+          {
+            "question": "ディープ・パープルが1970年にリリースしたシングルで、大ヒットとなった曲名は？",
+            "correct": "『Black Night』",
+            "distractors": [
+              "『Speed King』",
+              "『Child in Time』",
+              "『Strange Kind of Woman』"
+            ]
+          },
+          {
+            "question": "最強メンバーと言われる第2期ディープ・パープルのメンバーに含まれないのは？",
+            "correct": "デイヴィッド・カヴァデール",
+            "distractors": [
+              "イアン・ギラン",
+              "ロジャー・グローヴァー",
+              "イアン・ペイス"
+            ]
+          },
+          {
+            "question": "グランジという言葉が広まるきっかけとなったシアトルのインディーズレーベルは？",
+            "correct": "Sub Pop",
+            "distractors": [
+              "Kill Rock Stars",
+              "Touch and Go",
+              "K Records"
+            ]
+          },
+          {
+            "question": "ニルヴァーナのアルバム『Nevermind』のジャケットに写る赤ちゃんが水中で追いかけているものは何？",
+            "correct": "1ドル札",
+            "distractors": [
+              "ミルク瓶",
+              "浮輪",
+              "おもちゃのボール"
+            ]
+          },
+          {
+            "question": "ニルヴァーナが1991年にレコーディングした『Smells Like Teen Spirit』の曲名の元となった製品は？",
+            "correct": "制汗スプレー",
+            "distractors": [
+              "シャンプー",
+              "柔軟剤",
+              "歯磨き粉"
+            ]
+          },
+          {
+            "question": "カート・コバーンは自殺したとき何才だったか？",
+            "correct": "27才",
+            "distractors": [
+              "26才",
+              "29才",
+              "28才"
+            ]
+          },
+          {
+            "question": "ニルヴァーナの『Nevermind』に収録された隠しトラックのタイトルは？",
+            "correct": "Endless, Nameless",
+            "distractors": [
+              "Sappy",
+              "Dive",
+              "Blandest"
+            ]
+          },
+          {
+            "question": "アリス・イン・チェインズの『Dirt』収録曲で、ベトナム戦争の体験を元に作詞された曲は？",
+            "correct": "Rooster",
+            "distractors": [
+              "Would?",
+              "Them Bones",
+              "Angry Chair"
+            ]
+          },
+          {
+            "question": "アリス・イン・チェインズのデビューアルバム『Facelift』がリリースされた年は？",
+            "correct": "1990年",
+            "distractors": [
+              "1989年",
+              "1991年",
+              "1992年"
+            ]
+          },
+          {
+            "question": "アリス・イン・チェインズのメンバーで、『MTV Unplugged』出演時に体調不良が明らかだったボーカリストは誰？",
+            "correct": "レイン・ステイリー",
+            "distractors": [
+              "ジェリー・カントレル",
+              "マイク・スター",
+              "ショーン・キニー"
+            ]
+          },
+          {
+            "question": "パール・ジャムがアルバム『Ten』で取り上げた高校生の自殺事件に基づく楽曲は？",
+            "correct": "Jeremy",
+            "distractors": [
+              "Alive",
+              "Black",
+              "Even Flow"
+            ]
+          },
+          {
+            "question": "パール・ジャムのヴォーカルは？",
+            "correct": "エディ・ベイダー",
+            "distractors": [
+              "カート・コバーン",
+              "レイン・ステイリー",
+              "クリス・コーネル"
+            ]
+          },
+          {
+            "question": "サウンドガーデンが発表した楽曲で、変拍子（7/4拍子）が特徴的な代表曲は？",
+            "correct": "Spoonman",
+            "distractors": [
+              "Outshined",
+              "Rusty Cage",
+              "Jesus Christ Pose"
+            ]
+          },
+          {
+            "question": "サウンドガーデンの代表曲「Black Hole Sun」が収録されているアルバム名は？",
+            "correct": "Superunknown",
+            "distractors": [
+              "Badmotorfinger",
+              "Louder Than Love",
+              "Down on the Upside"
+            ]
+          },
+          {
+            "question": "サウンドガーデンがグランジバンドとして初めてメジャーレーベルと契約した際のレーベルは？",
+            "correct": "A&M Records",
+            "distractors": [
+              "Geffen Records",
+              "Sub Pop",
+              "Epic Records"
+            ]
+          },
+          {
+            "question": "マッドハニーが1988年にリリースしたグランジの象徴的楽曲は何か？",
+            "correct": "Touch Me I'm Sick",
+            "distractors": [
+              "Superfuzz Bigmuff",
+              "Hate the Police",
+              "Sweet Young Thing Ain't Sweet No More"
+            ]
+          },
+          {
+            "question": "B'zのシングルの中で202万枚と一番CD売上本数が多かった曲は？",
+            "correct": "『愛のままにわがままに 僕は君だけを傷つけない』",
+            "distractors": [
+              "『LOVE PHANTOM』",
+              "『BLOWIN’』",
+              "『裸足の女神』"
+            ]
+          },
+          {
+            "question": "『Atomic Heart』がオリコンアルバムチャートで1位を獲得した最初の週の売上枚数は？",
+            "correct": "約85万枚",
+            "distractors": [
+              "約65万枚",
+              "約100万枚",
+              "約45万枚"
+            ]
+          },
+          {
+            "question": "シングル『Tomorrow never knows』のレコーディングに使用されたスタジオは？",
+            "correct": "アビー・ロード・スタジオ",
+            "distractors": [
+              "ビクター青山スタジオ",
+              "ソニー信濃町スタジオ",
+              "アバコスタジオ"
+            ]
+          },
+          {
+            "question": "Mr.Childrenが初めてNHK紅白歌合戦に出演した際に披露した楽曲は？",
+            "correct": "『GIFT』",
+            "distractors": [
+              "『名もなき詩』",
+              "『シーソーゲーム～勇敢な恋の歌～』",
+              "TOMORROW NEVER KNOWS"
+            ]
+          },
+          {
+            "question": "Mr.Childrenのシングルの中で272万枚と一番CD売上本数が多かった曲は？",
+            "correct": "『Tomorrow never knows』",
+            "distractors": [
+              "『名もなき詩』",
+              "『innocent world』",
+              "『シーソーゲーム～勇敢な恋の歌～』"
+            ]
+          },
+          {
+            "question": "桜井和寿が二度目の結婚をしたグラビアアイドルは？",
+            "correct": "吉野美佳",
+            "distractors": [
+              "原田里佳",
+              "もちづきる美",
+              "荒井美恵子"
             ]
           }
         ]
