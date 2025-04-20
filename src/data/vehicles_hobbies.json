@@ -1845,9 +1845,9 @@
             "question": "360モデナをベースに作られたレーシング仕様モデルの名前は？",
             "correct": "360チャレンジストラダーレ",
             "distractors": [
-              "F430スクーデリア",
-              "348コンペティツィオーネ",
-              "F355ベルリネッタ"
+              "360スクーデリア",
+              "360モデナF1",
+              "360スパイダーF1"
             ]
           },
           {
@@ -2703,11 +2703,11 @@
           },
           {
             "question": "CB1100Rの後継モデルとして1984年に登場し、当時246km/hと世界最高速を誇ったバイクは？",
-            "correct": "ホンダ・CBR1000F",
+            "correct": "VF1000R",
             "distractors": [
-              "ヤマハ・FJ1100",
-              "スズキ・GSX-R1100",
-              "カワサキ・GPZ900R"
+              "CBR1000F",
+              "CBR1000RR",
+              "CBR1100XX Super BlackBird"
             ]
           },
           {
@@ -4319,6 +4319,371 @@
           }
         ]
       },
+      "aircraft": {
+        "name": "航空機",
+        "questions": [
+          {
+            "question": "ボーイング747が初飛行を行った年は？",
+            "correct": "1969年",
+            "distractors": [
+              "1975年",
+              "1982年",
+              "1990年"
+            ]
+          },
+          {
+            "question": "ボーイング747の特徴的な機体デザインは？",
+            "correct": "2階建て構造",
+            "distractors": [
+              "単発エンジン",
+              "垂直尾翼なし",
+              "後退翼なし"
+            ]
+          },
+          {
+            "question": "ボーイング747が搭載するエンジンの数は？",
+            "correct": "4基",
+            "distractors": [
+              "2基",
+              "3基",
+              "6基"
+            ]
+          },
+          {
+            "question": "ボーイング777が最初に就航した航空会社は？",
+            "correct": "ユナイテッド航空",
+            "distractors": [
+              "日本航空",
+              "シンガポール航空",
+              "ブリティッシュ・エアウェイズ"
+            ]
+          },
+          {
+            "question": "ボーイング777で最も強力なエンジンを搭載する派生型はどれか？",
+            "correct": "777-300ER",
+            "distractors": [
+              "777-200",
+              "777-200LR",
+              "777F"
+            ]
+          },
+          {
+            "question": "ボーイング777で導入された画期的な操縦システムは？",
+            "correct": "フライ・バイ・ワイヤ",
+            "distractors": [
+              "油圧式操縦装置",
+              "完全手動制御",
+              "機械式連動操縦装置"
+            ]
+          },
+          {
+            "question": "ボーイング737の最初のモデル（初代）が就航を開始したのはいつか？",
+            "correct": "1968年",
+            "distractors": [
+              "1974年",
+              "1980年",
+              "1988年"
+            ]
+          },
+          {
+            "question": "ボーイング737シリーズの中で、最も販売数の多いモデルはどれか？",
+            "correct": "737-800",
+            "distractors": [
+              "737-200",
+              "737-500",
+              "737-900"
+            ]
+          },
+          {
+            "question": "ボーイング757が主に搭載しているエンジンはどれか？",
+            "correct": "ロールスロイスRB211またはPW2000",
+            "distractors": [
+              "CFM56",
+              "GE90",
+              "GEnx"
+            ]
+          },
+          {
+            "question": "ボーイング757が主に開発された目的はどれか？",
+            "correct": "中距離の高密度路線",
+            "distractors": [
+              "超長距離路線",
+              "貨物輸送専門",
+              "超短距離路線"
+            ]
+          },
+          {
+            "question": "ボーイング767が初めて商業運航を開始した年は？",
+            "correct": "1982年",
+            "distractors": [
+              "1978年",
+              "1995年",
+              "2001年"
+            ]
+          },
+          {
+            "question": "ボーイング767を基に開発された軍用の空中給油機は？",
+            "correct": "KC-46ペガサス",
+            "distractors": [
+              "KC-135ストラトタンカー",
+              "KC-10エクステンダー",
+              "KC-767グローバルタンカー"
+            ]
+          },
+          {
+            "question": "ボーイング787の主翼の主な素材は何か？",
+            "correct": "複合材料（カーボン）",
+            "distractors": [
+              "アルミニウム合金",
+              "チタン合金",
+              "スチール"
+            ]
+          },
+          {
+            "question": "ボーイング787が初飛行した年はいつか？",
+            "correct": "2009年",
+            "distractors": [
+              "2005年",
+              "2012年",
+              "2015年"
+            ]
+          },
+          {
+            "question": "ボーイング787の通称として広く知られている名称は？",
+            "correct": "ドリームライナー",
+            "distractors": [
+              "ジャンボジェット",
+              "トリプルセブン",
+              "クラシックジェット"
+            ]
+          },
+          {
+            "question": "エアバスA350に搭載される主要なエンジンメーカーはどこか？",
+            "correct": "ロールスロイス",
+            "distractors": [
+              "GEアビエーション",
+              "プラット＆ホイットニー",
+              "CFMインターナショナル"
+            ]
+          },
+          {
+            "question": "エアバスA380の乗客定員は最大で約何名か？",
+            "correct": "853名",
+            "distractors": [
+              "600名",
+              "450名",
+              "1000名"
+            ]
+          },
+          {
+            "question": "エアバスA320に初めて搭載された革新的な操縦技術は何か？",
+            "correct": "フライ・バイ・ワイヤ",
+            "distractors": [
+              "油圧操縦装置",
+              "完全機械式操縦",
+              "自動着陸装置"
+            ]
+          },
+          {
+            "question": "エアバスA330をベースとした軍用空中給油機はどれか？",
+            "correct": "A330 MRTT",
+            "distractors": [
+              "A330neo",
+              "A330 Freighter",
+              "A330P2F"
+            ]
+          },
+          {
+            "question": "エアバスA350の標準的な客室窓の特徴は？",
+            "correct": "広く大きい窓",
+            "distractors": [
+              "極小の窓",
+              "丸い窓",
+              "正方形の窓"
+            ]
+          },
+          {
+            "question": "エアバスA320で最初に商業飛行を行った航空会社は？",
+            "correct": "エールフランス",
+            "distractors": [
+              "ルフトハンザ",
+              "ブリティッシュ・エアウェイズ",
+              "日本航空"
+            ]
+          },
+          {
+            "question": "A380が2階建て客室構造を採用した主な理由は？",
+            "correct": "乗客容量の大幅増加",
+            "distractors": [
+              "機体軽量化",
+              "短距離路線用",
+              "エンジン数削減"
+            ]
+          },
+          {
+            "question": "エアバスA330neoの「neo」が意味するものは何か？",
+            "correct": "New Engine Option",
+            "distractors": [
+              "Next Energy Output",
+              "New Eco Operation",
+              "New Enhanced Option"
+            ]
+          },
+          {
+            "question": "エアバスA350で初めて導入された新型翼端デバイスの名称は？",
+            "correct": "シャークレット",
+            "distractors": [
+              "ウイングレット",
+              "ウイングチップフェンス",
+              "カナード"
+            ]
+          },
+          {
+            "question": "エアバスA320が商業運航を開始した年はいつか？",
+            "correct": "1988年",
+            "distractors": [
+              "1984年",
+              "1992年",
+              "1995年"
+            ]
+          },
+          {
+            "question": "エアバスA330の初飛行は何年か？",
+            "correct": "1992年",
+            "distractors": [
+              "1985年",
+              "1998年",
+              "2000年"
+            ]
+          },
+          {
+            "question": "エアバスA350の機体構造で多用されている特徴的な素材は？",
+            "correct": "複合材料（カーボン）",
+            "distractors": [
+              "アルミニウム合金",
+              "チタン合金",
+              "鋼鉄"
+            ]
+          },
+          {
+            "question": "世界最大の旅客機として知られるエアバスA380の初飛行は？",
+            "correct": "2005年",
+            "distractors": [
+              "1999年",
+              "2009年",
+              "2012年"
+            ]
+          },
+          {
+            "question": "A320ファミリーで最も胴体が長い派生型はどれか？",
+            "correct": "A321",
+            "distractors": [
+              "A319",
+              "A318",
+              "A320neo"
+            ]
+          },
+          {
+            "question": "エアバスA330-200の航続距離は最大で約何キロメートルか？",
+            "correct": "13,450km",
+            "distractors": [
+              "10,000km",
+              "8,500km",
+              "15,500km"
+            ]
+          },
+          {
+            "question": "最初にフライ・バイ・ワイヤ方式を採用した商用旅客機は？",
+            "correct": "エアバスA320",
+            "distractors": [
+              "ボーイング747",
+              "コンコルド",
+              "ボーイング777"
+            ]
+          },
+          {
+            "question": "最初にグラスコックピットを全面的に導入した旅客機は？",
+            "correct": "ボーイング767",
+            "distractors": [
+              "ボーイング737",
+              "DC-10",
+              "MD-11"
+            ]
+          },
+          {
+            "question": "初めて二階建て構造を商業的に成功させた大型旅客機は？",
+            "correct": "ボーイング747",
+            "distractors": [
+              "エアバスA380",
+              "DC-10",
+              "ボーイング777"
+            ]
+          },
+          {
+            "question": "最初に複合材料を主翼に大規模に採用した旅客機は？",
+            "correct": "ボーイング787",
+            "distractors": [
+              "エアバスA350",
+              "エアバスA380",
+              "ボーイング777"
+            ]
+          },
+          {
+            "question": "初めて量産型で双発機による長距離洋上飛行が認可（ETOPS認証）された機体は？",
+            "correct": "ボーイング767",
+            "distractors": [
+              "ボーイング777",
+              "エアバスA330",
+              "ボーイング737"
+            ]
+          },
+          {
+            "question": "初めて広胴機（ワイドボディ）構造を採用した商用旅客機は？",
+            "correct": "ボーイング747",
+            "distractors": [
+              "エアバスA300",
+              "DC-10",
+              "MD-11"
+            ]
+          },
+          {
+            "question": "最初に商用化された超音速旅客機はどれか？",
+            "correct": "コンコルド",
+            "distractors": [
+              "ボーイング2707",
+              "ツポレフTu-144",
+              "ボーイング747"
+            ]
+          },
+          {
+            "question": "初めて液晶ディスプレイをコックピットに全面採用した旅客機は？",
+            "correct": "エアバスA380",
+            "distractors": [
+              "ボーイング777",
+              "ボーイング787",
+              "エアバスA350"
+            ]
+          },
+          {
+            "question": "初めてGPSを活用した完全自動着陸が可能になった機体は？",
+            "correct": "ボーイング777",
+            "distractors": [
+              "ボーイング787",
+              "エアバスA320",
+              "ボーイング737NG"
+            ]
+          },
+          {
+            "question": "初めて可変後退翼を旅客機に搭載しようと計画された機体（計画のみで未完成）は？",
+            "correct": "ボーイング2707",
+            "distractors": [
+              "コンコルド",
+              "DC-10",
+              "エアバスA380"
+            ]
+          }
+        ]
+      },
       "military": {
         "name": "ミリタリー",
         "questions": [
@@ -4881,6 +5246,339 @@
             ]
           },
           {
+            "question": "SCAR-Hが採用しているリコイルシステムの種類は？",
+            "correct": "ショートストロークガスピストン",
+            "distractors": [
+              "ローリングブロック",
+              "ダイレクトインピンジメント",
+              "ロングストロークピストン"
+            ]
+          },
+          {
+            "question": "特殊作戦用ライフルとして、7.62×51mm NATO弾を使用するFNH社製モデルは？",
+            "correct": "SCAR-H",
+            "distractors": [
+              "SCAR-L",
+              "HK417",
+              "M110 SASS"
+            ]
+          },
+          {
+            "question": "特殊作戦用ライフルとして、5.56×45mm NATO弾を使用するFNH社製モデルは？",
+            "correct": "SCAR-L",
+            "distractors": [
+              "SCAR-H",
+              "M4A1",
+              "HK416"
+            ]
+          },
+          {
+            "question": "米軍が1980年代後半～90年代前半に導入した初期型ACOGの型番は？",
+            "correct": "TA01NSN",
+            "distractors": [
+              "TA31RCO",
+              "TA11",
+              "TA44"
+            ]
+          },
+          {
+            "question": "1997年、M68 CCO（Close Combat Optic）として米陸軍に採用され、その後も陸軍、空軍、特殊部隊と広く愛用され続けたドットサイトは？",
+            "correct": "Aimpoint CompM2",
+            "distractors": [
+              "EOTech 552",
+              "Trijicon ACOG",
+              "Vortex Razor HD"
+            ]
+          },
+          {
+            "question": "M150 RCOとして米陸軍が採用したTrijicon製のACOGの倍率は？",
+            "correct": "4倍",
+            "distractors": [
+              "1.5倍",
+              "6倍",
+              "8倍"
+            ]
+          },
+          {
+            "question": "米軍で初めて本格的に普及したホログラフィックサイトのモデルは？",
+            "correct": "EOTech 553",
+            "distractors": [
+              "Aimpoint CompM4",
+              "EOTech XPS3",
+              "Aimpoint T-1"
+            ]
+          },
+          {
+            "question": "米特殊部隊がMk17（SCAR-H）に標準的に使用する光学照準器の一つである可変倍率サイトは？",
+            "correct": "Elcan SpecterDR",
+            "distractors": [
+              "Trijicon AccuPoint",
+              "Vortex Razor HD",
+              "Schmidt & Bender PMII"
+            ]
+          },
+          {
+            "question": "最新の米軍光学機器であるNGSW-FC（次世代分隊火器用射撃管制装置）の開発メーカーは？",
+            "correct": "Vortex Optics",
+            "distractors": [
+              "Trijicon",
+              "Sig Sauer",
+              "Nightforce"
+            ]
+          },
+          {
+            "question": "米軍が分隊選抜射手用として採用した可変倍率ライフルスコープLeupold Mark 4の最大倍率は？",
+            "correct": "10倍",
+            "distractors": [
+              "4倍",
+              "6倍",
+              "8倍"
+            ]
+          },
+          {
+            "question": "VCOGに採用されているイルミネーション方式は？",
+            "correct": "トリチウム＋ファイバーオプティック",
+            "distractors": [
+              "バッテリー駆動LED",
+              "太陽電池駆動",
+              "レチクル反射"
+            ]
+          },
+          {
+            "question": "Trijiconが開発し、固定4倍倍率でチューリビウム＋ファイバーオプティック照準を特徴とする光学照準器は？",
+            "correct": "Trijicon ACOG",
+            "distractors": [
+              "Trijicon VCOG",
+              "Aimpoint CompM2",
+              "Elcan SpecterDR"
+            ]
+          },
+          {
+            "question": "米海兵隊のM27 IARに広く搭載され、4倍固定倍率を採用する照準器は？",
+            "correct": "Trijiicon ACOG",
+            "distractors": [
+              "Trijicon VCOG",
+              "Aimpoint CompM2",
+              "Trijicon HCOG"
+            ]
+          },
+          {
+            "question": "可変倍率1–6倍レンジを持ち、ミルスケール照準を特徴とするTrijicon製照準器は？",
+            "correct": "Trijicon VCOG",
+            "distractors": [
+              "Trijiicon ACOG",
+              "Aimpoint CompM2",
+              "SpecterDR"
+            ]
+          },
+          {
+            "question": "AN/PVSシリーズの型番にある「PVS」は何の略称か？",
+            "correct": "Portable Vision Scope",
+            "distractors": [
+              "Personal Vision System",
+              "Passive Vision Sight",
+              "Protected Visual Sensor"
+            ]
+          },
+          {
+            "question": "ベトナム戦争時、米軍が初めて本格導入した暗視装置の型番は？",
+            "correct": "AN/PVS-2",
+            "distractors": [
+              "AN/PVS-7",
+              "AN/PVS-14",
+              "AN/PSQ-20"
+            ]
+          },
+          {
+            "question": "湾岸戦争時代に米軍が広く採用し、単眼型で有名になった第3世代暗視装置は？",
+            "correct": "AN/PVS-7",
+            "distractors": [
+              "AN/PVS-15",
+              "AN/PVS-2",
+              "AN/PVS-4"
+            ]
+          },
+          {
+            "question": "現在、米軍で最も広く普及している単眼式暗視装置の型番は？",
+            "correct": "AN/PVS-14",
+            "distractors": [
+              "AN/PVS-7",
+              "AN/PVS-31",
+              "AN/PVS-23"
+            ]
+          },
+          {
+            "question": "米軍特殊作戦部隊（SOF）向けに採用されている最新型の双眼式暗視装置は？",
+            "correct": "AN/PVS-31",
+            "distractors": [
+              "AN/PVS-15",
+              "AN/PVS-14",
+              "AN/PVS-7"
+            ]
+          },
+          {
+            "question": "AN/PVS-15とAN/PVS-31の大きな違いとして正しいものは？",
+            "correct": "重量軽減と単眼使用可能",
+            "distractors": [
+              "赤外線照射機能の有無",
+              "倍率の変更",
+              "耐水性能の強化"
+            ]
+          },
+          {
+            "question": "AN/PVS-4が主に装着された銃器として有名な米軍制式銃は？",
+            "correct": "M16A1",
+            "distractors": [
+              "M14",
+              "M249",
+              "M240B"
+            ]
+          },
+          {
+            "question": "米陸軍がAN/PVS-31として採用している双眼式ナイトビジョン装置の世代区分は？",
+            "correct": "第3世代",
+            "distractors": [
+              "第2世代",
+              "第4世代",
+              "第1世代"
+            ]
+          },
+          {
+            "question": "米海軍特殊部隊（SEAL）が近年採用している、ネプチューンスピア作戦で用いられた暗視装置は？",
+            "correct": "GPNVG-18",
+            "distractors": [
+              "AN/PVS-31",
+              "AN/PVS-15",
+              "AN/PVS-7"
+            ]
+          },
+          {
+            "question": "米軍が1990年代後半に採用したインターセプター・ボディアーマー（IBA）の製造元は？",
+            "correct": "Point Blank Body Armor",
+            "distractors": [
+              "Eagle Industries",
+              "LBT",
+              "Crye Precision"
+            ]
+          },
+          {
+            "question": "2000年代初頭に米海兵隊が採用したイーグル製の代表的なプレートキャリアは？",
+            "correct": "Eagle SPC",
+            "distractors": [
+              "Eagle CIRAS",
+              "LBT 6094",
+              "Velocity Scarab"
+            ]
+          },
+          {
+            "question": "米海兵隊がSPCの後継として2010年代に導入したプレートキャリアの通称は？",
+            "correct": "USMC Plate Carrier Gen3",
+            "distractors": [
+              "Eagle MBAV",
+              "LBT 6094",
+              "Crye CPC"
+            ]
+          },
+          {
+            "question": "陸軍特殊部隊が初期のイラク戦争時に広く使用したイーグル製アーマーシステムの型式は？",
+            "correct": "Eagle CIRAS",
+            "distractors": [
+              "Eagle MBAV",
+              "Eagle SPC",
+              "Eagle RRV"
+            ]
+          },
+          {
+            "question": "Eagle IndustriesのCIRASが正式採用されていた米軍組織はどれか？",
+            "correct": "USSOCOM全般",
+            "distractors": [
+              "米陸軍一般部隊",
+              "米空軍警備隊",
+              "米沿岸警備隊"
+            ]
+          },
+          {
+            "question": "LBT（London Bridge Trading）製のプレートキャリアで最も有名な型式は？",
+            "correct": "LBT 6094",
+            "distractors": [
+              "LBT 1961",
+              "LBT 2586",
+              "LBT 8005"
+            ]
+          },
+          {
+            "question": "LBT 6094の標準的な素材として知られているのは？",
+            "correct": "500D コーデュラナイロン",
+            "distractors": [
+              "1000D コーデュラナイロン",
+              "210D ナイロン",
+              "420D パッククロス"
+            ]
+          },
+          {
+            "question": "クライプレシジョンが開発し最大限の軽量化と荷物の携帯性能を両立した、SEALや特殊作戦部隊で標準装備されたプレートキャリアの型名は？",
+            "correct": "Crye JPC",
+            "distractors": [
+              "Crye AVS",
+              "Crye CPC",
+              "Crye LVS"
+            ]
+          },
+          {
+            "question": "Crye Precision JPCの名前の由来となっているコンセプトは？",
+            "correct": "Jumpable（降下可能な）軽量構造",
+            "distractors": [
+              "ジャングル戦向け",
+              "Jacket-type構造",
+              "Joint部隊向け"
+            ]
+          },
+          {
+            "question": "クライプレシジョンのCPC（CAGE Plate Carrier）がAVSやJPCと異なる主な特徴は？",
+            "correct": "全面的な装甲範囲の拡張",
+            "distractors": [
+              "重量の劇的軽減",
+              "クイックリリース機能の標準搭載",
+              "サイドプレート収納不可"
+            ]
+          },
+          {
+            "question": "クライプレシジョンAVSの最大の特徴であるシステムは？",
+            "correct": "ハーネスとモジュラー構造の組合せ",
+            "distractors": [
+              "サイドプレート内蔵機能",
+              "前面クイックリリース",
+              "磁気バックル採用"
+            ]
+          },
+          {
+            "question": "ベロシティ・システムズ製の超軽量プレートキャリアで特殊部隊に広く普及した型式は？",
+            "correct": "Velocity Scarab",
+            "distractors": [
+              "Velocity Mayflower APC",
+              "Velocity LWPC",
+              "Velocity LPAC"
+            ]
+          },
+          {
+            "question": "米海軍SEALがDEVGRUを中心に運用することで知られるプレートキャリア「NJPC」の開発元は？",
+            "correct": "Crye Precision",
+            "distractors": [
+              "LBT",
+              "イーグル",
+              "ベロシティ"
+            ]
+          },
+          {
+            "question": "米軍が次世代の兵士装備プログラム「SPS」の一環として導入した最新プレートキャリアの開発メーカーは？",
+            "correct": "KDH Defense Systems",
+            "distractors": [
+              "Eagle Industries",
+              "LBT",
+              "Velocity Systems"
+            ]
+          },
+          {
             "question": "世界初の実用戦車はどの国で開発されたか？",
             "correct": "イギリス",
             "distractors": [
@@ -5385,15 +6083,6 @@
             ]
           },
           {
-            "question": "零戦の初飛行年は？",
-            "correct": "1939年",
-            "distractors": [
-              "1937年",
-              "1941年",
-              "1943年"
-            ]
-          },
-          {
             "question": "陸上自衛隊が運用する、8輪駆動方式で高い機動性を持ち、「WAPC」とも呼ばれる装甲兵員輸送車は？",
             "correct": "96式装輪装甲車",
             "distractors": [
@@ -5481,6 +6170,15 @@
               "73式装甲車",
               "96式自走120mm迫撃砲",
               "96式装輪装甲車"
+            ]
+          },
+          {
+            "question": "零戦の初飛行年は？",
+            "correct": "1939年",
+            "distractors": [
+              "1937年",
+              "1941年",
+              "1943年"
             ]
           }
         ]
