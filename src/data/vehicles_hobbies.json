@@ -4887,10 +4887,10 @@
           },
           {
             "question": "米特殊作戦軍の要求でH&Kが開発した大型の戦術拳銃は？",
-            "correct": "HK Mk23 SOCOM",
+            "correct": "Mk23 SOCOM",
             "distractors": [
               "シグP226",
-              "ベレッタ92F",
+              "92F",
               "デザートイーグル"
             ]
           },
@@ -5246,6 +5246,141 @@
             ]
           },
           {
+            "question": "M16ライフルが米陸軍と米海兵隊にに最初に制式採用された際の正式名称は？",
+            "correct": "XM16E1",
+            "distractors": [
+              "M16A1",
+              "M16A2",
+              "M16A3"
+            ]
+          },
+          {
+            "question": "M16A1からM16A2への改良ポイントとして間違っているものは？",
+            "correct": "ナイトビジョン対応レールを追加した",
+            "distractors": [
+              "ハンドガードを上下分割の円筒状に変更した",
+              "リアサイトをL型からダイヤル方式に変更した",
+              "フルオートを廃止して3点バーストにした"
+            ]
+          },
+          {
+            "question": "M16シリーズの中で、ピカティニーレールを採用したモデルは？",
+            "correct": "MA16A4",
+            "distractors": [
+              "M16A1",
+              "M16A2",
+              "M16A3"
+            ]
+          },
+          {
+            "question": "海兵隊が標準歩兵ライフルとして採用したM16の最新モデル（2000年代）はどれか？",
+            "correct": "M16A4",
+            "distractors": [
+              "M16A3",
+              "M16A2",
+              "M4A1"
+            ]
+          },
+          {
+            "question": "M16の設計者として知られるユージン・ストーナーが当初勤務していた企業は？",
+            "correct": "アーマライト社",
+            "distractors": [
+              "コルト社",
+              "ブッシュマスター社",
+              "FNハースタル社"
+            ]
+          },
+          {
+            "question": "M16シリーズに最初に標準装備された銃剣の型式は？",
+            "correct": "M7銃剣",
+            "distractors": [
+              "M9銃剣",
+              "M6銃剣",
+              "OKC-3S銃剣"
+            ]
+          },
+          {
+            "question": "M16A4ライフルがM16A2と比較して標準採用した主な改善点は？",
+            "correct": "ピカティニーレールの採用",
+            "distractors": [
+              "軽量銃身への変更",
+              "ツイストレートの変更",
+              "フルオート射撃の追加"
+            ]
+          },
+          {
+            "question": "米軍の要請で開発された分隊選抜射手用ライフルとして知られるM16派生型の名称は？",
+            "correct": "Mk12 SPR",
+            "distractors": [
+              "M110 SASS",
+              "Mk18 CQBR",
+              "M27 IAR"
+            ]
+          },
+          {
+            "question": "ベトナム戦争中のM16初期型における深刻な作動不良問題の主な原因とされるのは？",
+            "correct": "火薬の変更とメンテナンス不足",
+            "distractors": [
+              "銃身の品質低下",
+              "ストック素材の劣化",
+              "銃剣の重量過多"
+            ]
+          },
+          {
+            "question": "M4カービンの銃身長は何インチか？",
+            "correct": "14.5インチ",
+            "distractors": [
+              "16インチ",
+              "20インチ",
+              "18インチ"
+            ]
+          },
+          {
+            "question": "M4A1カービンがM4と異なる主要な機能は何か？",
+            "correct": "フルオート射撃能力",
+            "distractors": [
+              "バースト射撃機能",
+              "伸縮式ストック",
+              "フリーフロートハンドガード"
+            ]
+          },
+          {
+            "question": "M4カービンに装着可能な40mmグレネードランチャーの標準型式は？",
+            "correct": "M203",
+            "distractors": [
+              "M320",
+              "M79",
+              "M32"
+            ]
+          },
+          {
+            "question": "米特殊作戦軍が採用した10.3インチ銃身を持つ短縮型M4派生モデルの名称は？",
+            "correct": "Mk18 CQBR",
+            "distractors": [
+              "Mk12 SPR",
+              "M16A4",
+              "M110 SASS"
+            ]
+          },
+          {
+            "question": "M4およびM4A1の製造を長年担当してきた主な米国内メーカーは？",
+            "correct": "コルト社",
+            "distractors": [
+              "FN社",
+              "ダニエル・ディフェンス社",
+              "LMT社"
+            ]
+          },
+          {
+            "question": "M4カービンに標準搭載される伸縮式ストックの正式名称は？",
+            "correct": "M4テレスコピックストック",
+            "distractors": [
+              "A2固定ストック",
+              "PRSストック",
+              "CTRストック"
+            ]
+          },
+          {
             "question": "SCAR-Hが採用しているリコイルシステムの種類は？",
             "correct": "ショートストロークガスピストン",
             "distractors": [
@@ -5270,6 +5405,24 @@
               "SCAR-H",
               "M4A1",
               "HK416"
+            ]
+          },
+          {
+            "question": "米陸軍がM16シリーズ（M4カービン）に代わる次世代ライフルとして採用を決めた新型ライフル（2022年）は？",
+            "correct": "XM7",
+            "distractors": [
+              "XM8",
+              "H&K416",
+              "M27 IAR"
+            ]
+          },
+          {
+            "question": "米陸軍が次世代ライフルとして採用を決めたXM7の元となるモデルは？",
+            "correct": "SIG MCX-SPEAR",
+            "distractors": [
+              "HK416",
+              "FN SCAR",
+              "Steyr AUG"
             ]
           },
           {
@@ -5364,10 +5517,10 @@
           },
           {
             "question": "可変倍率1–6倍レンジを持ち、ミルスケール照準を特徴とするTrijicon製照準器は？",
-            "correct": "Trijicon VCOG",
+            "correct": "VCOG",
             "distractors": [
-              "Trijiicon ACOG",
-              "Aimpoint CompM2",
+              "ACOG",
+              "CompM2",
               "SpecterDR"
             ]
           },
@@ -5463,11 +5616,11 @@
           },
           {
             "question": "2000年代初頭に米海兵隊が採用したイーグル製の代表的なプレートキャリアは？",
-            "correct": "Eagle SPC",
+            "correct": "SPC",
             "distractors": [
-              "Eagle CIRAS",
-              "LBT 6094",
-              "Velocity Scarab"
+              "CIRAS",
+              "6094",
+              "Scarab"
             ]
           },
           {
@@ -5486,6 +5639,15 @@
               "Eagle MBAV",
               "Eagle SPC",
               "Eagle RRV"
+            ]
+          },
+          {
+            "question": "2007年にアメリカ陸軍が採用し、プロテクターやアーマープレートを装着することで抗弾能力の向上を図ることができるたモジュラー式ボディーアーマーは？",
+            "correct": "IOTV",
+            "distractors": [
+              "IBA",
+              "SPCS",
+              "MBAV"
             ]
           },
           {
@@ -5576,6 +5738,258 @@
               "Eagle Industries",
               "LBT",
               "Velocity Systems"
+            ]
+          },
+          {
+            "question": "SASの正式名称（略称SAS）は何の略称か？",
+            "correct": "Special Air Service",
+            "distractors": [
+              "Special Assault Squadron",
+              "Service Air Special",
+              "Special Application Service"
+            ]
+          },
+          {
+            "question": "SASが創設された年は？",
+            "correct": "1941年",
+            "distractors": [
+              "1950年",
+              "1939年",
+              "1945年"
+            ]
+          },
+          {
+            "question": "SASを創設した人物は誰か？",
+            "correct": "デイヴィッド・スターリング",
+            "distractors": [
+              "ジョン・D・フロスト",
+              "ボブ・ブラウン",
+              "パディ・メイン"
+            ]
+          },
+          {
+            "question": "SASが最初に戦闘任務を遂行した戦域はどこか？",
+            "correct": "北アフリカ",
+            "distractors": [
+              "イタリア",
+              "フランス",
+              "バルカン半島"
+            ]
+          },
+          {
+            "question": "SASの部隊モットーは何か？",
+            "correct": "「Who Dares Wins」",
+            "distractors": [
+              "「Per Mare Per Terram」",
+              "「Nemo Me Impune Lacessit」",
+              "「Semper Fidelis」"
+            ]
+          },
+          {
+            "question": "予備役のSAS部隊として知られるのはどれか？",
+            "correct": "21 SAS",
+            "distractors": [
+              "22 SAS",
+              "23 SAS",
+              "24 SAS"
+            ]
+          },
+          {
+            "question": "SASの部隊章に描かれている武器は何か？",
+            "correct": "Winged Dagger",
+            "distractors": [
+              "Golden Lion",
+              "Crown and Anchor",
+              "Eagle and Globe"
+            ]
+          },
+          {
+            "question": "SASの選抜試験「ヒルズフェーズ」が行われる山岳地帯はどこか？",
+            "correct": "ブレコン・ビーコンズ",
+            "distractors": [
+              "スコティッシュ・ハイランド",
+              "湖水地方",
+              "コッツウォルズ"
+            ]
+          },
+          {
+            "question": "1980年のイラン大使館人質救出作戦の作戦名は何か？",
+            "correct": "Operation Nimrod",
+            "distractors": [
+              "Operation Eagle Claw",
+              "Operation Granby",
+              "Operation Desert Storm"
+            ]
+          },
+          {
+            "question": "SASの本部が置かれている基地はどこか？",
+            "correct": "スターリング・ラインズ",
+            "distractors": [
+              "サンドハースト",
+              "ペニンシュラ・バラックス",
+              "ブレコン・ビーコンズ"
+            ]
+          },
+          {
+            "question": "デルタフォースの正式名称（略称1st SFOD-D）の綴りは？",
+            "correct": "First Special Forces Operational Detachment-Delta",
+            "distractors": [
+              "First Special Operations Detachment-Delta",
+              "First Special Forces Operational Division-Delta",
+              "First Special Forces Operational Detachment-Devgru"
+            ]
+          },
+          {
+            "question": "デルタフォースを創設した米陸軍関係者は誰か？",
+            "correct": "チャールズ・A・ベックウィズ",
+            "distractors": [
+              "ビル・ヤング",
+              "ジェリー・マセナ",
+              "ジェームス・ウィリアムス"
+            ]
+          },
+          {
+            "question": "デルタフォースが公式に編成された年は？",
+            "correct": "1977年",
+            "distractors": [
+              "1980年",
+              "1975年",
+              "1983年"
+            ]
+          },
+          {
+            "question": "デルタフォース本部が所在するのはどの基地か？",
+            "correct": "フォートブラッグ",
+            "distractors": [
+              "フォートリーベンワース",
+              "フォートキャンベル",
+              "フォートフッド"
+            ]
+          },
+          {
+            "question": "イラン人質救出作戦『イーグル・クロー作戦』が発動されたのは何年か？",
+            "correct": "1980年",
+            "distractors": [
+              "1979年",
+              "1981年",
+              "1982年"
+            ]
+          },
+          {
+            "question": "1983年のグレナダ侵攻作戦でデルタフォースが参加した作戦名は？",
+            "correct": "オペレーション・アージェント・フューリー",
+            "distractors": [
+              "オペレーション・ジャスト・コーズ",
+              "オペレーション・アップル・ソース",
+              "オペレーション・ジャスティス"
+            ]
+          },
+          {
+            "question": "1989年のパナマ侵攻作戦でデルタフォースが関与した作戦名は？",
+            "correct": "オペレーション・アシッド・ギャンビット",
+            "distractors": [
+              "オペレーション・サンダー・チーム",
+              "オペレーション・アップサイドダウン",
+              "オペレーション・デザート・ウィンド"
+            ]
+          },
+          {
+            "question": "1993年のソマリア作戦（アイディード将軍捕獲作戦）でデルタフォースが参加した作戦名は？",
+            "correct": "オペレーション・ゴシック・サーペント",
+            "distractors": [
+              "オペレーション・レストア・ホープ",
+              "オペレーション・フェアウェザー",
+              "オペレーション・ストーミー・ナイト"
+            ]
+          },
+          {
+            "question": "デルタフォースの選抜過程で通称される『A&S』は何の略か？",
+            "correct": "Assessment & Selection",
+            "distractors": [
+              "Assignment & Screening",
+              "Advanced & Selection",
+              "Assessment & Screening"
+            ]
+          },
+          {
+            "question": "デルタフォースの象徴的部隊エンブレムに描かれているのは何か？",
+            "correct": "ウィングドダガー",
+            "distractors": [
+              "イーグル",
+              "ライオン",
+              "ドラゴン"
+            ]
+          },
+          {
+            "question": "デルタフォース、DEVGRUにこれを支援する第75レンジャー連隊、ナイトストーカーズ、第24特殊戦術中隊、SAS、SBSにこれを支援する特殊部隊支援群という組み合わせで構成され、2006年6月に第145任務部隊として結成された部隊のターゲットは？",
+            "correct": "アブー・ムサブ・アル＝ザルカウィ",
+            "distractors": [
+              "オサマ・ビン・ラディン",
+              "サダム・フセイン",
+              "アブー・バクル・アル＝バグダーディ"
+            ]
+          },
+          {
+            "question": "9・11からわずか15日後にCIA によって結成され、アフガニスタンに派遣された秘密工作部隊のコードネームはなにか？",
+            "correct": "「ジョー・ブレイカー」",
+            "distractors": [
+              "「チームコブラ」",
+              "「オペレーションエンドゲーム」",
+              "「レッドウイング」"
+            ]
+          },
+          {
+            "question": "2001年10月19日、ウズベキスタンのカルシ・ハナバード空軍基地から飛び立ち、バンジシール渓谷に入った部隊は？",
+            "correct": "ODA555",
+            "distractors": [
+              "ODA595",
+              "第75レンジャー部隊",
+              "デルタ・フォース"
+            ]
+          },
+          {
+            "question": "2001年、アフガニスタンに侵入し、北部同盟の最大軍閥であるドスタム将軍と連携し、要衝マザリシャリフを占領した部隊は？",
+            "correct": "ODA595",
+            "distractors": [
+              "ODA555",
+              "第75レンジャー部隊",
+              "デルタ・フォース"
+            ]
+          },
+          {
+            "question": "2001年、アフガニスタン南部カンダハル南西の簡易飛行場を確保する任務を果たした部隊は？",
+            "correct": "第75レンジャー部隊",
+            "distractors": [
+              "ODA555",
+              "ODA595",
+              "ODA555"
+            ]
+          },
+          {
+            "question": "2001年、あと一歩までビン・ラディンを追い詰めた、パキスタン国境近くの山岳地帯は？",
+            "correct": "トラ・ボラ山岳",
+            "distractors": [
+              "ヒンドゥークシュ山脈",
+              "ワジリスタン",
+              "パミール高原"
+            ]
+          },
+          {
+            "question": "次のうち、JSOC（統合特殊作戦コマンド）に属さないのは？",
+            "correct": "第160特殊作戦航空連隊",
+            "distractors": [
+              "デルタ・フォース",
+              "ISA（情報支援活動部隊）",
+              "第24特殊戦術中隊"
+            ]
+          },
+          {
+            "question": "米陸軍特殊部隊のうち、中近東地域を担当するのは？",
+            "correct": "第5特殊部隊グループ",
+            "distractors": [
+              "第3特殊部隊グループ",
+              "第7特殊部隊グループ",
+              "第10特殊部隊グループ"
             ]
           },
           {
