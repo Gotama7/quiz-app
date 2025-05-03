@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './styles.css';
+import Ranking from './components/Ranking';
+import { database } from './firebase';
+import { ref as dbRef, push, set, onValue } from 'firebase/database';
 
 // 画像のURLを設定
 const titleImageUrl = process.env.PUBLIC_URL + '/images/barbarossa.jpeg';
@@ -35,6 +38,10 @@ function QuizApp() {
   // eslint-disable-next-line no-unused-vars
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
+  const [playerName, setPlayerName] = useState('');
+  const [scoreSent, setScoreSent] = useState(false);
+  const [rankingData, setRankingData] = useState([]);
+  const [rankingLoading, setRankingLoading] = useState(true);
 
   // JSONデータを読み込む
   useEffect(() => {
@@ -66,6 +73,25 @@ function QuizApp() {
     };
     
     loadData();
+  }, []);
+
+  // ランキングデータをアプリ起動時に取得
+  useEffect(() => {
+    setRankingLoading(true);
+    const scoresRef = dbRef(database, 'scores');
+    const unsubscribe = onValue(scoresRef, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        setRankingData([]);
+        setRankingLoading(false);
+        return;
+      }
+      // データを配列に変換し、スコア順にソート
+      const scoresArray = Object.values(data).sort((a, b) => b.score - a.score);
+      setRankingData(scoresArray);
+      setRankingLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
   // タイマー制御
@@ -107,6 +133,33 @@ function QuizApp() {
     setView('subcategorySelection');
   };
 
+  // スコアを保存する関数
+  const saveScore = async () => {
+    console.log("saveScore called");
+    if (!playerName) {
+      alert('名前を入力してください');
+      return;
+    }
+    try {
+      const scoresRef = dbRef(database, 'scores');
+      const newScoreRef = push(scoresRef);
+      await set(newScoreRef, {
+        name: playerName,
+        score,
+        totalQuestions: questions.length,
+        category: selectedCategory || '',
+        subcategory: selectedSubcategory || '',
+        timestamp: new Date().toISOString()
+      });
+      console.log("setScoreSentを呼ぶよ");
+      setScoreSent(true);
+    } catch (error) {
+      console.log("catchに入ったよ", error);
+      console.error('スコアの保存中にエラーが発生しました:', error);
+      alert('スコアの保存に失敗しました: ' + error.message);
+    }
+  };
+
   // 次の問題ボタンクリックハンドラー
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -116,6 +169,8 @@ function QuizApp() {
       setShowNextButton(false);
       setTimeLeft(15);
     } else {
+      // クイズ終了時にスコアを保存
+      saveScore();
       setShowScore(true);
       setView('result');
     }
@@ -523,7 +578,14 @@ function QuizApp() {
           </div>
           <h2>カテゴリーを選択してください</h2>
           <div className="category-grid">
-            {Object.keys(quizData.categories).map((categoryId) => (
+            {[
+              'history_literature',
+              'math_science',
+              'living_things',
+              'sports',
+              'art_subculture',
+              'vehicles_hobbies'
+            ].map((categoryId) => (
               <button
                 key={categoryId}
                 className="category-button"
@@ -543,6 +605,7 @@ function QuizApp() {
               チャレンジ開始
             </button>
           </div>
+          <Ranking rankings={rankingData} isLoading={rankingLoading} />
         </div>
       </div>
     );
@@ -697,40 +760,34 @@ function QuizApp() {
   // 結果画面の表示
   const renderResult = () => {
     return (
-      <div className="app">
-        <div className="quiz-container">
-          <div className="title-section">
-            <img 
-              src={titleImageUrl}
-              alt="バルバロッサ" 
-              className="title-image"
+      <div className="result-section">
+        <h2>クイズ結果</h2>
+        <p>
+          {questions.length}問中{score}問正解！
+          （正答率: {Math.round((score / questions.length) * 100)}%）
+        </p>
+        {!scoreSent ? (
+          <div className="score-form">
+            <input
+              type="text"
+              placeholder="名前を入力してください"
+              value={playerName}
+              onChange={e => setPlayerName(e.target.value)}
+              className="name-input"
             />
-            <h1>バルバロッサクイズ！</h1>
+            <button onClick={saveScore} className="send-score-button">
+              スコアを送信
+            </button>
           </div>
-          <div className="score-section">
-            <h2>クイズ終了！</h2>
-            <div className="score-text">
-              あなたのスコアは {score} / {questions.length} です
-            </div>
-            <div className="percentage-score">
-              正答率: {Math.round((score / questions.length) * 100)}%
-            </div>
-            <div className="navigation-buttons">
-              <button
-                onClick={() => setView('categorySelection')}
-                className="nav-button"
-              >
-                トップに戻る
-              </button>
-              <button
-                onClick={() => setView('subcategorySelection')}
-                className="nav-button"
-              >
-                サブカテゴリー選択に戻る
-              </button>
-            </div>
-          </div>
+        ) : (
+          <div className="score-sent-message">スコアを送信しました！</div>
+        )}
+        <div className="result-buttons">
+          <button onClick={() => setView('categorySelection')}>
+            カテゴリー選択に戻る
+          </button>
         </div>
+        <Ranking />
       </div>
     );
   };

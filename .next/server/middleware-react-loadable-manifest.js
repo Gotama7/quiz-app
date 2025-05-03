@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"QuizApp.js -> ./data/index.json\":{\"id\":\"QuizApp.js -> ./data/index.json\",\"files\":[\"static/chunks/_app-pages-browser_src_data_index_json.js\"]}}"
