@@ -5107,6 +5107,15 @@
             ]
           },
           {
+            "question": "次のうち、ドングリを包む殻斗が浅い杯状になるのはどれか？",
+            "correct": "ナラガシワ",
+            "distractors": [
+              "クヌギ",
+              "アラカシ",
+              "ミズナラ"
+            ]
+          },
+          {
             "question": "クヌギの葉の縁の鋸歯はどのような形状か？",
             "correct": "粗く深く切れ込む",
             "distractors": [
@@ -5158,6 +5167,60 @@
               "薄くて柔らかい",
               "粉を吹いたように白っぽい",
               "表面に斑点が多い"
+            ]
+          },
+          {
+            "question": "次のうちバラ科でないものは？",
+            "correct": "イチジク",
+            "distractors": [
+              "モモ",
+              "ウメ",
+              "リンゴ"
+            ]
+          },
+          {
+            "question": "次のうちバラ科でないものは？",
+            "correct": "キウイ",
+            "distractors": [
+              "モモ",
+              "ウメ",
+              "リンゴ"
+            ]
+          },
+          {
+            "question": "次のうちバラ科でないものは？",
+            "correct": "バナナ",
+            "distractors": [
+              "イチゴ",
+              "アンズ",
+              "サクラ"
+            ]
+          },
+          {
+            "question": "次のうちバラ科でないものは？",
+            "correct": "ユズ",
+            "distractors": [
+              "サクランボ",
+              "ナシ",
+              "ヒメリンゴ"
+            ]
+          },
+          {
+            "question": "次のうちバラ科でないものは？",
+            "correct": "ブドウ",
+            "distractors": [
+              "モモ",
+              "サクラ",
+              "ナシ"
+            ]
+          },
+          {
+            "question": "次のうちバラ科でないものは？",
+            "correct": "クワ属",
+            "distractors": [
+              "サクラ属",
+              "リンゴ属",
+              "ヤマブキ属"
             ]
           },
           {
@@ -6599,6 +6662,87 @@
               "ADH",
               "アセトアルデヒド",
               "酢酸"
+            ]
+          },
+          {
+            "question": "黒死病（ペスト）の主原因とされる細菌は？",
+            "correct": "Yersinia pestis",
+            "distractors": [
+              "Clostridium perfringens",
+              "Bacillus anthracis",
+              "Vibrio vulnificus"
+            ]
+          },
+          {
+            "question": "ペストの媒介動物として最も重要視されるのはどれか？",
+            "correct": "ネズミノミ",
+            "distractors": [
+              "蚊",
+              "糞口経路の昆虫",
+              "ヒトヒト間"
+            ]
+          },
+          {
+            "question": "ペスト治療の第一選択薬として推奨されるのは？",
+            "correct": "ストレプトマイシン",
+            "distractors": [
+              "シプロフロキサシン",
+              "セファレキシン",
+              "アモキシシリン"
+            ]
+          },
+          {
+            "question": "赤痢の原因菌として最も一般的なのはどれか？",
+            "correct": "志賀菌（Shigella dysenteriae）",
+            "distractors": [
+              "サルモネラ菌（Salmonella enterica）",
+              "コレラ菌（Vibrio cholerae）",
+              "腸球菌（Enterococcus faecalis）"
+            ]
+          },
+          {
+            "question": "赤痢の潜伏期として最も長い期間はおよそどれか？",
+            "correct": "1～3日",
+            "distractors": [
+              "5～7日",
+              "10～14日",
+              "14～21日"
+            ]
+          },
+          {
+            "question": "赤痢の治療に一般的に用いられる抗菌薬はどれか？",
+            "correct": "ニューキノロン系",
+            "distractors": [
+              "ペニシリン系",
+              "マクロライド系",
+              "オピオイド系"
+            ]
+          },
+          {
+            "question": "コレラの主な症状として正しいものはどれか？",
+            "correct": "激しい水様性下痢",
+            "distractors": [
+              "粘血便を伴う下痢",
+              "高熱と発疹",
+              "激しい腹痛と便秘"
+            ]
+          },
+          {
+            "question": "コレラ菌が産生する毒素の名称は？",
+            "correct": "コレラ毒素（CT）",
+            "distractors": [
+              "シュワルツマン毒素（ScT）",
+              "エンテロトキシン（ET）",
+              "ドプトキシン（DT）"
+            ]
+          },
+          {
+            "question": "コレラの予防に効果的とされるワクチンは？",
+            "correct": "経口不活化ワクチン",
+            "distractors": [
+              "生ワクチン（BCG）",
+              "ポリオワクチン",
+              "BCGワクチン"
             ]
           }
         ]
