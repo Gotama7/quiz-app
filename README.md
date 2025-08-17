@@ -1,58 +1,94 @@
-# クイズアプリケーション
+# バルバロッサクイズアプリ
 
-多様なジャンルのクイズを楽しめるWebアプリケーションです。
+React + Firebaseを使用したクイズアプリケーションです。
 
 ## 機能
 
-- 複数のジャンルに分かれたクイズ
-- サブカテゴリー別の出題
-- 正答率の表示と記録
-- クイズ王チャレンジ（全ジャンルから30問）
-- ランキング機能
+- カテゴリー別クイズ（10問）
+- カテゴリー王チャレンジ（20問）
+- クイズ王チャレンジ（30問）
+- Firebase Firestoreを使用したスコア保存
+- モード別・カテゴリーフィルター付きランキング表示
+- 匿名認証によるセキュアなデータアクセス
 
 ## 技術スタック
 
-- フロントエンド: React.js
-- バックエンド: Node.js + Express
-- データベース: MySQL
+- React 18
+- Firebase v9 (modular SDK)
+- Firestore (データベース)
+- Firebase Auth (匿名認証)
 
-## 開発環境のセットアップ
+## セットアップ
 
-1. リポジトリのクローン
+### 1. 依存関係のインストール
+
 ```bash
-git clone https://github.com/あなたのユーザー名/quiz-app.git
-cd quiz-app
-```
-
-2. 依存パッケージのインストール
-```bash
-# フロントエンド
-npm install
-
-# バックエンド
-cd server
 npm install
 ```
 
-3. 環境変数の設定
-- `.env`ファイルを作成し、必要な環境変数を設定
+### 2. Firebase設定
 
-4. 開発サーバーの起動
+1. [Firebase Console](https://console.firebase.google.com/)でプロジェクトを作成
+2. Firestore Databaseを有効化
+3. Authenticationで匿名認証を有効化
+4. `src/firebase.ts`の設定値を更新（TODOコメント部分）
+
+### 3. Firestoreセキュリティルール
+
+`firestore.rules`の内容をFirebase ConsoleのFirestore > ルールにコピー：
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /scores/{doc} {
+      allow read: if true;                 // ランキングは公開
+      allow write: if request.auth != null; // 匿名認証済みのみ書き込み許可
+    }
+  }
+}
+```
+
+### 4. アプリの起動
+
 ```bash
-# フロントエンド
 npm start
-
-# バックエンド
-cd server
-npm run dev
 ```
 
-## デプロイ
+## データ構造
 
-- フロントエンド: Vercel
-- バックエンド: Railway
-- データベース: Railway MySQL
+### Firestore コレクション: `scores`
 
-## ライセンス
+```javascript
+{
+  name: "プレイヤー名",
+  score: 点数,
+  mode: モード（10/20/30）,
+  category: "カテゴリー名",
+  createdAt: サーバータイムスタンプ,
+  id: "ドキュメントID"
+}
+```
 
-MIT 
+## 主な変更点
+
+- GAS経由のスコア保存を廃止
+- Firebase Firestoreを使用したフロントエンドのみの実装
+- 匿名認証によるセキュアなアクセス
+- カテゴリーフィルター付きランキング表示
+- CORS問題の解決
+- TypeScript対応のヘルパー関数
+
+## ファイル構成
+
+- `src/firebase.ts` - Firebase初期化設定
+- `src/lib/score.ts` - スコア保存・ランキング取得のヘルパー関数
+- `src/QuizApp.js` - メインのクイズアプリケーション
+- `firestore.rules` - Firestoreセキュリティルール
+
+## 注意事項
+
+- Firebaseプロジェクトの設定が正しく行われていることを確認してください
+- `src/firebase.ts`の設定値を実際のFirebaseプロジェクトの値に置き換えてください
+- Firestoreのセキュリティルールが適切に設定されていることを確認してください
+- 匿名認証が有効になっていることを確認してください 

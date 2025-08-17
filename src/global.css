@@ -1,0 +1,176 @@
+/* 全体のスタイル */
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #45a049;
+  --background-color: #f5f5f5;
+  --text-color: #333;
+  --border-color: #ddd;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-color);
+}
+
+/* 画像の基本スタイル（タイトル画像以外） */
+img:not(.title-image) {
+  width: 100%;
+  height: auto;
+}
+
+/* タイトル画像の固定スタイル */
+.title-image {
+  width: 120px !important;
+  height: auto !important;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* タイトルセクション */
+.title-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 40px 0;
+}
+
+/* タイトル */
+.title-section h1 {
+  font-size: 3rem;
+  color: #2c3e50;
+  margin: 0;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.10);
+  letter-spacing: 2px;
+}
+
+/* ヘッダー */
+h1 {
+  color: #333;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+}
+
+/* カテゴリー選択画面 */
+.category-selection,
+.subcategory-selection {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin: 32px 0;
+}
+
+/* カテゴリー選択ボタン */
+.category-button {
+  min-width: 240px;
+  padding: 20px 0;
+  font-size: 1.3rem;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-weight: 500;
+}
+
+.category-button:hover {
+  background: #444;
+}
+
+/* クイズ画面 */
+.quiz-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto 0;
+}
+
+.question-section {
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.question-section h2 {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.option-button {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  line-height: 1.4;
+  -webkit-text-fill-color: #333;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option-button:hover:not([disabled]) {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  color: #333;
+  -webkit-text-fill-color: #333;
+}
+
+.option-button.correct {
+  background-color: #22c55e;
+  color: white;
+  border-color: #16a34a;
+  -webkit-text-fill-color: white;
+}
+
+.option-button.incorrect {
+  background-color: #ef4444;
+  color: white;
+  border-color: #dc2626;
+  -webkit-text-fill-color: white;
+}
+
+.option-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  color: #333;
+  -webkit-text-fill-color: #333;
+}
+
+/* ここでCSSは終了 */ 

@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ランキングの読み取りは公開
+    match /scores/{id} {
+      allow read: if true;
+
+      // 書き込みは匿名ユーザー含む「認証済み」だけ
+      allow create: if request.auth != null
+        && request.resource.data.name is string
+        && request.resource.data.score is number
+        && request.resource.data.mode in [10,20,30];
+
+      // 更新・削除は不要（必要なら条件追加）
+      allow update, delete: if false;
+    }
+  }
+} 

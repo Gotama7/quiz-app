@@ -1,43 +1,165 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './styles.css';
+import { saveScoreToFirestore, fetchRankingFromFirestore } from './lib/score';
 
-// 画像のURLを設定
-const titleImageUrl = process.env.PUBLIC_URL + '/images/barbarossa.jpeg';
-
-// 選択肢をランダムに並べ替える関数（Fisherâ€"Yatesアルゴリズム）
-function shuffleArray(array) {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    // 0からiまでのランダムなインデックスを選択
+/* ------------------------------------------------------------------
+   0. 定数 & 共通ユーティリティ
+------------------------------------------------------------------ */
+// 選択肢シャッフル (Fisher‑Yates)
+const shuffleArray = (arr) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    // 要素を入れ替え
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  return newArray;
+  return a;
+};
+
+/* ------------------------------------------------------------------
+   1. ランキング表示コンポーネント（Firestore方式）
+------------------------------------------------------------------ */
+function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack, quizData }) {
+  const [categoryId, setCategoryId] = useState(initialCategoryId || '');
+  const [subcategoryId, setSubcategoryId] = useState(initialSubcategoryId || '');
+  const [list, setList] = useState(null);
+  const [error, setError] = useState(null);
+
+  // 初期値が変更されたら内部状態を更新
+  useEffect(() => {
+    setCategoryId(initialCategoryId || '');
+    setSubcategoryId(initialSubcategoryId || '');
+  }, [initialCategoryId, initialSubcategoryId]);
+
+  // 選択カテゴリのサブカテゴリ一覧
+  const subcats = categoryId
+    ? Object.entries(quizData.categories[categoryId]?.subcategories || {})
+    : [];
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const ranking = await fetchRankingFromFirestore({
+          mode: initialMode,
+          categoryId: categoryId || undefined,
+          subcategoryId: subcategoryId || undefined,
+        });
+        setList(ranking);
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+        setList([]);
+      }
+    })();
+  }, [initialMode, categoryId, subcategoryId]);
+
+  if (error)        return <p>読み込み失敗: {error}</p>;
+  if (list===null)  return <p>読み込み中...</p>;
+  if (list.length===0) return <p>まだ記録がありません</p>;
+
+  const title = initialMode === 10 ? '通常モード' : initialMode === 20 ? 'カテゴリー王' : 'クイズ王';
+
+  return (
+    <div className="app">
+      <div className="quiz-container">
+        <div className="title-section">
+          <img
+            src="/images/barbarossa.jpeg"
+            alt="バルバロッサ"
+            className="title-image"
+            style={{ width: 120, height: 'auto' }}
+          />
+          <h1>{title} ランキング</h1>
+        </div>
+        
+        {/* カテゴリ・サブカテゴリフィルター */}
+        <div style={{display:'flex', gap:12, justifyContent:'center', margin:'16px 0'}}>
+          <select
+            value={categoryId}
+            onChange={(e) => { setCategoryId(e.target.value); setSubcategoryId(''); }}
+            className="category-select"
+          >
+            <option value="">全カテゴリー</option>
+            {Object.entries(quizData.categories || {}).map(([cid, c]) => (
+              <option key={cid} value={cid}>{c.name}</option>
+            ))}
+          </select>
+
+          {/* サブカテゴリ選択（カテゴリ選択時だけ有効） */}
+          <select
+            value={subcategoryId}
+            onChange={(e) => setSubcategoryId(e.target.value)}
+            disabled={!categoryId}
+            className="category-select"
+          >
+            <option value="">全サブカテゴリ</option>
+            {subcats.map(([scid, sc]) => (
+              <option key={scid} value={scid}>{sc.name}</option>
+            ))}
+          </select>
+        </div>
+        
+        <ol className="ranking-list">
+          {list.map((item, i) => (
+            <li key={i} className="ranking-item">
+              <span className="rank-num">{i + 1}.</span>
+              <span className="rank-name">{item.name}</span>
+              <span className="rank-score">{item.score} 点</span>
+              {item.categoryName && <span className="rank-category">({item.categoryName})</span>}
+              {item.subcategoryName && <span className="rank-category"> - {item.subcategoryName}</span>}
+            </li>
+          ))}
+        </ol>
+        <button className="back-button" onClick={onBack}>戻る</button>
+      </div>
+    </div>
+  );
 }
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwLf94i-OMFJ4Y8g1D-dRDr3WbrUMqwFdz6yB2eFKERkqWc_BFtWLlpcuWLYqcUASjV/exec";
-
-function QuizApp() {
-  const [view, setView] = useState('categorySelection');
+/* ------------------------------------------------------------------
+   2. メイン QuizApp コンポーネント
+   （データロード／クイズ進行部は元コードそのまま）
+------------------------------------------------------------------ */
+export default function QuizApp() {
+  // ステート類（抜粋）
+  const [view, setView]                       = useState('categorySelection');
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [questions, setQuestions] = useState([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [questions, setQuestions]             = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [feedback, setFeedback] = useState(null);
-  const [showNextButton, setShowNextButton] = useState(false);
-  const [quizData, setQuizData] = useState({ categories: {} });
-  const [isLoading, setIsLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(15);
-  const timerRef = useRef(null);
-  const [playerName, setPlayerName] = useState('');
+  const [score, setScore]                     = useState(0);
+  const [isAnswered, setIsAnswered]           = useState(false);
+  const [feedback, setFeedback]               = useState(null);
+  const [showNextButton, setShowNextButton]   = useState(false);
+  const [quizData, setQuizData]               = useState({ categories: {} });
+  const [timeLeft, setTimeLeft]               = useState(15);
+  const [playerName, setPlayerName]           = useState('');
+  const [quizMode, setQuizMode] = useState(null);
+  const timerRef                              = useRef(null);
+
+  // ランキング表示用の初期フィルタ
+  const [rankingFilter, setRankingFilter] = useState({
+    mode: 10,
+    categoryId: '',
+    subcategoryId: ''
+  });
+
+  // どこからでも呼べるランディング関数
+  const openRanking = (mode = 10, categoryId = '', subcategoryId = '') => {
+    setRankingFilter({ mode, categoryId, subcategoryId });
+    setView('ranking');               // ← ランキング画面へ遷移
+  };
+
+  // Firebase匿名認証を初期化
+  useEffect(() => {
+    // Firebase初期化時に自動的に匿名認証が行われる
+    console.log('Firebase初期化完了');
+  }, []);
 
   // JSONデータを読み込む
   useEffect(() => {
     const loadData = async () => {
       try {
-        setIsLoading(true);
         // src/data/index.jsonを読み込む
         const indexData = await import('./data/index.json');
         
@@ -55,10 +177,9 @@ function QuizApp() {
         }
         
         setQuizData({ categories: categoriesData });
-        setIsLoading(false);
+        console.log('[debug] categories loaded =', Object.keys(categoriesData));
       } catch (error) {
         console.error('Failed to load quiz data:', error);
-        setIsLoading(false);
       }
     };
     
@@ -101,11 +222,14 @@ function QuizApp() {
   // カテゴリー選択ハンドラー
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
+    setSelectedSubcategory(null); // サブカテゴリもリセット
     setView('subcategorySelection');
   };
 
   // サブカテゴリー選択ハンドラー
   const handleSubcategorySelect = (subcategoryId) => {
+    setSelectedSubcategory(subcategoryId);
+    
     // 選択されたサブカテゴリーの問題を取得
     const categoryQuestions = quizData.categories[selectedCategory].subcategories[subcategoryId].questions;
     
@@ -149,161 +273,7 @@ function QuizApp() {
     }
     
     setQuestions(selectedQuestions);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setIsAnswered(false);
-    setFeedback(null);
-    setShowNextButton(false);
-    setTimeLeft(15);
-    setView('quiz');
-  };
-
-  // クイズ王チャレンジ処理
-  const handleQuizKingChallenge = () => {
-    // カテゴリーごとに問題を整理
-    const questionsByCategory = {};
-    let totalCategories = 0;
-    
-    // 各カテゴリーとサブカテゴリーから問題を集める
-    Object.keys(quizData.categories).forEach(categoryId => {
-      const category = quizData.categories[categoryId];
-      questionsByCategory[categoryId] = {
-        name: category.name,
-        subcategories: {}
-      };
-      
-      let validSubcategoryCount = 0;
-      
-      // 各サブカテゴリーを処理
-      Object.keys(category.subcategories).forEach(subcategoryId => {
-        const subcategory = category.subcategories[subcategoryId];
-        if (subcategory.questions && subcategory.questions.length > 0) {
-          // 有効な問題をフィルタリング
-          const validQuestions = subcategory.questions.filter(q => 
-            q.question && q.correct && q.distractors && q.distractors.length === 3
-          );
-          
-          if (validQuestions.length > 0) {
-            questionsByCategory[categoryId].subcategories[subcategoryId] = {
-              name: subcategory.name,
-              questions: validQuestions.map(q => ({
-                ...q,
-                categoryId,
-                categoryName: category.name,
-                subcategoryId,
-                subcategoryName: subcategory.name
-              }))
-            };
-            validSubcategoryCount++;
-          }
-        }
-      });
-      
-      if (validSubcategoryCount > 0) {
-        totalCategories++;
-      }
-    });
-    
-    // 十分なカテゴリがない場合
-    if (totalCategories < 3) {
-      alert('十分なカテゴリーがありません。もっと問題を追加してください。');
-      return;
-    }
-    
-    // カテゴリーごとの出題数を計算
-    const questionsPerCategory = Math.floor(30 / totalCategories);
-    let remainingQuestions = 30 - (questionsPerCategory * totalCategories);
-    
-    // 最終的な問題リスト
-    const selectedQuestions = [];
-    
-    // 各カテゴリーから均等に問題を選択
-    Object.keys(questionsByCategory).forEach(categoryId => {
-      const categoryData = questionsByCategory[categoryId];
-      const validSubcategories = Object.keys(categoryData.subcategories);
-      
-      if (validSubcategories.length === 0) return;
-      
-      // このカテゴリーから選ぶ問題数
-      let questionsToSelectFromCategory = questionsPerCategory;
-      if (remainingQuestions > 0) {
-        questionsToSelectFromCategory++;
-        remainingQuestions--;
-      }
-      
-      // サブカテゴリーごとの出題数を計算
-      const questionsPerSubcategory = Math.max(1, Math.floor(questionsToSelectFromCategory / validSubcategories.length));
-      let remainingForCategory = questionsToSelectFromCategory - (questionsPerSubcategory * validSubcategories.length);
-      
-      // 各サブカテゴリーから問題を選択
-      validSubcategories.forEach(subcategoryId => {
-        const subcategoryData = categoryData.subcategories[subcategoryId];
-        const questions = subcategoryData.questions;
-        
-        // このサブカテゴリーから選ぶ問題数
-        let questionsToSelect = questionsPerSubcategory;
-        if (remainingForCategory > 0) {
-          questionsToSelect++;
-          remainingForCategory--;
-        }
-        
-        // 利用可能な問題数よりも多く選ぼうとしていないか確認
-        questionsToSelect = Math.min(questionsToSelect, questions.length);
-        
-        // 問題をシャッフルして選択
-        const shuffledQuestions = shuffleArray([...questions]);
-        selectedQuestions.push(...shuffledQuestions.slice(0, questionsToSelect));
-      });
-    });
-    
-    // 足りない問題がある場合、ランダムに追加
-    if (selectedQuestions.length < 30) {
-      // 全ての有効な問題を集める
-      const allQuestions = [];
-      Object.keys(questionsByCategory).forEach(categoryId => {
-        const categoryData = questionsByCategory[categoryId];
-        Object.keys(categoryData.subcategories).forEach(subcategoryId => {
-          allQuestions.push(...categoryData.subcategories[subcategoryId].questions);
-        });
-      });
-      
-      // 既に選ばれていない問題をフィルタリング
-      const unusedQuestions = allQuestions.filter(q1 => 
-        !selectedQuestions.some(q2 => q1.question === q2.question)
-      );
-      
-      // 必要な数だけ追加
-      const additionalNeeded = 30 - selectedQuestions.length;
-      if (unusedQuestions.length >= additionalNeeded) {
-        const additionalQuestions = shuffleArray(unusedQuestions).slice(0, additionalNeeded);
-        selectedQuestions.push(...additionalQuestions);
-      } else {
-        // 足りない場合は、既存の問題から重複を許して追加
-        const moreQuestions = shuffleArray(allQuestions).slice(0, additionalNeeded);
-        selectedQuestions.push(...moreQuestions);
-      }
-    }
-    
-    // 最終的な問題リストをシャッフル
-    const finalQuestions = shuffleArray(selectedQuestions).slice(0, 30);
-    
-    // 選択肢の準備
-    const questionsWithOptions = finalQuestions.map(q => {
-      const options = [
-        { text: q.correct, isCorrect: true },
-        { text: q.distractors[0], isCorrect: false },
-        { text: q.distractors[1], isCorrect: false },
-        { text: q.distractors[2], isCorrect: false }
-      ];
-      
-      return {
-        ...q,
-        options: shuffleArray(options)
-      };
-    });
-    
-    // クイズの状態をセット
-    setQuestions(questionsWithOptions);
+    setQuizMode(10);
     setCurrentQuestionIndex(0);
     setScore(0);
     setIsAnswered(false);
@@ -316,6 +286,9 @@ function QuizApp() {
   // カテゴリー王チャレンジの処理
   const handleCategoryKingChallenge = () => {
     if (!selectedCategory) return;
+    
+    // サブカテゴリはリセット（全カテゴリーから問題を選ぶため）
+    setSelectedSubcategory(null);
     
     const category = quizData.categories[selectedCategory];
     const allCategoryQuestions = [];
@@ -447,6 +420,7 @@ function QuizApp() {
     
     // クイズの状態をセット
     setQuestions(questionsWithOptions);
+    setQuizMode(20);
     setCurrentQuestionIndex(0);
     setScore(0);
     setIsAnswered(false);
@@ -454,37 +428,6 @@ function QuizApp() {
     setShowNextButton(false);
     setTimeLeft(15);
     setView('quiz');
-  };
-
-  // GAS用のスコア送信関数
-  const saveScore = async () => {
-    if (!playerName) {
-      alert('名前を入力してください');
-      return;
-    }
-    try {
-      const formData = new URLSearchParams();
-      formData.append('action', 'registerScore');
-      formData.append('name', playerName);
-      formData.append('score', score);
-      formData.append('category', selectedCategory || '');
-
-      const response = await fetch(GAS_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData.toString(),
-      });
-      const result = await response.json();
-      if (result.success) {
-        alert('スコアを送信しました！');
-      } else {
-        alert('スコアの保存に失敗しました');
-      }
-    } catch (error) {
-      alert('スコアの保存に失敗しました: ' + error.message);
-    }
   };
 
   // handleNextQuestion, handleAnswerClickの再定義（簡易版）
@@ -497,7 +440,17 @@ function QuizApp() {
       setTimeLeft(15);
     } else {
       // クイズ終了時にスコアを保存
-      saveScore();
+      if (playerName) {
+        saveScoreToFirestore({
+          name: playerName,
+          score: score,
+          mode: questions.length, // 10/20/30
+          categoryId: selectedCategory,
+          categoryName: quizData.categories[selectedCategory]?.name,
+          subcategoryId: selectedSubcategory,
+          subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+        });
+      }
       setView('result');
     }
   };
@@ -522,57 +475,6 @@ function QuizApp() {
     }
   };
 
-  // カテゴリー選択画面
-  const renderCategorySelection = () => {
-    if (isLoading) {
-      return <div className="loading">データを読み込み中...</div>;
-    }
-
-    return (
-      <div className="app">
-        <div className="quiz-container">
-          <div className="title-section">
-            <img 
-              src={titleImageUrl}
-              alt="バルバロッサ" 
-              className="title-image"
-            />
-            <h1>バルバロッサクイズ！</h1>
-          </div>
-          <h2>カテゴリーを選択してください</h2>
-          <div className="category-grid">
-            {[
-              'history_literature',
-              'math_science',
-              'living_things',
-              'sports',
-              'art_subculture',
-              'vehicles_hobbies'
-            ].map((categoryId) => (
-              <button
-                key={categoryId}
-                className="category-button"
-                onClick={() => handleCategorySelect(categoryId)}
-              >
-                {quizData.categories[categoryId].name}
-              </button>
-            ))}
-          </div>
-          <div className="quiz-king-section">
-            <h2>クイズ王チャレンジ</h2>
-            <p>全カテゴリーからランダムに30問出題！ハイスコアを目指そう！</p>
-            <button 
-              className="quiz-king-button"
-              onClick={handleQuizKingChallenge}
-            >
-              チャレンジ開始
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   // サブカテゴリー選択画面
   const renderSubcategorySelection = () => {
     if (!selectedCategory || !quizData.categories[selectedCategory]) {
@@ -583,10 +485,11 @@ function QuizApp() {
       <div className="app">
         <div className="quiz-container">
           <div className="title-section">
-            <img 
-              src={titleImageUrl}
-              alt="バルバロッサ" 
+            <img
+              src="/images/barbarossa.jpeg"
+              alt="バルバロッサ"
               className="title-image"
+              style={{ width: 120, height: 'auto' }}
             />
             <h1>バルバロッサクイズ！</h1>
           </div>
@@ -613,6 +516,13 @@ function QuizApp() {
               onClick={handleCategoryKingChallenge}
             >
               チャレンジ開始
+            </button>
+            <button
+              className="rank-link"
+              onClick={() => openRanking(20, selectedCategory)}
+              style={{ marginTop: '10px', width: '100%' }}
+            >
+              🏆 このカテゴリーのランキングを見る
             </button>
           </div>
           <button
@@ -738,7 +648,35 @@ function QuizApp() {
           />
           <button
             className="save-score-button"
-            onClick={saveScore}
+            onClick={async () => {
+              console.log('スコア送信開始');
+              console.log('送信データ:', {
+                name: playerName,
+                score: score,
+                mode: questions.length,
+                categoryId: selectedCategory,
+                categoryName: quizData.categories[selectedCategory]?.name,
+                subcategoryId: selectedSubcategory,
+                subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+              });
+              
+              try {
+                await saveScoreToFirestore({
+                  name: playerName,
+                  score: score,
+                  mode: questions.length, // 10/20/30
+                  categoryId: selectedCategory,
+                  categoryName: quizData.categories[selectedCategory]?.name,
+                  subcategoryId: selectedSubcategory,
+                  subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+                });
+                console.log('スコア送信成功');
+                alert('スコアを送信しました！');
+              } catch (error) {
+                console.error('スコア送信エラー:', error);
+                alert('スコアの保存に失敗しました: ' + error.message);
+              }
+            }}
             disabled={!playerName}
           >
             スコア送信
@@ -748,68 +686,74 @@ function QuizApp() {
           <button onClick={() => setView('categorySelection')}>
             カテゴリー選択に戻る
           </button>
+          <button onClick={() => openRanking(quizMode)}>
+            今回のランキングを見る
+          </button>
         </div>
       </div>
     );
   };
 
-  // メインのレンダリング
+  /* ----------------- 3‑B. 最終レンダリング ----------------- */
   return (
     <div className="quiz-app">
-      {view === 'categorySelection' && renderCategorySelection()}
-      {view === 'subcategorySelection' && renderSubcategorySelection()}
-      {view === 'quiz' && renderQuiz()}
-      {view === 'result' && renderResult()}
-      {view === 'quizKingComingSoon' && (
+      {view === 'categorySelection' && (
         <div className="app">
           <div className="quiz-container">
             <div className="title-section">
-              <img 
-                src={titleImageUrl}
-                alt="バルバロッサ" 
+              <img
+                src="/images/barbarossa.jpeg"
+                alt="バルバロッサ"
                 className="title-image"
+                style={{ width: 120, height: 'auto' }}
               />
-              <h1>クイズ王チャレンジ</h1>
+              <h1>バルバロッサクイズ！</h1>
             </div>
-            <div className="score-section">
-              <h2>準備中です！</h2>
-              <p>クイズ王モードは現在開発中です。もうしばらくお待ちください。</p>
-              <button 
-                className="back-button"
-                onClick={() => setView('categorySelection')}
-              >
-                カテゴリー選択に戻る
-              </button>
-            </div>
+
+            {/* quizData がまだ空だとクラッシュするのでガードを入れる */}
+            {Object.keys(quizData.categories || {}).length === 0 ? (
+              <p>読み込み中...</p>
+            ) : (
+              <>
+                <h2>カテゴリーを選択してください</h2>
+                <div className="category-grid">
+                  {Object.keys(quizData.categories).map((cid) => (
+                    <button
+                      key={cid}
+                      className="category-button"
+                      onClick={() => handleCategorySelect(cid)}
+                    >
+                      {quizData.categories[cid].name}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* ランキングを見るセクション（控えめな配置） */}
+            <section className="ranking-cta">
+              <h3 className="ranking-cta__title">ランキングを見る</h3>
+              <div className="ranking-cta__buttons">
+                <button className="rank-ghost" onClick={() => openRanking(10)}>通常10問</button>
+                <button className="rank-ghost" onClick={() => openRanking(20)}>カテゴリー王20問</button>
+                <button className="rank-ghost" onClick={() => openRanking(30)}>クイズ王30問</button>
+              </div>
+            </section>
           </div>
         </div>
       )}
-      {view === 'categoryKingComingSoon' && (
-        <div className="app">
-          <div className="quiz-container">
-            <div className="title-section">
-              <img 
-                src={titleImageUrl}
-                alt="バルバロッサ" 
-                className="title-image"
-              />
-              <h1>{quizData.categories[selectedCategory]?.name || ''}王チャレンジ</h1>
-            </div>
-            <div className="score-section">
-              <h2>準備中です！</h2>
-              <p>カテゴリー王モードは現在開発中です。もうしばらくお待ちください。</p>
-              <button 
-                className="back-button"
-                onClick={() => setView('subcategorySelection')}
-              >
-                サブカテゴリー選択に戻る
-              </button>
-            </div>
-          </div>
-        </div>
+      {view === 'subcategorySelection' && renderSubcategorySelection()}
+      {view === 'quiz' && renderQuiz()}
+      {view === 'result' && renderResult()}
+      {view === 'ranking' && (
+        <Ranking
+          initialMode={rankingFilter.mode}
+          initialCategoryId={rankingFilter.categoryId}
+          initialSubcategoryId={rankingFilter.subcategoryId}
+          onBack={() => setView('categorySelection')}
+          quizData={quizData}
+        />
       )}
     </div>
   );
 }
-
-export default QuizApp;
