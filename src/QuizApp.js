@@ -144,6 +144,10 @@ export default function QuizApp() {
     subcategoryId: ''
   });
 
+  // スコア送信状態
+  const [scoreSubmissionStatus, setScoreSubmissionStatus] = useState('idle'); // 'idle', 'submitting', 'success', 'error'
+  const [hasSubmittedScore, setHasSubmittedScore] = useState(false); // スコア送信済みフラグ
+
   // どこからでも呼べるランディング関数
   const openRanking = (mode = 10, categoryId = '', subcategoryId = '') => {
     setRankingFilter({ mode, categoryId, subcategoryId });
@@ -229,6 +233,7 @@ export default function QuizApp() {
   // サブカテゴリー選択ハンドラー
   const handleSubcategorySelect = (subcategoryId) => {
     setSelectedSubcategory(subcategoryId);
+    setHasSubmittedScore(false); // 新しいクイズ開始時にフラグをリセット
     
     // 選択されたサブカテゴリーの問題を取得
     const categoryQuestions = quizData.categories[selectedCategory].subcategories[subcategoryId].questions;
@@ -289,6 +294,7 @@ export default function QuizApp() {
     
     // サブカテゴリはリセット（全カテゴリーから問題を選ぶため）
     setSelectedSubcategory(null);
+    setHasSubmittedScore(false); // 新しいクイズ開始時にフラグをリセット
     
     const category = quizData.categories[selectedCategory];
     const allCategoryQuestions = [];
@@ -440,7 +446,8 @@ export default function QuizApp() {
       setTimeLeft(15);
     } else {
       // クイズ終了時にスコアを保存
-      if (playerName) {
+      if (playerName && !hasSubmittedScore) {
+        setScoreSubmissionStatus('submitting');
         saveScoreToFirestore({
           name: playerName,
           score: score,
@@ -449,6 +456,13 @@ export default function QuizApp() {
           categoryName: quizData.categories[selectedCategory]?.name,
           subcategoryId: selectedSubcategory,
           subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+        }).then(() => {
+          setScoreSubmissionStatus('success');
+          setHasSubmittedScore(true); // 送信済みフラグを設定
+          console.log('クイズ終了時のスコア送信成功');
+        }).catch((error) => {
+          setScoreSubmissionStatus('error');
+          console.error('クイズ終了時のスコア送信エラー:', error);
         });
       }
       setView('result');
@@ -645,10 +659,15 @@ export default function QuizApp() {
             onChange={(e) => setPlayerName(e.target.value)}
             placeholder="あなたの名前を入力"
             className="name-input"
+            disabled={hasSubmittedScore || scoreSubmissionStatus === 'success'}
           />
           <button
-            className="save-score-button"
+            className={`save-score-button ${scoreSubmissionStatus === 'success' ? 'success' : scoreSubmissionStatus === 'submitting' ? 'submitting' : hasSubmittedScore ? 'submitted' : ''}`}
             onClick={async () => {
+              // 既に送信済みまたは送信中の場合は何もしない
+              if (hasSubmittedScore || scoreSubmissionStatus === 'submitting' || scoreSubmissionStatus === 'success') return;
+              
+              setScoreSubmissionStatus('submitting');
               console.log('スコア送信開始');
               console.log('送信データ:', {
                 name: playerName,
@@ -671,16 +690,47 @@ export default function QuizApp() {
                   subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
                 });
                 console.log('スコア送信成功');
-                alert('スコアを送信しました！');
+                setScoreSubmissionStatus('success');
+                setHasSubmittedScore(true); // 送信済みフラグを設定
+                
+                // 成功メッセージを表示
+                setTimeout(() => {
+                  setScoreSubmissionStatus('idle');
+                }, 3000);
+                
               } catch (error) {
                 console.error('スコア送信エラー:', error);
+                setScoreSubmissionStatus('error');
                 alert('スコアの保存に失敗しました: ' + error.message);
+                
+                // エラー状態をリセット
+                setTimeout(() => {
+                  setScoreSubmissionStatus('idle');
+                }, 3000);
               }
             }}
-            disabled={!playerName}
+            disabled={!playerName || hasSubmittedScore || scoreSubmissionStatus === 'submitting' || scoreSubmissionStatus === 'success'}
           >
-            スコア送信
+            {hasSubmittedScore ? '✅ 送信済み' : 
+             scoreSubmissionStatus === 'submitting' ? '送信中...' : 
+             scoreSubmissionStatus === 'success' ? '✅ 送信完了！' : 
+             scoreSubmissionStatus === 'error' ? '❌ 送信失敗' : 
+             'スコア送信'}
           </button>
+          
+          {/* 成功メッセージ */}
+          {scoreSubmissionStatus === 'success' && (
+            <div className="success-message">
+              🎉 スコアを送信しました！ランキングに反映されます。
+            </div>
+          )}
+          
+          {/* 送信済みメッセージ */}
+          {hasSubmittedScore && scoreSubmissionStatus !== 'success' && (
+            <div className="submitted-message">
+              ℹ️ このクイズのスコアは既に送信済みです。
+            </div>
+          )}
         </div>
         <div className="result-buttons">
           <button onClick={() => setView('categorySelection')}>
