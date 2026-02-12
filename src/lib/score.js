@@ -22,27 +22,43 @@ export async function saveScoreToFirestore({
   subcategoryId, 
   subcategoryName 
 }) {
+  console.log('=== saveScoreToFirestore 開始 ===');
+  console.log('auth:', auth);
+  console.log('auth.currentUser:', auth.currentUser);
+  console.log('db:', db);
+  
   // 念のため匿名ログインを担保
   if (!auth.currentUser) {
-    await signInAnonymously(auth).catch(console.error);
+    console.log('匿名認証開始...');
+    try {
+      await signInAnonymously(auth);
+      console.log('匿名認証成功:', auth.currentUser);
+    } catch (error) {
+      console.error('匿名認証エラー:', error);
+      throw new Error('匿名認証に失敗しました: ' + error.message);
+    }
+  } else {
+    console.log('既に認証済み:', auth.currentUser);
   }
 
+  console.log('Firestore書き込み開始...');
   await addDoc(collection(db, "scores"), {
     name: name || "名無し",
     score: Number(score) || 0,
-    mode: String(mode || ""),
+    mode: Number(mode) || 10,
     categoryId: categoryId || null,
     categoryName: categoryName || null,
     subcategoryId: subcategoryId || null,
     subcategoryName: subcategoryName || null,
     createdAt: serverTimestamp(),
   });
+  console.log('Firestore書き込み完了');
 }
 
 /** ランキング取得（上位20件） */
 export async function fetchRankingFromFirestore({ mode, categoryId, subcategoryId }) {
   const base = collection(db, "scores");
-  let q = query(base, where("mode", "==", String(mode)));
+  let q = query(base, where("mode", "==", Number(mode)));
 
   if (categoryId) {
     q = query(q, where("categoryId", "==", categoryId));

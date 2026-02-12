@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './styles.css';
 import { saveScoreToFirestore, fetchRankingFromFirestore } from './lib/score';
+import { initializeAuth, auth, db } from './firebase';
 
 /* ------------------------------------------------------------------
    0. 定数 & 共通ユーティリティ
@@ -156,9 +157,46 @@ export default function QuizApp() {
 
   // Firebase匿名認証を初期化
   useEffect(() => {
-    // Firebase初期化時に自動的に匿名認証が行われる
-    console.log('Firebase初期化完了');
+    const initFirebase = async () => {
+      try {
+        await initializeAuth();
+        console.log('Firebase初期化完了');
+      } catch (error) {
+        console.error('Firebase初期化エラー:', error);
+        // エラーが発生してもアプリは動作を続ける
+      }
+    };
+    
+    // 少し遅延させて初期化
+    const timer = setTimeout(initFirebase, 1000);
+    return () => clearTimeout(timer);
   }, []);
+
+  // Firebase接続テスト用（一時的に追加）
+  useEffect(() => {
+    const testFirebase = async () => {
+      try {
+        console.log('=== Firebase接続テスト ===');
+        console.log('auth:', auth);
+        console.log('auth.currentUser:', auth.currentUser);
+        console.log('db:', db);
+        
+        // 簡単なFirestore読み取りテスト
+        if (db && auth.currentUser) {
+          console.log('Firestore読み取りテスト開始...');
+          const { collection, getDocs } = await import('firebase/firestore');
+          const snapshot = await getDocs(collection(db, 'scores'));
+          console.log('Firestore読み取り成功:', snapshot.docs.length, '件');
+        }
+      } catch (error) {
+        console.error('Firebase接続テストエラー:', error);
+      }
+    };
+    
+    // 認証完了後にテスト実行
+    const timer = setTimeout(testFirebase, 2000);
+    return () => clearTimeout(timer);
+  }, [auth, db]);
 
   // JSONデータを読み込む
   useEffect(() => {

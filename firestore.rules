@@ -1,7 +1,6 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
     // ランキングの読み取りは公開
     match /scores/{id} {
       allow read: if true;
@@ -16,4 +15,4 @@ service cloud.firestore {
       allow update, delete: if false;
     }
   }
-} 
+}
