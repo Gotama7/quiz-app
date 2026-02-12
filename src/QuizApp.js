@@ -196,7 +196,8 @@ export default function QuizApp() {
     // 認証完了後にテスト実行
     const timer = setTimeout(testFirebase, 2000);
     return () => clearTimeout(timer);
-  }, [auth, db]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // JSONデータを読み込む
   useEffect(() => {
@@ -465,6 +466,72 @@ export default function QuizApp() {
     // クイズの状態をセット
     setQuestions(questionsWithOptions);
     setQuizMode(20);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setIsAnswered(false);
+    setFeedback(null);
+    setShowNextButton(false);
+    setTimeLeft(15);
+    setView('quiz');
+  };
+
+  // クイズ王チャレンジ（全カテゴリーから30問）
+  const handleQuizKingChallenge = () => {
+    if (!quizData.categories) return;
+
+    // 全カテゴリーの全問題を集める
+    const allQuestions = [];
+    Object.keys(quizData.categories).forEach(catId => {
+      const category = quizData.categories[catId];
+      Object.keys(category.subcategories).forEach(subId => {
+        const subcategory = category.subcategories[subId];
+        if (subcategory.questions) {
+          subcategory.questions.forEach(q => {
+            allQuestions.push({
+              ...q,
+              categoryId: catId,
+              categoryName: category.name,
+              subcategoryId: subId,
+              subcategoryName: subcategory.name
+            });
+          });
+        }
+      });
+    });
+
+    // 有効な問題のみフィルター
+    const validQuestions = allQuestions.filter(q =>
+      q.question && q.correct && q.distractors && q.distractors.length === 3
+    );
+
+    // 30問ランダムに選択
+    const selectedQuestions = [];
+    const tempQuestions = [...validQuestions];
+    while (selectedQuestions.length < 30 && tempQuestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * tempQuestions.length);
+      selectedQuestions.push(tempQuestions.splice(randomIndex, 1)[0]);
+    }
+
+    // 選択肢の準備
+    const questionsWithOptions = selectedQuestions.map(q => {
+      const options = [
+        { text: q.correct, isCorrect: true },
+        { text: q.distractors[0], isCorrect: false },
+        { text: q.distractors[1], isCorrect: false },
+        { text: q.distractors[2], isCorrect: false }
+      ];
+
+      return {
+        ...q,
+        options: shuffleArray(options)
+      };
+    });
+
+    // クイズの状態をセット
+    setQuestions(questionsWithOptions);
+    setQuizMode(30);
+    setSelectedCategory(null); // 全カテゴリーなのでnull
+    setSelectedSubcategory(null);
     setCurrentQuestionIndex(0);
     setScore(0);
     setIsAnswered(false);
@@ -817,6 +884,19 @@ export default function QuizApp() {
                 </div>
               </>
             )}
+
+            {/* クイズ王チャレンジセクション */}
+            <section className="quiz-king-section" style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
+              <h2 style={{ color: '#000000' }}>🏆 クイズ王チャレンジ</h2>
+              <p>全カテゴリーからランダムに30問出題！真のクイズ王を目指せ！</p>
+              <button
+                className="quiz-king-button"
+                onClick={handleQuizKingChallenge}
+                style={{ backgroundColor: '#000000', color: 'white', padding: '15px 30px', fontSize: '18px', fontWeight: 'bold' }}
+              >
+                チャレンジ開始
+              </button>
+            </section>
 
             {/* ランキングを見るセクション（控えめな配置） */}
             <section className="ranking-cta">
