@@ -138,7 +138,11 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
 ------------------------------------------------------------------ */
 export default function QuizApp() {
   // ステート類（抜粋）
-  const [view, setView]                       = useState('categorySelection');
+  const [view, setView]                       = useState(() => {
+    // URLからviewを復元
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') || 'categorySelection';
+  });
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [questions, setQuestions]             = useState([]);
@@ -164,10 +168,43 @@ export default function QuizApp() {
   const [scoreSubmissionStatus, setScoreSubmissionStatus] = useState('idle'); // 'idle', 'submitting', 'success', 'error'
   const [hasSubmittedScore, setHasSubmittedScore] = useState(false); // スコア送信済みフラグ
 
+  // viewを変更する関数（History APIでブラウザ履歴に追加）
+  const changeView = (newView) => {
+    setView(newView);
+    // URLのクエリパラメータを更新
+    const url = new URL(window.location);
+    url.searchParams.set('view', newView);
+    window.history.pushState({ view: newView }, '', url);
+  };
+
+  // ブラウザの戻る/進むボタンに対応
+  useEffect(() => {
+    const handlePopState = (event) => {
+      if (event.state && event.state.view) {
+        setView(event.state.view);
+      } else {
+        // stateがない場合はURLから復元
+        const params = new URLSearchParams(window.location.search);
+        setView(params.get('view') || 'categorySelection');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // 初回ロード時に現在のstateを保存
+    const params = new URLSearchParams(window.location.search);
+    const currentView = params.get('view') || 'categorySelection';
+    window.history.replaceState({ view: currentView }, '');
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
   // どこからでも呼べるランディング関数
   const openRanking = (mode = 10, categoryId = '', subcategoryId = '') => {
     setRankingFilter({ mode, categoryId, subcategoryId });
-    setView('ranking');               // ← ランキング画面へ遷移
+    changeView('ranking');               // ← ランキング画面へ遷移
   };
 
   // Firebase匿名認証を初期化
@@ -281,7 +318,7 @@ export default function QuizApp() {
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
     setSelectedSubcategory(null); // サブカテゴリもリセット
-    setView('subcategorySelection');
+    changeView('subcategorySelection');
   };
 
   // サブカテゴリー選択ハンドラー
@@ -339,7 +376,7 @@ export default function QuizApp() {
     setFeedback(null);
     setShowNextButton(false);
     setTimeLeft(15);
-    setView('quiz');
+    changeView('quiz');
   };
 
   // カテゴリー王チャレンジの処理
@@ -487,7 +524,7 @@ export default function QuizApp() {
     setFeedback(null);
     setShowNextButton(false);
     setTimeLeft(15);
-    setView('quiz');
+    changeView('quiz');
   };
 
   // クイズ王チャレンジ（全カテゴリーから30問）
@@ -553,7 +590,7 @@ export default function QuizApp() {
     setFeedback(null);
     setShowNextButton(false);
     setTimeLeft(15);
-    setView('quiz');
+    changeView('quiz');
   };
 
   // handleNextQuestion, handleAnswerClickの再定義（簡易版）
@@ -585,7 +622,7 @@ export default function QuizApp() {
           console.error('クイズ終了時のスコア送信エラー:', error);
         });
       }
-      setView('result');
+      changeView('result');
     }
   };
 
@@ -661,7 +698,7 @@ export default function QuizApp() {
           </div>
           <button
             className="back-button"
-            onClick={() => setView('categorySelection')}
+            onClick={() => changeView('categorySelection')}
           >
             カテゴリー選択に戻る
           </button>
@@ -752,7 +789,7 @@ export default function QuizApp() {
             onClick={() => {
               if (window.confirm('クイズを中断してトップに戻りますか？')) {
                 clearInterval(timerRef.current);
-                setView('categorySelection');
+                changeView('categorySelection');
               }
             }}
           >
@@ -853,7 +890,7 @@ export default function QuizApp() {
           )}
         </div>
         <div className="result-buttons">
-          <button onClick={() => setView('categorySelection')}>
+          <button onClick={() => changeView('categorySelection')}>
             カテゴリー選択に戻る
           </button>
           <button onClick={() => openRanking(quizMode)}>
@@ -933,7 +970,7 @@ export default function QuizApp() {
           initialMode={rankingFilter.mode}
           initialCategoryId={rankingFilter.categoryId}
           initialSubcategoryId={rankingFilter.subcategoryId}
-          onBack={() => setView('categorySelection')}
+          onBack={() => changeView('categorySelection')}
           quizData={quizData}
         />
       )}
