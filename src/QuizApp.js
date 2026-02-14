@@ -101,15 +101,30 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
         </div>
         
         <ol className="ranking-list">
-          {list.map((item, i) => (
-            <li key={i} className="ranking-item">
-              <span className="rank-num">{i + 1}.</span>
-              <span className="rank-name">{item.name}</span>
-              <span className="rank-score">{item.score} 点</span>
-              {item.categoryName && <span className="rank-category">({item.categoryName})</span>}
-              {item.subcategoryName && <span className="rank-category"> - {item.subcategoryName}</span>}
-            </li>
-          ))}
+          {list.map((item, i) => {
+            // 同じスコアの場合は同順位を表示
+            let rank = 1;
+            if (i > 0) {
+              if (item.score === list[i - 1].score) {
+                // 前の人と同じスコアなら、前の人の順位を取得
+                rank = list[i - 1].rank;
+              } else {
+                rank = i + 1;
+              }
+            }
+            // 順位を保存（次の人が参照できるように）
+            item.rank = rank;
+
+            return (
+              <li key={i} className="ranking-item">
+                <span className="rank-num">{rank}.</span>
+                <span className="rank-name">{item.name}</span>
+                <span className="rank-score">{item.score} 点</span>
+                {item.categoryName && <span className="rank-category">({item.categoryName})</span>}
+                {item.subcategoryName && <span className="rank-category"> - {item.subcategoryName}</span>}
+              </li>
+            );
+          })}
         </ol>
         <button className="back-button" onClick={onBack}>戻る</button>
       </div>
