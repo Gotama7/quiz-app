@@ -117,6 +117,18 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
             // 順位を保存（次の人が参照できるように）
             item.rank = rank;
 
+            // 日時をフォーマット
+            const formatDate = (timestamp) => {
+              if (!timestamp || !timestamp.seconds) return '';
+              const date = new Date(timestamp.seconds * 1000);
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const day = String(date.getDate()).padStart(2, '0');
+              const hours = String(date.getHours()).padStart(2, '0');
+              const minutes = String(date.getMinutes()).padStart(2, '0');
+              return `${year}/${month}/${day} ${hours}:${minutes}`;
+            };
+
             return (
               <li key={i} className="ranking-item">
                 <span className="rank-num">{rank}.</span>
@@ -124,6 +136,7 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
                 <span className="rank-score">{item.score} 点</span>
                 {item.categoryName && <span className="rank-category">({item.categoryName})</span>}
                 {item.subcategoryName && <span className="rank-category"> - {item.subcategoryName}</span>}
+                {item.createdAt && <span className="rank-date" style={{ fontSize: '0.85em', color: '#888', marginLeft: '8px' }}>{formatDate(item.createdAt)}</span>}
               </li>
             );
           })}
@@ -611,10 +624,10 @@ export default function QuizApp() {
           name: playerName,
           score: score,
           mode: questions.length, // 10/20/30
-          categoryId: selectedCategory,
-          categoryName: quizData.categories[selectedCategory]?.name,
-          subcategoryId: selectedSubcategory,
-          subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+          categoryId: selectedCategory || null,
+          categoryName: selectedCategory ? quizData.categories[selectedCategory]?.name : null,
+          subcategoryId: selectedSubcategory || null,
+          subcategoryName: (selectedCategory && selectedSubcategory) ? quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name : null,
         }).then(() => {
           setScoreSubmissionStatus('success');
           setHasSubmittedScore(true); // 送信済みフラグを設定
@@ -834,21 +847,21 @@ export default function QuizApp() {
                 name: playerName,
                 score: score,
                 mode: questions.length,
-                categoryId: selectedCategory,
-                categoryName: quizData.categories[selectedCategory]?.name,
-                subcategoryId: selectedSubcategory,
-                subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+                categoryId: selectedCategory || null,
+                categoryName: selectedCategory ? quizData.categories[selectedCategory]?.name : null,
+                subcategoryId: selectedSubcategory || null,
+                subcategoryName: (selectedCategory && selectedSubcategory) ? quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name : null,
               });
-              
+
               try {
                 await saveScoreToFirestore({
                   name: playerName,
                   score: score,
                   mode: questions.length, // 10/20/30
-                  categoryId: selectedCategory,
-                  categoryName: quizData.categories[selectedCategory]?.name,
-                  subcategoryId: selectedSubcategory,
-                  subcategoryName: quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name,
+                  categoryId: selectedCategory || null,
+                  categoryName: selectedCategory ? quizData.categories[selectedCategory]?.name : null,
+                  subcategoryId: selectedSubcategory || null,
+                  subcategoryName: (selectedCategory && selectedSubcategory) ? quizData.categories[selectedCategory]?.subcategories[selectedSubcategory]?.name : null,
                 });
                 console.log('スコア送信成功');
                 setScoreSubmissionStatus('success');
