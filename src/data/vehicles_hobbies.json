@@ -6497,6 +6497,105 @@
             ]
           },
           {
+            "question": "M4 SOPMODキットを正式に開発・管理する米軍の組織は？",
+            "correct": "NSWCクレーン師団",
+            "distractors": [
+              "フォートベニング基地",
+              "ピカティニー兵器廠",
+              "フォートブラッグ基地"
+            ]
+          },
+          {
+            "question": "M4コマンドーの銃身長として一般的に知られるサイズは？",
+            "correct": "11.5インチ",
+            "distractors": [
+              "10.3インチ",
+              "14.5インチ",
+              "12インチ"
+            ]
+          },
+          {
+            "question": "NSWCクレーン師団の所在地は米国のどの州か？",
+            "correct": "インディアナ州",
+            "distractors": [
+              "バージニア州",
+              "ノースカロライナ州",
+              "フロリダ州"
+            ]
+          },
+          {
+            "question": "M4 SOPMOD Block IIで新たに導入されたハンドガードは？",
+            "correct": "EOTech EXPS3",
+            "distractors": [
+              "ACOG TA01NSN",
+              "Trijicon MRO",
+              "Elcan C79"
+            ]
+          },
+          {
+            "question": "CQBR（Close Quarters Battle Receiver）の標準銃身長は何インチか？",
+            "correct": "10.3インチ",
+            "distractors": [
+              "11.5インチ",
+              "14.5インチ",
+              "12.5インチ"
+            ]
+          },
+          {
+            "question": "CQBRが当初開発された主な理由は何か？",
+            "correct": "室内戦闘用の短縮ライフル需要",
+            "distractors": [
+              "精密射撃能力の向上",
+              "砂漠環境での耐久性向上",
+              "水陸両用作戦能力向上"
+            ]
+          },
+          {
+            "question": "CQBR（Mk18）が主に使用するサプレッサーの標準的なモデル名は？",
+            "correct": "SureFire SOCOM556-RC",
+            "distractors": [
+              "KAC NT-4",
+              "Gemtech HALO",
+              "SIG SRD556"
+            ]
+          },
+          {
+            "question": "Mk18 Mod1に標準装備されるレールシステムのメーカーはどこか？",
+            "correct": "ダニエル・ディフェンス社",
+            "distractors": [
+              "ナイツアーマメント社",
+              "ラルー・タクティカル社",
+              "LMT社"
+            ]
+          },
+          {
+            "question": "ダニエル・ディフェンス社がMk18用に提供するハンドガードの正式な製品名は？",
+            "correct": "RIS II",
+            "distractors": [
+              "URX 4",
+              "MFR Rail",
+              "M-LOK Rail"
+            ]
+          },
+          {
+            "question": "HK416がM4と根本的に異なる作動方式はどれか？",
+            "correct": "ショートストロークピストン方式",
+            "distractors": [
+              "ロングストロークピストン方式",
+              "ダイレクト・インピンジメント方式",
+              "ブローバック方式"
+            ]
+          },
+          {
+            "question": "HK416が米特殊部隊に最初に本格的に採用された部隊は？",
+            "correct": "デルタフォース（CAG）",
+            "distractors": [
+              "SEALチーム6（DEVGRU）",
+              "グリーンベレー（陸軍特殊部隊）",
+              "第75レンジャー連隊"
+            ]
+          },
+          {
             "question": "SCAR-Hが採用しているリコイルシステムの種類は？",
             "correct": "ショートストロークガスピストン",
             "distractors": [
@@ -6539,6 +6638,69 @@
               "HK416",
               "FN SCAR",
               "Steyr AUG"
+            ]
+          },
+          {
+            "question": "FNファイブセブン用の5.7×28mm弾が最初に開発された主目的は？",
+            "correct": "防弾ベスト貫通性能の向上",
+            "distractors": [
+              "長距離狙撃精度の向上",
+              "反動の低減",
+              "装弾数増加"
+            ]
+          },
+          {
+            "question": "NATO標準の小銃弾である5.56×45mm弾が米軍で正式採用された際の初期型番は？",
+            "correct": "M193",
+            "distractors": [
+              "M855",
+              "M80",
+              "M262"
+            ]
+          },
+          {
+            "question": "7.62×51mm NATO弾を使用する米軍の代表的狙撃ライフルは？",
+            "correct": "M24 SWS",
+            "distractors": [
+              "M110 SASS",
+              "M40A5",
+              "M14 EBR"
+            ]
+          },
+          {
+            "question": "ソビエト連邦が開発した、AK-74用に採用された小口径ライフル弾は？",
+            "correct": "5.45×39mm弾",
+            "distractors": [
+              "7.62×39mm弾",
+              "7.62×54mmR弾",
+              "9×39mm弾"
+            ]
+          },
+          {
+            "question": "拳銃弾の9mmパラベラムの正式なサイズは？",
+            "correct": "9×19mm",
+            "distractors": [
+              "9×18mm",
+              "9×21mm",
+              "9×23mm"
+            ]
+          },
+          {
+            "question": "第二次大戦時、ドイツ軍の突撃銃「StG44」に使用された世界初の中間弾薬は？",
+            "correct": "7.92×33mmクルツ弾",
+            "distractors": [
+              "7.62×39mm弾",
+              "7.92×57mmモーゼル弾",
+              "7.65×25mmトカレフ弾"
+            ]
+          },
+          {
+            "question": ".338ラプアマグナム弾が開発された主な目的は？",
+            "correct": "長距離狙撃用の高精度と威力の確保",
+            "distractors": [
+              "短距離での高装弾数化",
+              "拳銃向けの消音射撃",
+              "戦術ショットガン用弾薬"
             ]
           },
           {
@@ -6638,6 +6800,24 @@
               "ACOG",
               "CompM2",
               "SpecterDR"
+            ]
+          },
+          {
+            "question": "Elcan製の光学照準器で1.5×/6×のデュアル仕様を持つモデルは？",
+            "correct": "SpecterDR",
+            "distractors": [
+              "VCOG",
+              "ACOG",
+              "M150 RCO"
+            ]
+          },
+          {
+            "question": "「Dual Role」の略称として知られる照準器は次のうちどれか？",
+            "correct": "SpecterDR",
+            "distractors": [
+              "Comp2",
+              "EXPS3",
+              "HCOG"
             ]
           },
           {
