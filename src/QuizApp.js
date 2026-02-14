@@ -36,6 +36,38 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
     ? Object.entries(quizData.categories[categoryId]?.subcategories || {})
     : [];
 
+  // 重複排除関数：同じ人・同じサブカテゴリ・同じスコアの場合、最も古いデータのみを残す
+  const deduplicateRanking = (ranking) => {
+    // name + subcategoryId + score の組み合わせごとにグループ化
+    const groupMap = new Map();
+
+    ranking.forEach(item => {
+      // キーを生成（name, subcategoryId, scoreの組み合わせ）
+      const key = `${item.name}_${item.subcategoryId || 'null'}_${item.score}`;
+
+      if (!groupMap.has(key)) {
+        groupMap.set(key, item);
+      } else {
+        // 既に同じキーが存在する場合、より古いデータを保持
+        const existingItem = groupMap.get(key);
+
+        // createdAtを比較（古い方を残す）
+        if (item.createdAt && existingItem.createdAt) {
+          const itemTime = item.createdAt.seconds || 0;
+          const existingTime = existingItem.createdAt.seconds || 0;
+
+          if (itemTime < existingTime) {
+            // itemの方が古い場合、itemを保持
+            groupMap.set(key, item);
+          }
+        }
+      }
+    });
+
+    // Mapから配列に変換
+    return Array.from(groupMap.values());
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -44,7 +76,11 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
           categoryId: categoryId || undefined,
           subcategoryId: subcategoryId || undefined,
         });
-        setList(ranking);
+
+        // 重複排除処理
+        const deduplicatedRanking = deduplicateRanking(ranking);
+
+        setList(deduplicatedRanking);
         setError(null);
       } catch (err) {
         console.error(err);
