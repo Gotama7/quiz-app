@@ -200,11 +200,26 @@ h2 {
   -webkit-tap-highlight-color: transparent;
 }
 
-.option-button:hover:not([disabled]) {
-  background-color: #f0f0f0;
-  transform: translateY(-2px);
-  color: #333;
-  -webkit-text-fill-color: #333;
+/* ホバースタイル（デスクトップのみ） */
+@media (hover: hover) and (pointer: fine) {
+  .option-button:hover:not([disabled]) {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    color: #333;
+    -webkit-text-fill-color: #333;
+  }
+}
+
+/* タッチデバイス用：アクティブ状態をクリア */
+.option-button:active {
+  background-color: white;
+  transform: none;
+}
+
+/* フォーカススタイルを無効化（タッチデバイス） */
+.option-button:focus {
+  outline: none;
+  background-color: white;
 }
 
 .option-button.correct {
