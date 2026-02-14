@@ -68,7 +68,9 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
             src="/images/barbarossa.jpeg"
             alt="バルバロッサ"
             className="title-image"
-            style={{ width: 120, height: 'auto' }}
+            style={{ width: 120, height: 'auto', cursor: 'pointer' }}
+            onClick={onBack}
+            title="トップに戻る"
           />
           <h1>{title} ランキング</h1>
         </div>
@@ -660,7 +662,9 @@ export default function QuizApp() {
               src="/images/barbarossa.jpeg"
               alt="バルバロッサ"
               className="title-image"
-              style={{ width: 120, height: 'auto' }}
+              style={{ width: 120, height: 'auto', cursor: 'pointer' }}
+              onClick={() => changeView('categorySelection')}
+              title="トップに戻る"
             />
             <h1>バルバロッサクイズ！</h1>
           </div>
@@ -912,7 +916,9 @@ export default function QuizApp() {
                 src="/images/barbarossa.jpeg"
                 alt="バルバロッサ"
                 className="title-image"
-                style={{ width: 120, height: 'auto' }}
+                style={{ width: 120, height: 'auto', cursor: 'pointer' }}
+                onClick={() => window.location.reload()}
+                title="ページを再読み込み"
               />
               <h1>バルバロッサクイズ！</h1>
             </div>
