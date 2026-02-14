@@ -55,7 +55,7 @@ export async function saveScoreToFirestore({
   console.log('Firestore書き込み完了');
 }
 
-/** ランキング取得（上位20件） */
+/** ランキング取得（重複排除を考慮して多めに取得） */
 export async function fetchRankingFromFirestore({ mode, categoryId, subcategoryId }) {
   const base = collection(db, "scores");
   let q = query(base, where("mode", "==", Number(mode)));
@@ -67,8 +67,8 @@ export async function fetchRankingFromFirestore({ mode, categoryId, subcategoryI
     q = query(q, where("subcategoryId", "==", subcategoryId));
   }
 
-  // スコア降順・最新優先（同点なら新しい方を上にしたい場合）
-  q = query(q, orderBy("score", "desc"), orderBy("createdAt", "desc"), limit(50));
+  // スコア降順・最新優先（重複排除後に50件確保するため多めに取得）
+  q = query(q, orderBy("score", "desc"), orderBy("createdAt", "desc"), limit(150));
 
   const snap = await getDocs(q);
   return snap.docs.map((d) => d.data());

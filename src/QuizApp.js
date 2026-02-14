@@ -80,7 +80,8 @@ function Ranking({ initialMode, initialCategoryId, initialSubcategoryId, onBack,
         // 重複排除処理
         const deduplicatedRanking = deduplicateRanking(ranking);
 
-        setList(deduplicatedRanking);
+        // 50件に制限
+        setList(deduplicatedRanking.slice(0, 50));
         setError(null);
       } catch (err) {
         console.error(err);
