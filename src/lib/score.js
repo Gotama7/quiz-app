@@ -68,7 +68,7 @@ export async function fetchRankingFromFirestore({ mode, categoryId, subcategoryI
   }
 
   // スコア降順・最新優先（同点なら新しい方を上にしたい場合）
-  q = query(q, orderBy("score", "desc"), orderBy("createdAt", "desc"), limit(20));
+  q = query(q, orderBy("score", "desc"), orderBy("createdAt", "desc"), limit(50));
 
   const snap = await getDocs(q);
   return snap.docs.map((d) => d.data());
