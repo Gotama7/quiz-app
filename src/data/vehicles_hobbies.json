@@ -613,8 +613,8 @@
             "correct": "ガソリン/HEV/PHEVを用意",
             "distractors": [
               "自然吸気のみで展開",
-              "BEV専用のみ",
-              "水素燃料電池のみ"
+              "BEV専用",
+              "水素燃料電池"
             ]
           },
           {
@@ -622,7 +622,7 @@
             "correct": "2列ミッドサイズSUV",
             "distractors": [
               "3列ロングホイールベース専用",
-              "クーペのみ",
+              "クーペ",
               "ミニバン"
             ]
           },
@@ -1954,8 +1954,8 @@
             "correct": "GTB（クーペ）とGTS（タルガ）",
             "distractors": [
               "tb（クーペ）とts（タルガ）",
-              "ベルリネッタとスパイダーのみ",
-              "スパイダーのみ"
+              "ベルリネッタとスパイダー",
+              "スパイダー"
             ]
           },
           {
@@ -3585,11 +3585,11 @@
           },
           {
             "question": "1969年にホンダが発売した世界初の量産直列4気筒エンジン搭載バイクで、世界中で話題となった名車は？",
-            "correct": "ホンダ CB750Four",
+            "correct": "CB750Four",
             "distractors": [
-              "スズキ GSX1100Sカタナ",
-              "ヤマハ RD400",
-              "カワサキ W1"
+              "GSX1100Sカタナ",
+              "RD400",
+              "W1"
             ]
           },
           {
@@ -3630,11 +3630,11 @@
           },
           {
             "question": "1970年代、カワサキが発売し、北米市場で「キング・オブ・モーターサイクル」と呼ばれ大ヒットしたバイクは？",
-            "correct": "カワサキ Z1",
+            "correct": "Z1",
             "distractors": [
-              "ホンダ CB750Four",
-              "スズキ GS750",
-              "ヤマハ XS650"
+              "CB750Four",
+              "GS750",
+              "XS650"
             ]
           },
           {
@@ -4107,11 +4107,11 @@
           },
           {
             "question": "スズキがカタナのデザインをベースにして250ccクラスで発売した車種は何か？",
-            "correct": "GSX250Sカタナ",
+            "correct": "GSX250S",
             "distractors": [
-              "RG250ガンマ",
-              "RGV250ガンマ",
-              "GSX-R250"
+              "RG250",
+              "RGV250",
+              "GSX-R"
             ]
           },
           {
@@ -8171,6 +8171,51 @@
             ]
           },
           {
+            "question": "PASGTヘルメットの主な素材は何か？",
+            "correct": "ケブラー",
+            "distractors": [
+              "チタン",
+              "カーボンファイバー",
+              "アルミ合金"
+            ]
+          },
+          {
+            "question": "MICHヘルメットがPASGTヘルメットから改良された最大の変更点は？",
+            "correct": "イヤーカット形状変更",
+            "distractors": [
+              "重量の大幅増加",
+              "金属製外殻の追加",
+              "全面防弾ガラス追加"
+            ]
+          },
+          {
+            "question": "MICHヘルメットの正式な軍用制式名称は何か？",
+            "correct": "Modular Integrated Communications Helmet",
+            "distractors": [
+              "Multi-Integrated Combat Helmet",
+              "Military Infantry Combat Helmet",
+              "Modular Infantry Command Helmet"
+            ]
+          },
+          {
+            "question": "Ops-Core FASTヘルメットの「FAST」は何の略称か？",
+            "correct": "Future Assault Shell Technology",
+            "distractors": [
+              "Fully Adjustable Shell Type",
+              "Floating Armor System Tech",
+              "Full Advanced System Tech"
+            ]
+          },
+          {
+            "question": "FASTヘルメットの開発メーカーであるOps-Core社の現在の親会社は？",
+            "correct": "Gentex Corporation",
+            "distractors": [
+              "Honeywell International",
+              "Revision Military",
+              "3M Company"
+            ]
+          },
+          {
             "question": "SASの正式名称（略称SAS）は何の略称か？",
             "correct": "Special Air Service",
             "distractors": [
@@ -8420,6 +8465,15 @@
               "第3特殊部隊グループ",
               "第7特殊部隊グループ",
               "第10特殊部隊グループ"
+            ]
+          },
+          {
+            "question": "ドイツ軍が採用した携行対戦車兵器で、単発使い捨ての第3世代型として知られるのは？",
+            "correct": "パンツァー・ファウスト3",
+            "distractors": [
+              "バズーカM1",
+              "RPG-7",
+              "AT4"
             ]
           },
           {
@@ -9014,6 +9068,33 @@
               "ボクサー",
               "パトリア6×6",
               "RG-32"
+            ]
+          },
+          {
+            "question": "フィンランドの多用途装輪装甲車「AMV」を製造した企業はどれか？",
+            "correct": "パトリア",
+            "distractors": [
+              "BAEシステムズ",
+              "ロッキード・マーチン",
+              "ノースロップ・グラマン"
+            ]
+          },
+          {
+            "question": "1952年ストックホルムで創業し、防衛・航空・エンジニアリング事業を展開するフィンランドの企業はどれか？",
+            "correct": "パトリア",
+            "distractors": [
+              "サーブ",
+              "サーブ・スペース",
+              "ASコスメティクス"
+            ]
+          },
+          {
+            "question": "防衛産業で「Patria 6×6」などの車両を提供しているメーカーは？",
+            "correct": "パトリア",
+            "distractors": [
+              "ヒューズ・エアクラフト",
+              "エアバス",
+              "ボーイング"
             ]
           },
           {
@@ -9620,6 +9701,51 @@
             ]
           },
           {
+            "question": "即時に敵を全滅させる能力を示すことで抑止力を高める、1950年代にダレスによって提唱された核戦略は？",
+            "correct": "大量報復戦略",
+            "distractors": [
+              "柔軟反応戦略",
+              "損害限定戦略",
+              "相互確証破壊"
+            ]
+          },
+          {
+            "question": "キューバ危機後にジョンソン政権で採用され、核・非核を組み合わせた多層的対応を重視した戦略は？,",
+            "correct": "柔軟反応戦略",
+            "distractors": [
+              "大量報復戦略",
+              "選択反応戦略",
+              "相殺戦略"
+            ]
+          },
+          {
+            "question": "局所的な核使用で敵の戦力を限定的に破壊し、全面核戦争へのエスカレーションを防ぐことを目的としたのは？",
+            "correct": "損害限定戦略",
+            "distractors": [
+              "相互確証破壊",
+              "大量報復戦略",
+              "柔軟反応戦略"
+            ]
+          },
+          {
+            "question": "米ソ双方が相手の報復を避けられない核攻撃能力を保持することで抑止均衡を維持する戦略は？",
+            "correct": "相互確証破壊",
+            "distractors": [
+              "損害限定戦略",
+              "選択反応戦略",
+              "相殺戦略"
+            ]
+          },
+          {
+            "question": "敵の核使用など特定の挑発行動に対して限定的な核報復を繰り返すという、シュレジンジャーが提唱した戦略は？",
+            "correct": "選択反応戦略",
+            "distractors": [
+              "相互確証破壊",
+              "柔軟反応戦略",
+              "大量報復戦略"
+            ]
+          },
+          {
             "question": "W87核弾頭が搭載されている大陸間弾道ミサイルは？",
             "correct": "LGM-118A ピースキーパー",
             "distractors": [
@@ -9699,6 +9825,123 @@
               "対潜ミサイル",
               "対陸攻撃ミサイル"
             ]
+          },
+          {
+            "question": "長射程の戦術弾道ミサイルとして米陸軍が運用しているのは？",
+            "correct": "ATACMS",
+            "distractors": [
+              "Tomahawk",
+              "HIMARS",
+              "Patriot"
+            ]
+          },
+          {
+            "question": "ATACMSが発射される発射機はHIMARSともう一つあるが、次のうちどれか？",
+            "correct": "MLRS",
+            "distractors": [
+              "AMRAAM",
+              "SM-3",
+              "Patriot"
+            ]
+          },
+          {
+            "question": "ATACMSの正式名称は何か？",
+            "correct": "Army Tactical Missile System",
+            "distractors": [
+              "Advanced Tactical Air Control",
+              "Anti-Aircraft Tactical Missile",
+              "Armored Tactical Missile System"
+            ]
+          },
+          {
+            "question": "ATACMSの最大射程はおおよそ何kmか？",
+            "correct": "300km",
+            "distractors": [
+              "150km",
+              "75km",
+              "500km"
+            ]
+          },
+          {
+            "question": "ATACMSが搭載する弾頭の種類は？",
+            "correct": "クラスター弾頭",
+            "distractors": [
+              "核弾頭",
+              "化学弾頭",
+              "生物弾頭"
+            ]
+          },
+          {
+            "question": "ATACMSの誘導方式として正しいのは？",
+            "correct": "GPS・慣性誘導",
+            "distractors": [
+              "赤外線誘導",
+              "ワイヤ誘導",
+              "レーザー誘導"
+            ]
+          },
+          {
+            "question": "ATACMSが最初に制式配備された年代はいつか？",
+            "correct": "1989年",
+            "distractors": [
+              "1980年",
+              "2012年",
+              "1975年"
+            ]
+          },
+          {
+            "question": "米陸軍が従来のATACMSの後継として開発した、HIMARSから発射可能な最新の地対地ミサイル",
+            "correct": "PrSM",
+            "distractors": [
+              "Tomahawk",
+              "JASSM",
+              "GMLRS"
+            ]
+          },
+          {
+            "question": "ATACMSが運用される米陸軍の火力支援隊は何と呼ばれる？",
+            "correct": "Field Artillery Brigade",
+            "distractors": [
+              "Armor Brigade",
+              "Infantry Brigade",
+              "Aviation Brigade"
+            ]
+          },
+          {
+            "question": "ATACMSの発射プラットフォームとして米国外でライセンス生産された国はどこか？",
+            "correct": "韓国",
+            "distractors": [
+              "ドイツ",
+              "日本",
+              "イギリス"
+            ]
+          },
+          {
+            "question": "M26 MLRSロケットの最大射程はおよそ何kmか？",
+            "correct": "32 km",
+            "distractors": [
+              "20 km",
+              "45 km",
+              "15 km"
+            ]
+          },
+          {
+            "question": "M26ロケットが搭載するM77サブ弾頭の数は合計いくつか？",
+            "correct": "644個",
+            "distractors": [
+              "518個",
+              "300個",
+              "1024個"
+            ]
+          },
+          {
+            "question": "M26ロケットが「スチール・レイン」の異名で多用された紛争はどれか？",
+            "correct": "湾岸戦争",
+            "distractors": [
+              "イラク戦争",
+              "アフガニスタン紛争",
+              "コソボ紛争"
+            ]
           }
         ]
       },
@@ -9720,7 +9963,7 @@
             "distractors": [
               "モンブラン",
               "ドロミテ",
-              "マッターホルン南壁"
+              "ヨセミテ"
             ]
           },
           {
@@ -11132,8 +11375,8 @@
             "correct": "3ジップ構造",
             "distractors": [
               "ロールトップ",
-              "トップローディングのみ",
-              "サイドジップのみ"
+              "トップローディング",
+              "サイドジップ"
             ]
           },
           {
@@ -11660,7 +11903,7 @@
           },
           {
             "question": "イスカの主力製品として最も有名なのは？",
-            "correct": "シュラフ（寝袋）",
+            "correct": "シュラフ",
             "distractors": [
               "テント",
               "ザック",
@@ -11917,6 +12160,15 @@
               "日本アルプス",
               "アルプス",
               "ヒマラヤ"
+            ]
+          },
+          {
+            "question": "DCF製シェルターで有名なULブランドは？",
+            "correct": "Zpacks",
+            "distractors": [
+              "モンベル",
+              "ノースフェイス",
+              "ミレー"
             ]
           },
           {
